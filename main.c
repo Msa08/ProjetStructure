@@ -44,8 +44,17 @@ int main(){
     fclose(f);
     fclose(f2);*/
 
-    long a=random_prime_number(10000000,2000000000,20);
-    printf("%lu\n",a);
+    long a=random_prime_number(8,127,5000);
+    long b=random_prime_number(8,127,5000);
+    printf("nb premier %lu %lu\n",a,b);
+    long tts = 0;
+    long ttn = 0;
+    long ttu = 0;
+    long *n=&ttn;
+    long *u=&ttu;
+    long *s=&ttn;
+    generate_key_values(a,b, n, s, u);
+    printf("n:%lu s:%lu u:%lu\n",*n,*s,*u);
     return 0;
     //on obtient 215000363
 }
