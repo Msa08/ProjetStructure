@@ -5,8 +5,8 @@
 #include <time.h>
 
 int main(){
-    FILE *f = fopen("modpow.txt", "w");
-    FILE *f2=fopen("modpow2.txt", "w");
+    //FILE *f = fopen("modpow.txt", "w");
+    //FILE *f2=fopen("modpow2.txt", "w");
     clock_t time_initial=0;
     clock_t time_final=0;
     clock_t time_initial2=0;
