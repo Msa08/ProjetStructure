@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "prime_number.h"
 #include "chiffrement.h"
 
@@ -26,4 +27,17 @@ void generate_key_values(long p, long q, long* n, long *s, long *u){
     while(extended_gcd(*s,t,u,&v)!=1){
         *s = rand_long(0,t-1);
     }
+}
+
+long* encrypt(char* chaine, long s, long n){
+    long *crypted=(long*)malloc(chaine[strlen(chaine)]*sizeof(long));
+    long c;
+    int i=0;
+    while(chaine[i]!='\0'){
+        c=modpow(chaine[i], s, n);
+        *crypted=c;
+        i++;
+        crypted++;
+    }
+    return crypted;
 }

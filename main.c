@@ -3,7 +3,15 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 #include <time.h>
+#include <string.h>
 
+void print_long_vector(long *result, int size){
+    printf("Vector: [");
+    for(int i=0;i<size;i++){
+        printf("%lx \t",result[i]);
+    }
+    printf("]\n");
+}
 int main(){
     //FILE *f = fopen("modpow.txt", "w");
     //FILE *f2=fopen("modpow2.txt", "w");
@@ -44,17 +52,40 @@ int main(){
     fclose(f);
     fclose(f2);*/
 
-    long a=random_prime_number(8,127,5000);
-    long b=random_prime_number(8,127,5000);
+    //srand(time(NULL));
+
+    //generation de cle;
+    printf("nombre premier\n");
+    long a=random_prime_number(3,7,5000);
+    long b=random_prime_number(3,7,5000);
+    while(a==b){
+        b=random_prime_number(3,7,5000);
+    }
     printf("nb premier %lu %lu\n",a,b);
-    long tts = 0;
-    long ttn = 0;
-    long ttu = 0;
-    long *n=&ttn;
-    long *u=&ttu;
-    long *s=&ttn;
-    generate_key_values(a,b, n, s, u);
-    printf("n:%lu s:%lu u:%lu\n",*n,*s,*u);
+
+    long n;
+    long u;
+    long s;
+    generate_key_values(a,b, &n, &s, &u);
+    if(u<0){
+        long t= (a-1)*(b-1);
+        u=u+t;
+    }
+
+    //affichage des clés en haxadécimal
+    printf("cle publique = (%lx, %lx) \n",s,n);
+    printf("cle privee = (%lx, %lx) \n",u,n);
+    //chiffrement
+    char mess[10]="hello";
+    int len=strlen(mess);
+    long *crypted=encrypt(mess,s,n);
+    printf("Initial message %s \n",mess);
+    printf("Encoded representation \n");
+    print_long_vector(crypted,len);
+    /*while(test!=NULL){
+        printf("%lu",*test);
+        test++;
+    }*/
     return 0;
     //on obtient 215000363
 }
