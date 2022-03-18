@@ -15,13 +15,19 @@ void print_long_vector(long *result, int size){
 int main(){
     //FILE *f = fopen("modpow.txt", "w");
     //FILE *f2=fopen("modpow2.txt", "w");
-    clock_t time_initial=0;
+    /*clock_t time_initial=0;
     clock_t time_final=0;
     clock_t time_initial2=0;
     clock_t time_final2=0;
     double time;
     double time2;
-    /*long i;
+    long a, b;
+    for(int i=20;i<40;i++){
+        a=modpow(10,i,15);
+        b=modpow_naive(10,i,15);
+        printf("modpow : %lu, naive : %lu\n",a,b);
+    }
+    long i;
     int res=0;
     int tmp=0;
     for(i=215000000; time<2;i++){
@@ -35,9 +41,9 @@ int main(){
         printf("time : %f, nb : %d\n",time, i);
     }
     printf("plus grand nombre : %d\n",res);
-    return 0 ;*/
+    return 0 ;
 
-    /*for(int i=1;i<1000000;i++){
+    for(int i=1;i<1000000;i++){
       time_initial=clock();
       modpow(10, i, 15);
       time_final=clock();
@@ -52,10 +58,9 @@ int main(){
     fclose(f);
     fclose(f2);*/
 
-    //srand(time(NULL));
+    srand(time(NULL));
 
     //generation de cle;
-    printf("nombre premier\n");
     long a=random_prime_number(3,7,5000);
     long b=random_prime_number(3,7,5000);
     while(a==b){
@@ -66,7 +71,9 @@ int main(){
     long n;
     long u;
     long s;
+    printf("bonjour\n");
     generate_key_values(a,b, &n, &s, &u);
+    printf("bjr\n");
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
@@ -82,10 +89,9 @@ int main(){
     printf("Initial message %s \n",mess);
     printf("Encoded representation \n");
     print_long_vector(crypted,len);
-    /*while(test!=NULL){
-        printf("%lu",*test);
-        test++;
-    }*/
+    //dechiffrement
+    char* decoded=decrypt(crypted,len,u,n);
+    printf("Decoded: %s\n",decoded);
     return 0;
     //on obtient 215000363
 }
