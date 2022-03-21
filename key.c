@@ -10,7 +10,7 @@ void init_key(Key* key, long val, long n){
     key->clé=val;
 }
 
-void init_pair_key(Key* pKey, Key* sKey, long low_size, long up_size){
+void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
     long a=random_prime_number(low_size,up_size,5000);
     long b=random_prime_number(low_size,up_size,5000);
     while(a==b){
