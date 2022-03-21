@@ -1,6 +1,6 @@
 CC = gcc
 
-main : main.o prime_number.o chiffrement.o
+main : main.o prime_number.o chiffrement.o key.o
 	$(CC) -o main $^
 
 main.o : main.c
@@ -11,3 +11,6 @@ prime_number.o : prime_number.c
 
 chiffrement.o : chiffrement.c
 	$(CC) -o chiffrement.o -c $^
+
+key.o : key.c
+	$(CC) -o key.o -c $^

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "prime_number.h"
 #include "chiffrement.h"
+#include "key.h"
 #include <time.h>
 #include <string.h>
 
@@ -71,9 +72,7 @@ int main(){
     long n;
     long u;
     long s;
-    printf("bonjour\n");
     generate_key_values(a,b, &n, &s, &u);
-    printf("bjr\n");
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
@@ -83,7 +82,7 @@ int main(){
     printf("cle publique = (%lx, %lx) \n",s,n);
     printf("cle privee = (%lx, %lx) \n",u,n);
     //chiffrement
-    char mess[10]="hello";
+    char mess[50]="hello";
     int len=strlen(mess);
     long *crypted=encrypt(mess,s,n);
     printf("Initial message %s \n",mess);
@@ -92,6 +91,13 @@ int main(){
     //dechiffrement
     char* decoded=decrypt(crypted,len,u,n);
     printf("Decoded: %s\n",decoded);
+    Key* pKey=malloc(sizeof(Key));
+    init_key(pKey, s,n);
+    char* str=key_to_str(pKey);
+    printf("%s\n",str);
+    Key* sKey=str_to_key("(1273,1f15)");
+    printf("%lu,%lu\n",pKey->clé,pKey->n);
+    printf("%lu,%lu\n",sKey->clé,sKey->n);
     return 0;
     //on obtient 215000363
 }

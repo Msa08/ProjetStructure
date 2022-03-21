@@ -86,9 +86,9 @@ int is_prime_miller(long p, int k) {
 }
 
 long random_prime_number(int low_size, int up_size, int k){
-    long i=rand_long(low_size,up_size);
+    long i=rand_long(pow(2,low_size-1),pow(2,up_size)-1);
     while(! is_prime_miller(i,k)){
-        i=rand_long(pow(2,low_size),pow(2,up_size));
+        i=rand_long(pow(2,low_size-1),pow(2,up_size)-1);
     }
     return i;
 }
