@@ -100,7 +100,7 @@ int main(){
     printf("%lu,%lu\n",sKey->cle,sKey->n);*/
 
     //Testing Init Keys
-    Key* pKey = malloc(sizeof(Key));
+    /*Key* pKey = malloc(sizeof(Key));
     Key* sKey = malloc(sizeof(Key));
     init_pair_keys(pKey, sKey,3,7);
     printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
@@ -110,6 +110,7 @@ int main(){
     printf("key to str : %s \n", chaine);
     Key* k = str_to_key(chaine);
     printf("str to key : %lx , %lx \n", k->cle, k->n);
+	free(k);
     //Testing signature
     //Candidate keys:
     Key* pKeyC = malloc(sizeof(Key));
@@ -145,7 +146,9 @@ int main(){
     free(sKeyC);
     free(sgn);
     free(pr);
-    //generate_random_data(50,25);
+    free(mess);
+	free(chaine);*/
+    generate_random_data(50,10);
     return 0;
 
     //on obtient 215000363

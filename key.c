@@ -115,9 +115,13 @@ int verify(Protected* pr){
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
-    if(strcmp(decrypt(sgn->content,sgn->size,pKey->cle,pKey->n),mess)==0){
+	char* test = decrypt(sgn->content,sgn->size,pKey->cle,pKey->n);
+	
+    if(strcmp(test,mess)==0){
+		free(test);
         return 1;
     }
+	free(test);
     return 0;
 }
 
