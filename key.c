@@ -147,7 +147,6 @@ char* protected_to_str(Protected* pr){
 }*/
 
 void generate_random_data(int nv, int nc){
-    printf("coucou \n");
     FILE *f=fopen("keys.txt","w");
     FILE *f2=fopen("candidates.txt","w");
     if(f==NULL || f2==NULL){
@@ -162,12 +161,13 @@ void generate_random_data(int nv, int nc){
     }
     Signature *signature;
     for(int i=0;i<nv;i++){
-        init_pair_keys(pKey,sKey,3,8);
+        init_pair_keys(pKey,sKey,3,9);
+        printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
+        printf("sKey: %lx , %lx \n", sKey->cle, sKey->n);
         fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
     }
     fclose(f);
     FILE *f4=fopen("keys.txt","r");
-    printf("coucou 2\n");
     char* pKey2=malloc(61*sizeof(char));
     char *ligne=malloc(60*sizeof(char));
     char* poubelle=malloc(60*sizeof(char));
@@ -177,50 +177,39 @@ void generate_random_data(int nv, int nc){
         j=rand_long(1,nv);
         for(int h=0;h<j;h++){
             fgets(ligne,60,f4);
-            printf("coucou 2.1\n");
         }
-        printf("coucou 3.1\n");
         k = 0;
         sscanf(ligne,"%s %s",pKey2, poubelle);
         fprintf(f2,"%s\n",pKey2);
     }
-    printf("coucou 3\n");
     fclose(f2);
-    printf("coucou 4\n");
+    fclose(f4);
+    FILE *f6=fopen("keys.txt","r");
     FILE *f3=fopen("declarations.txt","w");
     FILE *f5=fopen("candidates.txt","r");
     char* ligne2=malloc(60*sizeof(char));
     
     int z;
     for(int i=0;i<nv;i++){
-        printf("coucou 4.1\n");
-        fgets(ligne2,50,f4);
+        fgets(ligne2,50,f6);
         j=rand_long(1,nc);
         for(int h=0;h<j;h++){
             fgets(ligne,50,f5);
         }
-        printf("coucou 4.2\n");
         k=0;
         z=0;
         sscanf(ligne2,"(%s,%s)",poubelle, pKey2);
-        printf("TEEEEEEEEEEEEEEEEST%s %s\n", ligne, ligne2);
-        printf("coucou 4.4\n");
         pKey=str_to_key(pKey2);
         signature=sign(ligne,str_to_key(ligne2));
         Protected *pr=init_protected(pKey,ligne,signature);
         fprintf(f3,"%s\n",protected_to_str(pr));
-        printf("coucou 4.5\n");
     }
-    printf("coucou 5\n");
     fclose(f);
     fclose(f4);
     fclose(f5);
-    printf("coucou 6\n");
+    fclose(f6);
     free(ligne);
-    printf("coucou 7\n");
     free(ligne2);
-    printf("coucou 7m\n");
     free(pKey);
     free(sKey);
-    printf("coucou 8\n");
 }
