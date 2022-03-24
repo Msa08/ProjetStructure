@@ -115,13 +115,9 @@ int verify(Protected* pr){
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
-	char* test = decrypt(sgn->content,sgn->size,pKey->cle,pKey->n);
-	
-    if(strcmp(test,mess)==0){
-		free(test);
+    if(strcmp(decrypt(sgn->content,sgn->size,pKey->cle,pKey->n),mess)==0){
         return 1;
     }
-	free(test);
     return 0;
 }
 
@@ -151,60 +147,47 @@ char* protected_to_str(Protected* pr){
 }*/
 
 void generate_random_data(int nv, int nc){
-    FILE *f=fopen("keys.txt","w");
-    FILE *f2=fopen("candidates.txt","w");
-    Key* pKey=malloc(sizeof(Key));
-    Key* sKey=malloc(sizeof(Key));
-    Signature *signature;
-    for(int i=0;i<nv;i++){
-        init_pair_keys(pKey,sKey,3,8);
-        fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
-    }
-    char* pKey2=malloc(50*sizeof(char));
-    char *ligne=malloc(50*sizeof(char));
-    for(int i=0;i<nc;i++){
-        long j=rand_long(1,nv);
-        for(int h=0;h<j;h++){
-            fgets(ligne,20,f);
-        }
-        while(*ligne!=' '){
-            *pKey2=*ligne;
-            ligne++;
-            pKey2++;
-        }
-        *pKey2='\0';
-        fprintf(f2,"%s\n",pKey2);
-    }
-    fclose(f2);
-    fclose(f);
-    FILE *f3=fopen("declarations.txt","w");
-    FILE *f4=fopen("keys.txt","r");
-    FILE *f5=fopen("candidates.txt","r");
-    char* ligne2=malloc(50*sizeof(char));
-    for(int i=0;i<nc;i++){
-        fgets(ligne2,50,f4);
-        printf("ligne2 : %s\n",ligne2);
-        long j=rand_long(1,nc);
-        for(int h=0;h<j;h++){
-            fgets(ligne,50,f5);
-        }
-        while(*ligne2!=' '){
-            ligne2++;
-        }
-        while(*ligne2!='\0'){
-            *pKey2=*ligne2;
-            ligne2++;
-            pKey2++;
-        }
-        pKey=str_to_key(pKey2);
-        signature=sign(ligne,str_to_key(ligne2));
-        Protected *pr=init_protected(pKey,ligne,signature);
-        printf("%s\n",protected_to_str(pr));
-        fprintf(f3,"%s\n",protected_to_str(pr));
-    }
-    fclose(f);
-    fclose(f4);
-    fclose(f5);
-    free(pKey);
-    free(sKey);
+    FILE *f1 = fopen("keys.txt","w");
+	Key* newPKey=(Key*)malloc(sizeof(Key));
+	Key* newSKey=(Key*)malloc(sizeof(Key));
+	
+	char** tabNV = (char**)malloc(nv*sizeof(char*));
+	
+	//génération clés publique/secrète
+	for (int i = 0; i < nv; i++){
+		
+		init_pair_keys(newPKey, newSKey, 3, 7);
+		char* newStrPKey = key_to_str(newPKey);
+		char* newStrSKey = key_to_str(newSKey);
+		
+		tabNV[i]=strdup(newStrPKey);
+		
+		fprintf(f1,"(%s,%s)\n",newStrPKey,newStrSKey);
+		free(newStrPKey);
+		free(newStrSKey);
+	}
+	
+	FILE *f2 = fopen("candidates.txt","w");
+	int j;
+	int random;
+	//clé des candidats aléatoire
+	for(j=0;j<nc;j++){
+		random=rand()%nv;
+		while(strcmp(tabNV[random],"blablabla")==0){
+			random=rand()%nv;
+		}
+		fprintf(f2,"%s\n",tabNV[random]);
+		free(tabNV[random]);
+		tabNV[random]=strdup("blablabla");
+		
+	}
+	
+	for(int lib=0;lib<nv;lib++){
+		free(tabNV[lib]);
+	}
+	free(tabNV);
+	free(newPKey);
+	free(newSKey);
+	fclose(f1);
+	fclose(f2);
 }
