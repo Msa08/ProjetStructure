@@ -72,13 +72,13 @@ int main(){
     long n;
     long u;
     long s;
-    generate_key_cléues(a,b, &n, &s, &u);
+    generate_key_cleues(a,b, &n, &s, &u);
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
     }
 
-    //affichage des clés en haxadécimal
+    //affichage des cles en haxadécimal
     printf("cle publique = (%lx, %lx) \n",s,n);
     printf("cle privee = (%lx, %lx) \n",u,n);
     //chiffrement
@@ -96,30 +96,30 @@ int main(){
     char* str=key_to_str(pKey);
     printf("%s\n",str);
     Key* sKey=str_to_key("(1273,1f15)");
-    printf("%lu,%lu\n",pKey->clé,pKey->n);
-    printf("%lu,%lu\n",sKey->clé,sKey->n);*/
+    printf("%lu,%lu\n",pKey->cle,pKey->n);
+    printf("%lu,%lu\n",sKey->cle,sKey->n);*/
 
     //Testing Init Keys
     Key* pKey = malloc(sizeof(Key));
-    Key* sKey = malloc(sizeof(Key)); 
+    Key* sKey = malloc(sizeof(Key));
     init_pair_keys(pKey, sKey,3,7);
-    printf("pKey: %lx , %lx \n", pKey->clé, pKey->n); 
-    printf("sKey: %lx , %lx \n", sKey->clé, sKey->n);
+    printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
+    printf("sKey: %lx , %lx \n", sKey->cle, sKey->n);
     //Testing Key Serialization
     char* chaine = key_to_str(pKey);
     printf("key to str : %s \n", chaine);
     Key* k = str_to_key(chaine);
-    printf("str to key : %lx , %lx \n", k->clé, k->n);
+    printf("str to key : %lx , %lx \n", k->cle, k->n);
     //Testing signature
     //Candidate keys:
     Key* pKeyC = malloc(sizeof(Key));
-    Key* sKeyC = malloc(sizeof(Key)); 
+    Key* sKeyC = malloc(sizeof(Key));
     init_pair_keys(pKeyC, sKeyC,3,7);
     //Declaration:
     char* mess = key_to_str(pKeyC);
     printf("%s vote pour %s\n",key_to_str(pKey), mess); 
-    Signature* sgn = sign(mess, sKey); 
-    printf("signature : "); 
+    Signature* sgn = sign(mess, sKey);
+    printf("signature : ");
     print_long_vector(sgn->content,sgn->size);
     chaine = signature_to_str(sgn);
     printf("signature to str : %s \n", chaine);
@@ -130,10 +130,10 @@ int main(){
     Protected* pr = init_protected(pKey,mess, sgn);
     //Verification:
     if (verify(pr)){ 
-        printf("Signature cléide\n");
+        printf("Signature cleide\n");
     }
     else{
-        printf("Signature non cléide\n");
+        printf("Signature non cleide\n");
     }
     chaine = protected_to_str(pr);
     printf(" protected to str : %s\n", chaine);
@@ -142,7 +142,10 @@ int main(){
     free(pKey); 
     free(sKey); 
     free(pKeyC); 
-    free(sKeyC); 
+    free(sKeyC);
+    free(sgn);
+    free(pr);
+    //generate_random_data(50,25);
     return 0;
 
     //on obtient 215000363

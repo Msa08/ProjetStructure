@@ -27,7 +27,6 @@ void generate_key_values(long p, long q, long* n, long *s, long *u){
     while(extended_gcd(*s,t,u,&v)!=1){
         *s = rand_long(0,t);
     }
-    printf("%ld %ld %ld %ld %ld\n",*s,*u,t,v,((*s)*(*u))+(t*v));
 }
 
 long* encrypt(char* chaine, long s, long n){

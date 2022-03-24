@@ -2,7 +2,7 @@
 #define KEY_H
 
 typedef struct Key{
-    long clé;
+    long cle;
     long n;
 }Key;
 
@@ -28,4 +28,6 @@ Signature* str_to_signature(char* str);
 Protected* init_protected(Key* pKey, char* mess, Signature* sgn);
 int verify(Protected* pr);
 char* protected_to_str(Protected* pr);
+void generate_random_data(int nv, int nc);
+
 #endif

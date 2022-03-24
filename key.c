@@ -7,7 +7,7 @@
 #include "math.h"
 void init_key(Key* key, long val, long n){
     key->n=n;
-    key->clé=val;
+    key->cle=val;
 }
 
 void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
@@ -24,16 +24,16 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
         long t= (a-1)*(b-1);
         u=u+t;
     }
-    pKey->clé=s;
+    pKey->cle=s;
     pKey->n=n;
-    sKey->clé=u;
+    sKey->cle=u;
     sKey->n=n;
 }
 
 char* key_to_str(Key* key){
     char* str=malloc(10*sizeof(char));
     int i=0;
-    long a=key->clé;
+    long a=key->cle;
     long b=key->n;
     sprintf(str,"(%lx,%lx)",a,b);
     return str;
@@ -41,9 +41,9 @@ char* key_to_str(Key* key){
 
 Key* str_to_key(char* str){
     Key* pKey=malloc(sizeof(Key));
-    long clé, n;
-    sscanf(str,"(%lx,%lx)",&clé,&n);
-    init_key(pKey,clé,n);
+    long cle, n;
+    sscanf(str,"(%lx,%lx)",&cle,&n);
+    init_key(pKey,cle,n);
     return pKey;
 }
 
@@ -55,7 +55,7 @@ Signature* init_signature(long* content, int size){
 }
 
 Signature* sign(char* mess, Key* sKey){
-    long* tab=encrypt(mess,sKey->clé,sKey->n);
+    long* tab=encrypt(mess,sKey->cle,sKey->n);
     Signature* signature=init_signature(tab, strlen(mess));
     return signature;
 }
@@ -115,7 +115,7 @@ int verify(Protected* pr){
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
-    if(strcmp(decrypt(sgn->content,sgn->size,pKey->clé,pKey->n),mess)==0){
+    if(strcmp(decrypt(sgn->content,sgn->size,pKey->cle,pKey->n),mess)==0){
         return 1;
     }
     return 0;
@@ -145,3 +145,62 @@ char* protected_to_str(Protected* pr){
 
     }
 }*/
+
+void generate_random_data(int nv, int nc){
+    FILE *f=fopen("keys.txt","w");
+    FILE *f2=fopen("candidates.txt","w");
+    Key* pKey=malloc(sizeof(Key));
+    Key* sKey=malloc(sizeof(Key));
+    Signature *signature;
+    for(int i=0;i<nv;i++){
+        init_pair_keys(pKey,sKey,3,8);
+        fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
+    }
+    char* pKey2=malloc(50*sizeof(char));
+    char *ligne=malloc(50*sizeof(char));
+    for(int i=0;i<nc;i++){
+        long j=rand_long(1,nv);
+        for(int h=0;h<j;h++){
+            fgets(ligne,20,f);
+        }
+        while(*ligne!=' '){
+            *pKey2=*ligne;
+            ligne++;
+            pKey2++;
+        }
+        *pKey2='\0';
+        fprintf(f2,"%s\n",pKey2);
+    }
+    fclose(f2);
+    fclose(f);
+    FILE *f3=fopen("declarations.txt","w");
+    FILE *f4=fopen("keys.txt","r");
+    FILE *f5=fopen("candidates.txt","r");
+    char* ligne2=malloc(50*sizeof(char));
+    for(int i=0;i<nc;i++){
+        fgets(ligne2,50,f4);
+        printf("ligne2 : %s\n",ligne2);
+        long j=rand_long(1,nc);
+        for(int h=0;h<j;h++){
+            fgets(ligne,50,f5);
+        }
+        while(*ligne2!=' '){
+            ligne2++;
+        }
+        while(*ligne2!='\0'){
+            *pKey2=*ligne2;
+            ligne2++;
+            pKey2++;
+        }
+        pKey=str_to_key(pKey2);
+        signature=sign(ligne,str_to_key(ligne2));
+        Protected *pr=init_protected(pKey,ligne,signature);
+        printf("%s\n",protected_to_str(pr));
+        fprintf(f3,"%s\n",protected_to_str(pr));
+    }
+    fclose(f);
+    fclose(f4);
+    fclose(f5);
+    free(pKey);
+    free(sKey);
+}
