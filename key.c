@@ -130,9 +130,9 @@ char* protected_to_str(Protected* pr){
     return str;
 }
 
-/*Protected* str_to_protected(char* str){
+Protected* str_to_protected(char* str){
     Protected* pr=malloc(sizeof(Protected));
-    char* key=malloc(10*sizeof(char));
+    /*char* key=malloc(10*sizeof(char));
     int i=0;
     while(str!=' '){
         key[i]=str[i];
@@ -144,8 +144,9 @@ char* protected_to_str(Protected* pr){
     char* mess
     while(str!=' '){
 
-    }
-}*/
+    }*/
+    return pr;
+}
 
 void generate_random_data(int nv, int nc){
     srand(time(NULL));

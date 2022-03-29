@@ -20,4 +20,7 @@ typedef struct cellProtected{
     Protected* data;
     struct cellProtected* next;
 } CellProtected;
+
+CellProtected* create_cell_protected(Protected* pr);
+void add_cell_protected(CellProtected** cellPro, Protected* pr);
 #endif

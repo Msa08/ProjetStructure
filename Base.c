@@ -33,7 +33,6 @@ CellKey* read_public_keys(char* fichier){
     char ligne[50];
     char poubelle[50];
     char pKey[50];
-    CellKey* key;
     Key* pkey2;
     CellKey* liste = malloc(sizeof(CellKey));
     liste->data=NULL;
@@ -77,3 +76,75 @@ void delete_list_keys(CellKey* LCK){
         LCK=LCK2;
     }
 }
+
+CellProtected* create_cell_protected(Protected* pr){
+    CellProtected* cell_p=malloc(sizeof(CellProtected));
+    cell_p->data=pr;
+    cell_p->next=NULL;
+    return cell_p;
+}
+
+void add_cell_protected(CellProtected** cellPro, Protected* pr){
+	if (!(*cellPro) || !pr){
+		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
+		return;
+	}
+	CellProtected* newCellProtected = create_cell_protected(pr);
+	newCellProtected->next = (*cellPro); 
+	(*cellPro) = newCellProtected;
+	return;
+}
+
+CellProtected* read_protected(char* fic){
+    if(strcmp(fic,"declarations.txt")!=0){
+        printf("mauvais fichier\n");
+        return NULL;
+    }
+    FILE *f = fopen(fic,"r");
+    CellProtected* liste=malloc(sizeof(CellProtected));
+    liste->data=NULL;
+    liste->next=NULL;
+    char ligne[50];
+    char poubelle[50];
+    char protected[50];
+    Protected* pr2;
+    while(!feof(f)){
+        fgets(ligne,50,f);
+        sscanf(ligne,"%s %s",protected,poubelle);
+        pr2=str_to_protected(protected);
+        if(liste->data==NULL){
+            liste->data=str_to_protected(protected);
+        }
+        else{
+            add_cell_protected(&liste, pr2);
+        }
+    }
+    return liste;
+}
+
+void print_list_protected(CellProtected* LCP){
+    if(LCP==NULL){
+        printf("erreur\n");
+        return;
+    }
+    while(LCP!=NULL){
+        printf("%s \t",protected_to_str((LCP->data)));
+        LCP=LCP->next;
+    }
+    printf("\n");
+}
+
+void delete_cell_protected(CellProtected* cp){
+    free(cp->data);
+    free(cp);
+}
+
+void delete_list_protected(CellKey* LCP){
+    CellKey* LCP2;
+    while(LCP!=NULL){
+        LCP2=LCP->next;
+        delete_cell_key(LCP);
+        LCP=LCP2;
+    }
+}
+
