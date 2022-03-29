@@ -147,4 +147,15 @@ void delete_list_protected(CellKey* LCP){
         LCP=LCP2;
     }
 }
+void deleted_invalid_sign(CellProtected *LCP) {
+    CellProtected *tmp = LCP;
+    CellProtected *tmp2 = tmp;
+    while (tmp) {
+        tmp2 = tmp->next;
+        if (verify(tmp->data) == 0) {
+            delete_list_protected(LCP);
+        }
+        tmp = tmp2;
+    }
+}
 
