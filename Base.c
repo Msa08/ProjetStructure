@@ -135,7 +135,9 @@ void print_list_protected(CellProtected* LCP){
 }
 
 void delete_cell_protected(CellProtected* cp){
-    free(cp->data);
+    free(cp->data->pKey);
+    free(cp->data->mess);
+    free(cp->data->sgn);
     free(cp);
 }
 
