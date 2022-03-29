@@ -74,5 +74,6 @@ void delete_list_keys(CellKey* LCK){
     while(LCK!=NULL){
         LCK2=LCK->next;
         delete_cell_key(LCK);
+        LCK=LCK2;
     }
 }

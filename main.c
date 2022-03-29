@@ -151,11 +151,11 @@ int main(){
     free(mess);
 	free(chaine);*/
     generate_random_data(50,10);
-    
-    //CellKey* LCK=read_public_keys("keys.txt");
-    //printf("read\n");
-    //print_list_keys(LCK);
-    //printf("print\n");
+    CellKey* LCK=read_public_keys("keys.txt");
+    print_list_keys(LCK);
+    delete_list_keys(LCK);
+    printf("delete\n");
+
     return 0;
 
     //on obtient 215000363
