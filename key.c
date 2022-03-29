@@ -129,24 +129,18 @@ char* protected_to_str(Protected* pr){
     sprintf(str,"%s %s %s",key, pr->mess, sgn);
     return str;
 }
-
 Protected* str_to_protected(char* str){
     Protected* pr=malloc(sizeof(Protected));
-    /*char* key=malloc(10*sizeof(char));
-    int i=0;
-    while(str!=' '){
-        key[i]=str[i];
-        i++;
-        str++;
-    }
-    i++;
-    key[i]='\0';
-    char* mess
-    while(str!=' '){
-
-    }*/
+    char key[255];
+    char mess[255];
+    char signature[255];
+    sscanf(str,"%s %s %s",key,mess,c);
+    pr->prKey=str_to_key(key);
+    pr->mess=strdup(mess);
+    pr->sign=str_to_signature(signature);
     return pr;
 }
+
 
 void generate_random_data(int nv, int nc){
     srand(time(NULL));
