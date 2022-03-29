@@ -178,31 +178,24 @@ void generate_random_data(int nv, int nc){
     int a=0;
     while(i<nc){
         j=rand_long(1,nv);
-        printf("j=%ld i=%d\n",j,i);
         rewind(f4);
         for(int h=0;h<j;h++){
             fgets(ligne,60,f4);
         }
-        printf("ligne : %s\n",ligne);
         sscanf(ligne,"%s %s",pKey2, poubelle);
         for(int z=0;z<nc;z++){
             if((tab[z]->cle==str_to_key(pKey2)->cle) && (tab[z]->n==str_to_key(pKey2)->n)){
-                printf("tab[%d]->cle=%lx et tab[%d]->n=%lx\n",z,tab[z]->cle,z,tab[z]->n);
-                printf("key : %s\n",pKey2);
-                printf("break\n");
                 a=1;
                 break;
             }
         }
         if(a==1){
             a=0;
-            printf("continue\n"); 
             continue;
         }
         else{
             fprintf(f2,"%s\n",pKey2);
             tab[i]=str_to_key(pKey2);
-            printf("1EEEEELLLLSSSSSSEEEEEEE\n");
             i++;
         }
     }
