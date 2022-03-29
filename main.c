@@ -16,8 +16,9 @@ void print_long_vector(long *result, int size){
 }
 int main(){
     srand(time(NULL));
-    //test partie 1
-    FILE *f = fopen("modpow.txt", "w");
+
+/*____________________________TEST PARTIE 1__________________________________________________________*/
+    FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
     FILE *f2=fopen("modpow2.txt", "w");
     clock_t time_initial=0;
     clock_t time_final=0;
@@ -26,42 +27,53 @@ int main(){
     double time;
     double time2;
     long a, b;
+    
+    //test de modpow et modpow_naive
     for(int i=20;i<40;i++){
         a=modpow(10,i,15);
         b=modpow_naive(10,i,15);
         printf("modpow : %lu, naive : %lu\n",a,b);
     }
-    /*long i;
+
+    //Q1.2 Plus grand nombre premier testable en moins de 2 millième de sec?
+    long i;
     int res=0;
     int tmp=0;
-    for(i=215000000; time<2;i++){
+    for(i=215000000; time<2;i++){// tant que time< 2 millième de sec itérer
         time_initial=clock();
         tmp=is_prime_naive(i);
         time_final=clock();
-        if(tmp==1){
-            res=i;
+        if(tmp==1){ // si i premier
+            res=i; 
         }
-        time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;
+        time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;//
         printf("time : %f, nb : %ld\n",time, i);
     }
-    printf("plus grand nombre : %d\n",res);*/
+    printf("plus grand nombre : %d\n",res);
+
+    //Q1.5 Comparaison des performances de modpow_naive et modpow 
     //écriture dans les fichiers modpow_naive et modpow 
-    /*for(int i=1;i<100000;i++){
+    for(int i=1;i<100000;i++){ //la puissance varie de 1 à 100 000
+      //modpow
       time_initial=clock();
       modpow(10, i, 15);
       time_final=clock();
       time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;
+      
+      //modpow_naive
       time_initial2=clock();
       modpow_naive(10, i, 15);
       time_final2=clock();
       time2=(double)(time_final2-time_initial2)/CLOCKS_PER_SEC;
-      fprintf(f,"%d %f\n",i,time);
-      fprintf(f2,"%d %f\n",i,time2);
+      
+      fprintf(f,"%d %f\n",i,time);//modpow
+      fprintf(f2,"%d %f\n",i,time2);//modpow_naive
       printf("%i\n",i);
-    }*/
+    }
     fclose(f);
     fclose(f2);
-    //test partie 2 :
+    
+    /*____________________________TEST PARTIE 2______________________________________________________*/
     //generation de cle;
     a=random_prime_number(3,7,5000);
     b=random_prime_number(3,7,5000);
