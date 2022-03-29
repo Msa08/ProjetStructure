@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "key.h"
 #include "prime_number.h"
 #include "chiffrement.h"
@@ -16,9 +17,9 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
     while(a==b){
         b=random_prime_number(low_size,up_size,5000);
     }
-    long n;
-    long u;
-    long s;
+    long n=0;
+    long u=0;
+    long s=0;
     generate_key_values(a,b, &n, &s, &u);
     if(u<0){
         long t= (a-1)*(b-1);
@@ -31,7 +32,7 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
 }
 
 char* key_to_str(Key* key){
-    char* str=malloc(10*sizeof(char));
+    char* str=malloc(20*sizeof(char));
     int i=0;
     long a=key->cle;
     long b=key->n;
@@ -147,6 +148,7 @@ char* protected_to_str(Protected* pr){
 }*/
 
 void generate_random_data(int nv, int nc){
+    srand(time(NULL));
     FILE *f=fopen("keys.txt","w");
     FILE *f2=fopen("candidates.txt","w");
     if(f==NULL || f2==NULL){
@@ -161,9 +163,7 @@ void generate_random_data(int nv, int nc){
     }
     Signature *signature;
     for(int i=0;i<nv;i++){
-        init_pair_keys(pKey,sKey,3,9);
-        printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
-        printf("sKey: %lx , %lx \n", sKey->cle, sKey->n);
+        init_pair_keys(pKey,sKey,3,12);
         fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
     }
     fclose(f);
@@ -171,17 +171,41 @@ void generate_random_data(int nv, int nc){
     char* pKey2=malloc(61*sizeof(char));
     char *ligne=malloc(60*sizeof(char));
     char* poubelle=malloc(60*sizeof(char));
-    int k;
     long j;
-    for(int i=0;i<nc;i++){
+    int i=0;
+    Key* tab[nc];
+    int a=0;
+    while(i<nc){
         j=rand_long(1,nv);
+        printf("j=%ld i=%d\n",j,i);
+        rewind(f4);
         for(int h=0;h<j;h++){
             fgets(ligne,60,f4);
         }
-        k = 0;
+        printf("ligne : %s\n",ligne);
         sscanf(ligne,"%s %s",pKey2, poubelle);
-        fprintf(f2,"%s\n",pKey2);
+        for(int z=0;z<nc;z++){
+            if((tab[z]->cle==str_to_key(pKey2)->cle) && (tab[z]->n==str_to_key(pKey2)->n)){
+                printf("tab[%d]->cle=%lx et tab[%d]->n=%lx\n",z,tab[z]->cle,z,tab[z]->n);
+                printf("key : %s\n",pKey2);
+                printf("break\n");
+                a=1;
+                break;
+            }
+        }
+        if(a==1){
+            a=0;
+            printf("continue\n"); 
+            continue;
+        }
+        else{
+            fprintf(f2,"%s\n",pKey2);
+            tab[i]=str_to_key(pKey2);
+            printf("1EEEEELLLLSSSSSSEEEEEEE\n");
+            i++;
+        }
     }
+
     fclose(f2);
     fclose(f4);
     FILE *f6=fopen("keys.txt","r");
@@ -189,15 +213,12 @@ void generate_random_data(int nv, int nc){
     FILE *f5=fopen("candidates.txt","r");
     char* ligne2=malloc(60*sizeof(char));
     
-    int z;
     for(int i=0;i<nv;i++){
         fgets(ligne2,50,f6);
         j=rand_long(1,nc);
         for(int h=0;h<j;h++){
             fgets(ligne,50,f5);
         }
-        k=0;
-        z=0;
         sscanf(ligne2,"(%s,%s)",poubelle, pKey2);
         pKey=str_to_key(pKey2);
         signature=sign(ligne,str_to_key(ligne2));

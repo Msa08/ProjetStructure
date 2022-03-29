@@ -3,6 +3,7 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 #include "key.h"
+#include "Base.h"
 #include <time.h>
 #include <string.h>
 
@@ -14,6 +15,7 @@ void print_long_vector(long *result, int size){
     printf("]\n");
 }
 int main(){
+    srand(time(NULL));
     //FILE *f = fopen("modpow.txt", "w");
     //FILE *f2=fopen("modpow2.txt", "w");
     /*clock_t time_initial=0;
@@ -59,8 +61,6 @@ int main(){
     fclose(f);
     fclose(f2);*/
 
-    srand(time(NULL));
-
     //generation de cle;
     /*long a=random_prime_number(3,7,5000);
     long b=random_prime_number(3,7,5000);
@@ -100,11 +100,13 @@ int main(){
     printf("%lu,%lu\n",sKey->cle,sKey->n);*/
 
     //Testing Init Keys
-    /*Key* pKey = malloc(sizeof(Key));
+    /*for(int i=0;i<20;i++){
+    Key* pKey = malloc(sizeof(Key));
     Key* sKey = malloc(sizeof(Key));
     init_pair_keys(pKey, sKey,3,7);
     printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
     printf("sKey: %lx , %lx \n", sKey->cle, sKey->n);
+    }
     //Testing Key Serialization
     char* chaine = key_to_str(pKey);
     printf("key to str : %s \n", chaine);
@@ -149,6 +151,11 @@ int main(){
     free(mess);
 	free(chaine);*/
     generate_random_data(50,10);
+    
+    //CellKey* LCK=read_public_keys("keys.txt");
+    //printf("read\n");
+    //print_list_keys(LCK);
+    //printf("print\n");
     return 0;
 
     //on obtient 215000363

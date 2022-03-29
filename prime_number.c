@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "prime_number.h"
+#include <time.h>
 
 
 int is_prime_naive(long p){
