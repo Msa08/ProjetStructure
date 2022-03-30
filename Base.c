@@ -15,6 +15,7 @@ CellKey* create_cell_key(Key* key){
 
 
 void add_cell_key(CellKey** cellKey, Key* key){
+	/*ajout d'une clé en tete de liste*/
 	if (!(*cellKey) || !key){
 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
 		return;
@@ -26,6 +27,7 @@ void add_cell_key(CellKey** cellKey, Key* key){
 }
 
 CellKey* read_public_keys(char* fichier){
+    /*retourne une liste chainée contenant toutes les clés du fichier en paramètre*/
     if(strcmp(fichier,"keys.txt")!=0 && strcmp(fichier,"candidates.txt")!=0){
         printf("mauvais fichier\n");
         return NULL;
@@ -53,6 +55,7 @@ CellKey* read_public_keys(char* fichier){
 }
 
 void print_list_keys(CellKey* LCK){
+    /* affiche la liste des clés LCK*/
     if(LCK==NULL){
         printf("erreur\n");
         return;
@@ -65,11 +68,13 @@ void print_list_keys(CellKey* LCK){
 }
 
 void delete_cell_key(CellKey* c){
+    /* supprime une cellule de liste chaînée de clés */
     free(c->data);
     free(c);
 }
 
 void delete_list_keys(CellKey* LCK){
+    /* supprime la liste chaînée de clé c */
     CellKey* LCK2;
     while(LCK!=NULL){
         LCK2=LCK->next;
@@ -79,6 +84,7 @@ void delete_list_keys(CellKey* LCK){
 }
 
 CellProtected* create_cell_protected(Protected* pr){
+    /* alloue et initialise une cellule de liste chaînée de déclarations signées */
     CellProtected* cell_p=malloc(sizeof(CellProtected));
     cell_p->data=pr;
     cell_p->next=NULL;
@@ -86,6 +92,7 @@ CellProtected* create_cell_protected(Protected* pr){
 }
 
 void add_cell_protected(CellProtected** cellPro, Protected* pr){
+	/* ajoute une déclaration signée en tête de liste*/
 	if (!(*cellPro) || !pr){
 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
 		return;
@@ -97,6 +104,8 @@ void add_cell_protected(CellProtected** cellPro, Protected* pr){
 }
 
 CellProtected* read_protected(char* fic){
+    /* retourne une liste chaînée contenant toutes les déclarations signées du fichier
+    “declarations.txt” */
     if(strcmp(fic,"declarations.txt")!=0){
         printf("mauvais fichier\n");
         return NULL;
@@ -124,6 +133,7 @@ CellProtected* read_protected(char* fic){
 }
 
 void print_list_protected(CellProtected* LCP){
+    /* affiche la liste de déclarations signées LCP*/
     if(LCP==NULL){
         printf("erreur\n");
         return;
@@ -136,6 +146,7 @@ void print_list_protected(CellProtected* LCP){
 }
 
 void delete_cell_protected(CellProtected* cp){
+    /* supprime une cellule de liste chaînée de déclarations signées */
     free(cp->data->pKey);
     free(cp->data->mess);
     free(cp->data->sgn);
@@ -143,6 +154,7 @@ void delete_cell_protected(CellProtected* cp){
 }
 
 void delete_list_protected(CellProtected* LCP){
+    /* supprime la liste chaînée de déclarations signées */
     CellKey* LCP2;
     while(LCP!=NULL){
         LCP2=LCP->next;
@@ -151,6 +163,7 @@ void delete_list_protected(CellProtected* LCP){
     }
 }
 void deleted_invalid_sign(CellProtected *LCP) {
+    /* supprime les déclarations dont la cellule n'est pas valide d'une liste chainée de déclarations signées*/
     CellProtected *tmp = LCP;
     CellProtected *tmp2 = tmp;
     while (tmp) {
