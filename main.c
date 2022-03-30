@@ -18,7 +18,7 @@ int main(){
     srand(time(NULL));
 
 /*____________________________TEST PARTIE 1__________________________________________________________*/
-   /* FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
+    FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
     FILE *f2=fopen("modpow2.txt", "w");
     clock_t time_initial=0;
     clock_t time_final=0;
@@ -29,7 +29,7 @@ int main(){
     long a, b;
     
     //test de modpow et modpow_naive
-    for(int i=20;i<40;i++){
+    /*for(int i=20;i<40;i++){
         a=modpow(10,i,15);
         b=modpow_naive(10,i,15);
         printf("modpow : %lu, naive : %lu\n",a,b);
@@ -71,13 +71,13 @@ int main(){
       printf("%i\n",i);
     }*/
     fclose(f);
-    fclose(f2);*/
+    fclose(f2);
     
 
     //generation de cle;
     //on génère 2 nb premiers de taille comprise entre 3 et 7 bits
-    long a=random_prime_number(3,7,5000);
-    long b=random_prime_number(3,7,5000);
+    a=random_prime_number(3,7,5000);
+    b=random_prime_number(3,7,5000);
     while(a==b){
         b=random_prime_number(3,7,5000);//pour que a et b soient différents
     }
