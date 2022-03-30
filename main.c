@@ -18,7 +18,7 @@ int main(){
     srand(time(NULL));
 
 /*____________________________TEST PARTIE 1__________________________________________________________*/
-    FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
+   /* FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
     FILE *f2=fopen("modpow2.txt", "w");
     clock_t time_initial=0;
     clock_t time_final=0;
@@ -71,21 +71,21 @@ int main(){
       printf("%i\n",i);
     }
     fclose(f);
-    fclose(f2);
+    fclose(f2);*/
     
     /*____________________________TEST PARTIE 2______________________________________________________*/
     //generation de cle;
-    a=random_prime_number(3,7,5000);
-    b=random_prime_number(3,7,5000);
+    long a=random_prime_number(3,7,5000);//on génère 2 entiers de taille comprise entre 3 et 7 bits
+    long b=random_prime_number(3,7,5000);
     while(a==b){
-        b=random_prime_number(3,7,5000);
+        b=random_prime_number(3,7,5000);//pour que ea et b soient différents
     }
-    printf("nb premier %lu %lu\n",a,b);
+    printf("nb premier a=%lu , b=%lu\n",a,b);// print de a et b
 
     long n;
     long u;
     long s;
-    generate_key_values(a,b, &n, &s, &u);
+    generate_key_values(a,b, &n, &s, &u);// generation d'une clé publique et privé asscoié à a et b
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
