@@ -32,7 +32,7 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
 }
 
 char* key_to_str(Key* key){
-    char* str=malloc(20*sizeof(char));
+    char* str=malloc(50*sizeof(char));
     int i=0;
     long a=key->cle;
     long b=key->n;
@@ -100,7 +100,7 @@ Signature* str_to_signature(char* str){
             } 
         }
     }
-    content=realloc(content ,num*sizeof(long)); 
+    content=realloc(content ,num*sizeof(long));
     return init_signature(content , num);
 }
 
@@ -116,17 +116,22 @@ int verify(Protected* pr){
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
-    if(strcmp(decrypt(sgn->content,sgn->size,pKey->cle,pKey->n),mess)==0){
+    char* decrypt1=decrypt(sgn->content,sgn->size,pKey->cle,pKey->n);
+    if(strcmp(decrypt1,mess)==0){
+        free(decrypt1);
         return 1;
     }
+    free(decrypt1);
     return 0;
 }
 
 char* protected_to_str(Protected* pr){
     char* key=key_to_str(pr->pKey);
     char* sgn=signature_to_str(pr->sgn);
-    char* str=malloc((strlen(key)+strlen(sgn)+strlen(pr->mess))*sizeof(char));
+    char* str=malloc(2*(strlen(key)+strlen(sgn)+strlen(pr->mess))*sizeof(char));
     sprintf(str,"%s %s %s",key, pr->mess, sgn);
+    free(key);
+    free(sgn);
     return str;
 }
 
@@ -150,6 +155,8 @@ Protected* str_to_protected(char* str){
 
 void generate_random_data(int nv, int nc){
     srand(time(NULL));
+    char* pKeychar;
+    char* sKeychar;
     FILE *f=fopen("keys.txt","w");
     FILE *f2=fopen("candidates.txt","w");
     if(f==NULL || f2==NULL){
@@ -165,16 +172,21 @@ void generate_random_data(int nv, int nc){
     Signature *signature;
     for(int i=0;i<nv;i++){
         init_pair_keys(pKey,sKey,3,12);
-        fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
+        sKeychar=key_to_str(sKey);
+        pKeychar=key_to_str(pKey);
+        fprintf(f,"%s %s\n",pKeychar,sKeychar);
+        free(sKeychar);
+        free(pKeychar);
     }
+    free(pKey);
     fclose(f);
     FILE *f4=fopen("keys.txt","r");
-    char* pKey2=malloc(61*sizeof(char));
-    char *ligne=malloc(60*sizeof(char));
-    char* poubelle=malloc(60*sizeof(char));
+    char pKey2[60];
+    char ligne[60];
+    char poubelle[60];
     long j;
     int i=0;
-    Key* tab[nc];
+    char* tab[nc];
     int a=0;
     while(i<nc){
         j=rand_long(1,nv);
@@ -183,8 +195,8 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,60,f4);
         }
         sscanf(ligne,"%s %s",pKey2, poubelle);
-        for(int z=0;z<nc;z++){
-            if((tab[z]->cle==str_to_key(pKey2)->cle) && (tab[z]->n==str_to_key(pKey2)->n)){
+        for(int z=0;z<i;z++){
+            if(strcmp(tab[z],pKey2)==0){
                 a=1;
                 break;
             }
@@ -195,18 +207,20 @@ void generate_random_data(int nv, int nc){
         }
         else{
             fprintf(f2,"%s\n",pKey2);
-            tab[i]=str_to_key(pKey2);
+            tab[i]=strdup(pKey2);
             i++;
         }
     }
-
+    for(int z=0;z<nc;z++){
+        free(tab[z]);
+    }
     fclose(f2);
     fclose(f4);
     FILE *f6=fopen("keys.txt","r");
     FILE *f3=fopen("declarations.txt","w");
     FILE *f5=fopen("candidates.txt","r");
     char* ligne2=malloc(60*sizeof(char));
-    
+    char* protected;
     for(int i=0;i<nv;i++){
         fgets(ligne2,50,f6);
         j=rand_long(1,nc);
@@ -214,17 +228,23 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,50,f5);
         }
         sscanf(ligne2,"(%s,%s)",poubelle, pKey2);
+        pKey=str_to_key(ligne2);
+        signature=sign(ligne,pKey);
+        free(pKey);
         pKey=str_to_key(pKey2);
-        signature=sign(ligne,str_to_key(ligne2));
         Protected *pr=init_protected(pKey,ligne,signature);
-        fprintf(f3,"%s\n",protected_to_str(pr));
+        protected=protected_to_str(pr);
+        free(pKey);
+        fprintf(f3,"%s\n",protected);
+        free(signature->content);
+        free(signature);
+        free(protected);
+        free(pr);
+
     }
-    fclose(f);
-    fclose(f4);
+    fclose(f3);
     fclose(f5);
     fclose(f6);
-    free(ligne);
     free(ligne2);
-    free(pKey);
     free(sKey);
 }

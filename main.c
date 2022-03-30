@@ -36,7 +36,7 @@ int main(){
     }
 
     //Q1.2 Plus grand nombre premier testable en moins de 2 millième de sec?
-    long i;
+    /*long i;
     int res=0;
     int tmp=0;
     for(i=215000000; time<2;i++){// tant que time< 2 millième de sec itérer
@@ -69,7 +69,7 @@ int main(){
       fprintf(f,"%d %f\n",i,time);//modpow
       fprintf(f2,"%d %f\n",i,time2);//modpow_naive
       printf("%i\n",i);
-    }
+    }*/
     fclose(f);
     fclose(f2);*/
     
@@ -82,10 +82,17 @@ int main(){
     }
     printf("nb premier a=%lu , b=%lu\n",a,b);// print de a et b
 
+<<<<<<< HEAD
     long n;
     long u;
     long s;
     generate_key_values(a,b, &n, &s, &u);// generation d'une clé publique et privé asscoié à a et b
+=======
+    long n=0;
+    long u=0;
+    long s=0;
+    generate_key_values(a,b, &n, &s, &u);
+>>>>>>> a64cc05f884b3d44ff97036042ee97869a7e8aec
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
@@ -122,7 +129,9 @@ int main(){
     char* chaine = key_to_str(pKey);
     printf("key to str : %s \n", chaine);
     Key* k = str_to_key(chaine);
+    free(chaine);
     printf("str to key : %lx , %lx \n", k->cle, k->n);
+    free(k);
     //Testing signature
     //Candidate keys:
     Key* pKeyC = malloc(sizeof(Key));
@@ -130,13 +139,18 @@ int main(){
     init_pair_keys(pKeyC, sKeyC,3,7);
     //Declaration:
     char* mess = key_to_str(pKeyC);
-    printf("%s vote pour %s\n",key_to_str(pKey), mess); 
+    char* pkeycar=key_to_str(pKey);
+    printf("%s vote pour %s\n",pkeycar, mess); 
+    free(pkeycar);
     Signature* sgn = sign(mess, sKey); 
     printf("signature : "); 
     print_long_vector(sgn->content,sgn->size);
     chaine = signature_to_str(sgn);
+    free(sgn->content);
+    free(sgn);
     printf(" signature to str : %s \n", chaine);
     sgn = str_to_signature(chaine);
+    free(chaine);
     printf("str to signature : "); 
     print_long_vector(sgn->content,sgn->size);
 //Testing protected:
@@ -150,7 +164,7 @@ int main(){
     chaine = protected_to_str(pr);
     printf(" protected to str : %s\n", chaine);
     //pr = str_to_protected(chaine);
-    //printf("str to protected : %s %s %s\n",key_to_str(pr->pKey),pr->mess,
+    //printf("str to protected : %s %s %s\n",key_to_str(pr->pKey),pr->mess,signature_to_str(pr->sgn));
     free(pKey);
     free(sKey);
     free(pKeyC); 
@@ -164,9 +178,10 @@ int main(){
     free(str);
     //test partie 3
     generate_random_data(50,10);
-    CellKey* LCK=read_public_keys("keys.txt");
-    print_list_keys(LCK);
-    delete_list_keys(LCK);
+    printf("generate\n");
+    //CellKey* LCK=read_public_keys("keys.txt");
+    //print_list_keys(LCK);
+    //delete_list_keys(LCK);
     return 0;
 
     //on obtient 215000363

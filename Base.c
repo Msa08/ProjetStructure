@@ -141,7 +141,7 @@ void delete_cell_protected(CellProtected* cp){
     free(cp);
 }
 
-void delete_list_protected(CellKey* LCP){
+void delete_list_protected(CellProtected* LCP){
     CellKey* LCP2;
     while(LCP!=NULL){
         LCP2=LCP->next;
