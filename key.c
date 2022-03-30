@@ -141,9 +141,9 @@ Protected* str_to_protected(char* str){
      char mess[255];
      char signature[255];
      sscanf(str,"%s %s %s",key,mess,signature);
-     pr->prKey=str_to_key(key);
+     pr->pKey=str_to_key(key);
      pr->mess=strdup(mess);
-     pr->sign=str_to_signature(signature);
+     pr->sgn=str_to_signature(signature);
      return pr;
 }
 

@@ -155,17 +155,17 @@ void delete_cell_protected(CellProtected* cp){
 
 void delete_list_protected(CellProtected* LCP){
     /* supprime la liste chaînée de déclarations signées */
-    CellKey* LCP2;
+    CellProtected* LCP2;
     while(LCP!=NULL){
         LCP2=LCP->next;
-        delete_cell_key(LCP);
+        delete_cell_protected(LCP);
         LCP=LCP2;
     }
 }
 void deleted_invalid_sign(CellProtected *LCP) {
     /* supprime les déclarations dont la cellule n'est pas valide d'une liste chainée de déclarations signées*/
     CellProtected *tmp = LCP;
-    CellProtected *tmp2 = tmp;
+    CellProtected *tmp2 = tmp; 
     while (tmp) {
         tmp2 = tmp->next;
         if (verify(tmp->data) == 0) {
