@@ -6,6 +6,7 @@
 #include "chiffrement.h"
 
 CellKey* create_cell_key(Key* key){
+    /* allocation et initialisation d'une cellule de liste chainée de clés */
     CellKey* cell=malloc(sizeof(CellKey));
     cell->data=key;
     cell->next=NULL;
