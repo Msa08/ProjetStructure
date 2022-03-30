@@ -73,26 +73,20 @@ int main(){
     fclose(f);
     fclose(f2);*/
     
-    /*____________________________TEST PARTIE 2______________________________________________________*/
+
     //generation de cle;
-    long a=random_prime_number(3,7,5000);//on génère 2 entiers de taille comprise entre 3 et 7 bits
+    //on génère 2 nb premiers de taille comprise entre 3 et 7 bits
+    long a=random_prime_number(3,7,5000);
     long b=random_prime_number(3,7,5000);
     while(a==b){
-        b=random_prime_number(3,7,5000);//pour que ea et b soient différents
+        b=random_prime_number(3,7,5000);//pour que a et b soient différents
     }
     printf("nb premier a=%lu , b=%lu\n",a,b);// print de a et b
 
-<<<<<<< HEAD
     long n;
     long u;
     long s;
     generate_key_values(a,b, &n, &s, &u);// generation d'une clé publique et privé asscoié à a et b
-=======
-    long n=0;
-    long u=0;
-    long s=0;
-    generate_key_values(a,b, &n, &s, &u);
->>>>>>> a64cc05f884b3d44ff97036042ee97869a7e8aec
     if(u<0){
         long t= (a-1)*(b-1);
         u=u+t;
@@ -119,8 +113,8 @@ int main(){
     printf("%lu,%lu\n",pKey->cle,pKey->n);
     printf("%lu,%lu\n",sKey->cle,sKey->n);
 
-    //Testing Init Keys
-    //test partie 2 :
+ 
+    /*____________________________TEST PARTIE 2______________________________________________________*/
     //Testing Init Keys
     init_pair_keys(pKey, sKey,3,7);
     printf("pKey: %lx , %lx \n", pKey->cle, pKey->n); 
