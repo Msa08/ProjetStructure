@@ -32,7 +32,7 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
 }
 
 char* key_to_str(Key* key){
-    char* str=malloc(20*sizeof(char));
+    char* str=malloc(50*sizeof(char));
     int i=0;
     long a=key->cle;
     long b=key->n;
@@ -58,6 +58,7 @@ Signature* init_signature(long* content, int size){
 Signature* sign(char* mess, Key* sKey){
     long* tab=encrypt(mess,sKey->cle,sKey->n);
     Signature* signature=init_signature(tab, strlen(mess));
+    free(tab);
     return signature;
 }
 
@@ -116,17 +117,22 @@ int verify(Protected* pr){
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
-    if(strcmp(decrypt(sgn->content,sgn->size,pKey->cle,pKey->n),mess)==0){
+    char* decrypt1=decrypt(sgn->content,sgn->size,pKey->cle,pKey->n);
+    if(strcmp(decrypt1,mess)==0){
+        free(decrypt1);
         return 1;
     }
+    free(decrypt1);
     return 0;
 }
 
 char* protected_to_str(Protected* pr){
     char* key=key_to_str(pr->pKey);
     char* sgn=signature_to_str(pr->sgn);
-    char* str=malloc((strlen(key)+strlen(sgn)+strlen(pr->mess))*sizeof(char));
+    char* str=malloc(2*(strlen(key)+strlen(sgn)+strlen(pr->mess))*sizeof(char));
     sprintf(str,"%s %s %s",key, pr->mess, sgn);
+    free(key);
+    free(sgn);
     return str;
 }
 
@@ -183,7 +189,7 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,60,f4);
         }
         sscanf(ligne,"%s %s",pKey2, poubelle);
-        for(int z=0;z<nc;z++){
+        for(int z=0;z<i;z++){
             if((tab[z]->cle==str_to_key(pKey2)->cle) && (tab[z]->n==str_to_key(pKey2)->n)){
                 a=1;
                 break;
