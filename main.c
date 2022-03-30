@@ -169,7 +169,7 @@ int main(){
     free(decoded);
     free(str);
     //test partie 3
-    //generate_random_data(50,10);
+    generate_random_data(50,10);
     printf("generate\n");
     //CellKey* LCK=read_public_keys("keys.txt");
     //print_list_keys(LCK);

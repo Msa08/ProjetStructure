@@ -101,7 +101,7 @@ Signature* str_to_signature(char* str){
             } 
         }
     }
-    content=realloc(content ,num*sizeof(long)); 
+    content=realloc(content ,num*sizeof(long));
     return init_signature(content , num);
 }
 
@@ -156,6 +156,8 @@ Protected* str_to_protected(char* str){
 
 void generate_random_data(int nv, int nc){
     srand(time(NULL));
+    char* pKeychar;
+    char* sKeychar;
     FILE *f=fopen("keys.txt","w");
     FILE *f2=fopen("candidates.txt","w");
     if(f==NULL || f2==NULL){
@@ -171,7 +173,12 @@ void generate_random_data(int nv, int nc){
     Signature *signature;
     for(int i=0;i<nv;i++){
         init_pair_keys(pKey,sKey,3,12);
-        fprintf(f,"%s %s\n",key_to_str(pKey),key_to_str(sKey));
+        sKeychar=key_to_str(sKey);
+        pKeychar=key_to_str(pKey);
+        free(pKey);
+        fprintf(f,"%s %s\n",pKeychar,sKeychar);
+        free(sKeychar);
+        free(pKeychar);
     }
     fclose(f);
     FILE *f4=fopen("keys.txt","r");
@@ -189,11 +196,16 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,60,f4);
         }
         sscanf(ligne,"%s %s",pKey2, poubelle);
+        free(ligne);
+        free(poubelle);
         for(int z=0;z<i;z++){
-            if((tab[z]->cle==str_to_key(pKey2)->cle) && (tab[z]->n==str_to_key(pKey2)->n)){
+            pKey=str_to_key(pKey2);
+            if((tab[z]->cle==pKey->cle) && (tab[z]->n==pKey->n)){
+                free(pKey);
                 a=1;
                 break;
             }
+            free(pKey);
         }
         if(a==1){
             a=0;
@@ -201,7 +213,10 @@ void generate_random_data(int nv, int nc){
         }
         else{
             fprintf(f2,"%s\n",pKey2);
-            tab[i]=str_to_key(pKey2);
+            pKey=str_to_key(pKey2);
+            tab[i]=pKey;
+            free(pKey);
+            free(pKey2);
             i++;
         }
     }
@@ -212,7 +227,7 @@ void generate_random_data(int nv, int nc){
     FILE *f3=fopen("declarations.txt","w");
     FILE *f5=fopen("candidates.txt","r");
     char* ligne2=malloc(60*sizeof(char));
-    
+    char* protected;
     for(int i=0;i<nv;i++){
         fgets(ligne2,50,f6);
         j=rand_long(1,nc);
@@ -220,17 +235,22 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,50,f5);
         }
         sscanf(ligne2,"(%s,%s)",poubelle, pKey2);
+        pKey=str_to_key(ligne2);
+        signature=sign(ligne,pKey);
+        free(pKey);
         pKey=str_to_key(pKey2);
-        signature=sign(ligne,str_to_key(ligne2));
         Protected *pr=init_protected(pKey,ligne,signature);
-        fprintf(f3,"%s\n",protected_to_str(pr));
+        free(pKey);
+        protected=protected_to_str(pr);
+        fprintf(f3,"%s\n",protected);
+        free(protected);
+        free(pr);
+        free(signature);
+
     }
-    fclose(f);
-    fclose(f4);
+    fclose(f3);
     fclose(f5);
     fclose(f6);
-    free(ligne);
     free(ligne2);
-    free(pKey);
     free(sKey);
 }
