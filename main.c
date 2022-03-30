@@ -139,6 +139,7 @@ int main(){
     printf("signature : "); 
     print_long_vector(sgn->content,sgn->size);
     chaine = signature_to_str(sgn);
+    free(sgn->content);
     free(sgn);
     printf(" signature to str : %s \n", chaine);
     sgn = str_to_signature(chaine);

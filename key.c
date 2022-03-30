@@ -58,7 +58,6 @@ Signature* init_signature(long* content, int size){
 Signature* sign(char* mess, Key* sKey){
     long* tab=encrypt(mess,sKey->cle,sKey->n);
     Signature* signature=init_signature(tab, strlen(mess));
-    free(tab);
     return signature;
 }
 
@@ -175,19 +174,19 @@ void generate_random_data(int nv, int nc){
         init_pair_keys(pKey,sKey,3,12);
         sKeychar=key_to_str(sKey);
         pKeychar=key_to_str(pKey);
-        free(pKey);
         fprintf(f,"%s %s\n",pKeychar,sKeychar);
         free(sKeychar);
         free(pKeychar);
     }
+    free(pKey);
     fclose(f);
     FILE *f4=fopen("keys.txt","r");
-    char* pKey2=malloc(61*sizeof(char));
-    char *ligne=malloc(60*sizeof(char));
-    char* poubelle=malloc(60*sizeof(char));
+    char pKey2[60];
+    char ligne[60];
+    char poubelle[60];
     long j;
     int i=0;
-    Key* tab[nc];
+    char* tab[nc];
     int a=0;
     while(i<nc){
         j=rand_long(1,nv);
@@ -196,16 +195,11 @@ void generate_random_data(int nv, int nc){
             fgets(ligne,60,f4);
         }
         sscanf(ligne,"%s %s",pKey2, poubelle);
-        free(ligne);
-        free(poubelle);
         for(int z=0;z<i;z++){
-            pKey=str_to_key(pKey2);
-            if((tab[z]->cle==pKey->cle) && (tab[z]->n==pKey->n)){
-                free(pKey);
+            if(strcmp(tab[z],pKey2)==0){
                 a=1;
                 break;
             }
-            free(pKey);
         }
         if(a==1){
             a=0;
@@ -213,14 +207,13 @@ void generate_random_data(int nv, int nc){
         }
         else{
             fprintf(f2,"%s\n",pKey2);
-            pKey=str_to_key(pKey2);
-            tab[i]=pKey;
-            free(pKey);
-            free(pKey2);
+            tab[i]=strdup(pKey2);
             i++;
         }
     }
-
+    for(int z=0;z<nc;z++){
+        free(tab[z]);
+    }
     fclose(f2);
     fclose(f4);
     FILE *f6=fopen("keys.txt","r");
@@ -240,12 +233,13 @@ void generate_random_data(int nv, int nc){
         free(pKey);
         pKey=str_to_key(pKey2);
         Protected *pr=init_protected(pKey,ligne,signature);
-        free(pKey);
         protected=protected_to_str(pr);
+        free(pKey);
         fprintf(f3,"%s\n",protected);
+        free(signature->content);
+        free(signature);
         free(protected);
         free(pr);
-        free(signature);
 
     }
     fclose(f3);
