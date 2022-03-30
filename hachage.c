@@ -13,3 +13,7 @@ HashCell* create_hashcell(Key* key){
 	
 	return h;
 }
+
+int hash_function(Key* key, int size){
+	return ((key->n)*(key->val))%size;
+}
