@@ -15,5 +15,6 @@ HashCell* create_hashcell(Key* key){
 }
 
 int hash_function(Key* key, int size){
-	return ((key->n)*(key->val))%size;
+	return ((key->n)*(key->cle))%size;
 }
+

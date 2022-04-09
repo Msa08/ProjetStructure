@@ -29,14 +29,14 @@ int main(){
     long a, b;
     
     //test de modpow et modpow_naive
-    /*for(int i=20;i<40;i++){
+    for(int i=20;i<40;i++){
         a=modpow(10,i,15);
         b=modpow_naive(10,i,15);
         printf("modpow : %lu, naive : %lu\n",a,b);
     }
 
     //Q1.2 Plus grand nombre premier testable en moins de 2 millième de sec?
-    /*long i;
+    long i;
     int res=0;
     int tmp=0;
     for(i=215000000; time<2;i++){// tant que time< 2 millième de sec itérer
@@ -69,7 +69,7 @@ int main(){
       fprintf(f,"%d %f\n",i,time);//modpow
       fprintf(f2,"%d %f\n",i,time2);//modpow_naive
       printf("%i\n",i);
-    }*/
+    }
     fclose(f);
     fclose(f2);
     
@@ -157,8 +157,8 @@ int main(){
     }
     chaine = protected_to_str(pr);
     printf(" protected to str : %s\n", chaine);
-    //pr = str_to_protected(chaine);
-    //printf("str to protected : %s %s %s\n",key_to_str(pr->pKey),pr->mess,signature_to_str(pr->sgn));
+    pr = str_to_protected(chaine);
+    printf("str to protected : %s %s %s\n",key_to_str(pr->pKey),pr->mess,signature_to_str(pr->sgn));
     free(pKey);
     free(sKey);
     free(pKeyC); 
