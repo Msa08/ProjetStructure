@@ -65,8 +65,10 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	HashTable* hc= create_hashtable(candidates,sizeC);
 	HashTable* hv= create_hashtable(voters, sizeV);
 
+	//test si decl null a ajouter
+
 	while(decl){
-		//on verfie si l'electeur a le droit de voter
+		//pas sur du if
 		if(hv->tab[find_position(hv,(decl->data->pKey))]->val==0 && hc->tab[find_position(hc,(str_to_key(decl->data->mess)))]->val>=0){
 			
 			hc->tab[find_position(hc,(str_to_key(decl->data->mess)))]->val+=1;
@@ -81,6 +83,6 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 			gagnant=hc->tab[i];
 		}
 	}
-	
+	//free à ajouter ?
 	return gagnant->key;
 } 
