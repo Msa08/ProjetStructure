@@ -50,7 +50,7 @@ HashTable* create_hashtable(CellKey* keys, int size){
 	return h;
 }
 
-}
+
 	
 void delete_hashtable(HashTable* t){
 	for(int i=0 ; i < t->size; i++){
@@ -62,24 +62,25 @@ void delete_hashtable(HashTable* t){
 }
 
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
-	HashTable hc= create_hashtable(candidates,sizeC);
-	HashTable hv= create_hashtable(voters, sizeV);
+	HashTable* hc= create_hashtable(candidates,sizeC);
+	HashTable* hv= create_hashtable(voters, sizeV);
 
 	while(decl){
 		//on verfie si l'electeur a le droit de voter
-		if(hv->tab[find_position(decl->data->pkey)]->val==0 && hc->tab[find_position(str_to_key(decl->data->mess))]->val>=0){
-			hc->tab[find_position(str_to_key(decl->data->mess))]->val+=1;
-			hv->tab[find_position(decl->data->pkey)]->val==1;
+		if(hv->tab[find_position(hv,(decl->data->pKey))]->val==0 && hc->tab[find_position(hc,(str_to_key(decl->data->mess)))]->val>=0){
+			
+			hc->tab[find_position(hc,(str_to_key(decl->data->mess)))]->val+=1;
+			hv->tab[find_position(hv,(decl->data->pKey))]->val=1;
 		}
 		decl=decl->next;
 	}
 
-	HashCell gagnant= hc->tab[0];
+	HashCell* gagnant= hc->tab[0];
 	for(int i=1; i<sizeC; i++){
-		if (hc->tab[i]->val>gagnat->val){
-			max=hc->tab[i];
+		if (hc->tab[i]->val > gagnant->val){
+			gagnant=hc->tab[i];
 		}
 	}
 	
-	return gaganant->key;
+	return gagnant->key;
 } 
