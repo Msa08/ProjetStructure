@@ -20,4 +20,6 @@ int find_position(HashTable* t, Key* key);
 
 HashTable* create_hashtable(CellKey* keys, int size);
 
+void delete_hashtable(HashTable* t); 
+
 #endif
