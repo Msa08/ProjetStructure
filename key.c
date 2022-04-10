@@ -33,7 +33,6 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
 
 char* key_to_str(Key* key){
     char* str=malloc(50*sizeof(char));
-    int i=0;
     long a=key->cle;
     long b=key->n;
     sprintf(str,"(%lx,%lx)",a,b);
