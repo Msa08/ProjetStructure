@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <assert.h>
 
 
 HashCell* create_hashcell(Key* key){
@@ -20,7 +21,7 @@ void delete_hashcell(HashCell* c){
 }
 
 int hash_function(Key* key, int size){
-	return ((key->n)*(key->val))%size;
+	return ((key->n)*(key->cle))%size;
 }
 
 int find_position(HashTable* t, Key* key){
@@ -28,7 +29,7 @@ int find_position(HashTable* t, Key* key){
 	hash_function(key, t->size);
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
 		//si clé de la ième case de tab = la clé en argument alors return i
-		if(t->tab[i]->key->n == key->n && t->tab[i]->key->val == key->val){
+		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
 			return i;
 		}
 	}
@@ -39,7 +40,7 @@ int find_position(HashTable* t, Key* key){
 
 HashTable* create_hashtable(CellKey* keys, int size){
 	HashTable * h = malloc(sizeof(HashTable));
-	assert(h);
+	//assert(h);
 	h->tab = malloc(sizeof(HashCell*)*size);
 	h->size = size;
 	
