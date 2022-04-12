@@ -18,7 +18,7 @@ int main(){
     srand(time(NULL));
 
 /*____________________________TEST PARTIE 1__________________________________________________________*/
-    FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
+    /*FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
     FILE *f2=fopen("modpow2.txt", "w");
     clock_t time_initial=0;
     clock_t time_final=0;
@@ -72,12 +72,12 @@ int main(){
     }
     fclose(f);
     fclose(f2);
-    
+    */
 
     //generation de cle;
     //on génère 2 nb premiers de taille comprise entre 3 et 7 bits
-    a=random_prime_number(3,7,5000);
-    b=random_prime_number(3,7,5000);
+    long a=random_prime_number(3,7,5000);
+    long b=random_prime_number(3,7,5000);
     while(a==b){
         b=random_prime_number(3,7,5000);//pour que a et b soient différents
     }
@@ -170,12 +170,21 @@ int main(){
     free(crypted);
     free(decoded);
     free(str);
-    //test partie 3
+    /*____________________________TEST PARTIE 3______________________________________________________*/
+    printf("\n_______________________________TEST PARTIE 3___________________________\n");
     generate_random_data(50,10);
-    printf("generate\n");
-    //CellKey* LCK=read_public_keys("keys.txt");
-    //print_list_keys(LCK);
+    printf("\ngenerate keys\n");
+    CellKey* LCK=read_public_keys("keys.txt");
+    print_list_keys(LCK);
     //delete_list_keys(LCK);
+    printf("\ngenerate protected\n");
+    
+    CellProtected* LCP=read_protected("declarations.txt");
+    print_list_protected(LCP);
+    //delete_cell_protected(LCP);
+
+
+    //compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV)
     return 0;
 
     //on obtient 215000363
