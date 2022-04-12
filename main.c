@@ -179,9 +179,9 @@ int main(){
     //delete_list_keys(LCK);
     printf("\ngenerate protected\n");
     
-    CellProtected* LCP=read_protected("declarations.txt");
+    CellProtected* LCP=read_protected(NULL);
     print_list_protected(LCP);
-    //delete_cell_protected(LCP);
+    delete_cell_protected(LCP);
 
 
     //compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV)
