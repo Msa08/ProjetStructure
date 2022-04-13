@@ -23,4 +23,9 @@ typedef struct cellProtected{
 
 CellProtected* create_cell_protected(Protected* pr);
 void add_cell_protected(CellProtected** cellPro, Protected* pr);
+CellProtected* read_protected(char* fic);
+void print_list_protected(CellProtected* LCP);
+void delete_cell_protected(CellProtected* cp);
+void delete_list_protected(CellProtected* LCP);
+void deleted_invalid_sign(CellProtected *LCP);
 #endif
