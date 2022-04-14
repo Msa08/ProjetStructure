@@ -139,7 +139,7 @@ void print_list_protected(CellProtected* LCP){
         return;
     }
     while(LCP!=NULL){
-        printf("%s \t",protected_to_str((LCP->data)));
+        printf("%s \n",protected_to_str((LCP->data)));
         LCP=LCP->next;
     }
     printf("\n");

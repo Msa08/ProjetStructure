@@ -172,20 +172,25 @@ int main(){
     free(decoded);
     free(str);
     /*____________________________TEST PARTIE 3______________________________________________________*/
-    printf("\n_______________________________TEST PARTIE 3___________________________\n");
+    printf("\n______________________________TEST PARTIE 3___________________________\n");
     generate_random_data(50,10);
     printf("\ngenerate keys\n");
-    CellKey* LCK=read_public_keys("keys.txt");
-    print_list_keys(LCK);
-    delete_list_keys(LCK);
+    CellKey* voters=read_public_keys("keys.txt");
+    print_list_keys(voters);
+    //delete_list_keys(voters);
     
-    printf("\ngenerate protected\n");
-    CellProtected* LCP=read_protected("declarations.txt");
-    print_list_protected(LCP);
-    delete_cell_protected(LCP);
-    
+    printf("\ngenerate candidates\n");
+    CellKey* candidates=read_public_keys("candidates.txt");
+    print_list_keys(candidates);
+    //delete_list_keys(candidates);
 
-    //compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV)
+    printf("\ngenerate protected\n");
+    CellProtected* decl=read_protected("declarations.txt");
+    print_list_protected(decl);
+    //delete_cell_protected(LCP);
+    
+    
+    Key* gaganant = compute_winner(decl,candidates,voters, 10,50);
     return 0;
 
     //on obtient 215000363

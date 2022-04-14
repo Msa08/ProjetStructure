@@ -26,14 +26,16 @@ int hash_function(Key* key, int size){
 
 int find_position(HashTable* t, Key* key){
 	/*cherche dans t si key existe*/
-	hash_function(key, t->size);
+	
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
 		//si clé de la ième case de tab = la clé en argument alors return i
 		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
+printf("\nfind pos1\n");
 			return i;
 		}
 	}
 	//sinon retourne la position ou elle aurait du etre 
+printf("\nfind pos\n");
 	return hash_function(key, t->size);
 }
 		
@@ -45,6 +47,7 @@ HashTable* create_hashtable(CellKey* keys, int size){
 	h->size = size;
 	
 	for(int i=0; i<size; i++){
+printf("\nfin create hashtable\n");
 		h->tab[find_position(h, keys->data)] = create_hashcell(keys->data);
 		keys = keys->next;
 	}
@@ -65,8 +68,10 @@ void delete_hashtable(HashTable* t){
 
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
 	//Creation de 2 tables de hachages
+printf("\ndebut1\n");
 	HashTable* hc= create_hashtable(candidates,sizeC);//pour la liste des candidats
-	HashTable* hv= create_hashtable(voters, sizeV);//pour la liste des candidats
+printf("\ndebut\n");
+	HashTable* hv= create_hashtable(voters, sizeV);//pour la liste des votants
 
 	if(decl==NULL){
 		return NULL;
@@ -95,7 +100,7 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 			gagnant=hc->tab[i];//il devient le gagnant
 		}
 	}
-	
+	//delete_hashtable_
 	//(free à ajouter ?)
 	return gagnant->key;
 } 
