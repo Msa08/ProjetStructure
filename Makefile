@@ -17,3 +17,6 @@ key.o : key.c
 
 Base.o : Base.c
 	$(CC) -g -o Base.o -c $^
+
+Hachage.o : hachage.c
+	$(CC) -g -o Hachage.o -c $^

@@ -4,6 +4,7 @@
 #include "chiffrement.h"
 #include "key.h"
 #include "Base.h"
+#include "hachage.h"
 #include <time.h>
 #include <string.h>
 
@@ -176,7 +177,7 @@ int main(){
     printf("\ngenerate keys\n");
     CellKey* LCK=read_public_keys("keys.txt");
     print_list_keys(LCK);
-    //delete_list_keys(LCK);
+    delete_list_keys(LCK);
     
     printf("\ngenerate protected\n");
     CellProtected* LCP=read_protected("declarations.txt");

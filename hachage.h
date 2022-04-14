@@ -1,6 +1,6 @@
 #ifndef HACHAGE_H
 #define HACHAGE_H
-#include "base.h"
+#include "Base.h"
 
 typedef struct hashcell{
 	Key* key;
@@ -21,5 +21,7 @@ int find_position(HashTable* t, Key* key);
 HashTable* create_hashtable(CellKey* keys, int size);
 
 void delete_hashtable(HashTable* t); 
+
+Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV);
 
 #endif
