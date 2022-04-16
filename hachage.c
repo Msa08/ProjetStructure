@@ -24,21 +24,31 @@ int hash_function(Key* key, int size){
 	return ((key->n)*(key->cle))%size;
 }
 
-int find_position(HashTable* t, Key* key){
-	/*cherche dans t si key existe*/
+/*int find_position(HashTable* t, Key* key){
+	//cherche dans t si key existe
 	
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
 		//si clé de la ième case de tab = la clé en argument alors return i
 		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
-printf("\nfind pos1\n");
 			return i;
 		}
 	}
 	//sinon retourne la position ou elle aurait du etre 
-printf("\nfind pos\n");
 	return hash_function(key, t->size);
 }
-		
+*/		
+int find_position(HashTable* t, Key* key){
+	int h, i=0;
+	while(i != t->size){
+		h=(hash_function(key,t->size)+i)%t->size;
+		if(t->tab[h]==NULL || (t->tab[h]->key->cle == key->cle && t->tab[h]->key->n == key->n)){
+			return h;
+		}
+		i++;
+	}
+	return i;
+}
+
 
 HashTable* create_hashtable(CellKey* keys, int size){
 	HashTable * h = malloc(sizeof(HashTable));
@@ -47,7 +57,6 @@ HashTable* create_hashtable(CellKey* keys, int size){
 	h->size = size;
 	
 	for(int i=0; i<size; i++){
-printf("\nfin create hashtable\n");
 		h->tab[find_position(h, keys->data)] = create_hashcell(keys->data);
 		keys = keys->next;
 	}
@@ -68,17 +77,17 @@ void delete_hashtable(HashTable* t){
 
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
 	//Creation de 2 tables de hachages
-printf("\ndebut1\n");
+	
 	HashTable* hc= create_hashtable(candidates,sizeC);//pour la liste des candidats
-printf("\ndebut\n");
+	printf("table de hachage des candidats cree\n");
 	HashTable* hv= create_hashtable(voters, sizeV);//pour la liste des votants
-
+	printf("table de hachage des votants cree\n");
 	if(decl==NULL){
 		return NULL;
 	}
 
 	while(decl){//on parcourt la liste des déclarations
-
+		printf("t\n");
 		//Test si le votant a le droit de voté (il est dans hv?)
 		if(hv->tab[find_position(hv,(decl->data->pKey))]->key==decl->data->pKey){
 			//Test si le votant n'a pas deja voté(val=0)
