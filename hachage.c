@@ -23,6 +23,15 @@ void delete_hashcell(HashCell* c){
 int hash_function(Key* key, int size){
 	return ((key->n)*(key->cle))%size;
 }
+/*int hash_function(Key* key, int size){
+	int r=((key->n)*(key->cle))%size;
+	if (r<0){
+		r=(-1)*r;
+	}
+	return r;
+}*/
+
+
 
 /*int find_position(HashTable* t, Key* key){
 	//cherche dans t si key existe
@@ -87,7 +96,6 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	}
 
 	while(decl){//on parcourt la liste des déclarations
-		printf("t\n");
 		//Test si le votant a le droit de voté (il est dans hv?)
 		if(hv->tab[find_position(hv,(decl->data->pKey))]->key==decl->data->pKey){
 			//Test si le votant n'a pas deja voté(val=0)

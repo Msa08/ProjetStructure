@@ -195,4 +195,11 @@ int main(){
     return 0;
 
     //on obtient 215000363
+
+    /*Problème :
+    -la fonction hash_function retourne des valeurs negatives
+    -Il y a 5 cle public dans keys.txt
+    -Il y a 3 cle public dans candidates.txt
+    -Il y a beaucoup plus de 5 declarations dans declarations.txt
+    -compute_winner genere une fois sur deux  hc*/
 }
