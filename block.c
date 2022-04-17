@@ -27,3 +27,16 @@ Block* lire_block(char* filename){
 	unsigned char p_hash[50];
 	char vote[50];
 	int nonce;
+	
+	fgets(buffer, sizeof(buffer), f);
+	sscanf(buffer, "%s\n", author);
+	Key* key_author = str_to_key(author);
+	
+	fgets(buffer, sizeof(buffer), f);
+	sscanf(buffer, "%s\n", hash);
+	
+	fgets(buffer, sizeof(buffer), f);
+	sscanf(buffer, "%s\n", p_hash);
+	
+	fgets(buffer, sizeof(buffer), f);
+	sscanf(buffer, "%d\n", &nonce);
