@@ -75,4 +75,20 @@ char * block_to_str(Block* b){
 	return strdup(strb);
 }
 
+char * hachage_SHA256(const unsigned char *s){
+	unsigned char *d = SHA256(s, strlen((const char*)s),0);
+	
+	char* tmp = malloc(sizeof(char)*strlen((const char*)d)*2+1);
+	
+	int i; 
+	int cpt=0;
+	for(i=0; i < SHA256_DIGEST_LENGTH; i++){     /* Returns the length in bytes of the hash value of the digest. */
+		sprintf(&(tmp[cpt]), "%02x", d[i]);
+		cpt=cpt+2;
+	}
+	
+	tmp[cpt]='\0';
+	return tmp;	
+}
+
 
