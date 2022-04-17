@@ -36,7 +36,26 @@ Block* lire_block(char* filename){
 	sscanf(buffer, "%s\n", hash);
 	
 	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", p_hash);
+	sscanf(buffer, "%s\n", previous_hash);
 	
 	fgets(buffer, sizeof(buffer), f);
 	sscanf(buffer, "%d\n", &nonce);
+	
+	fgets(buffer, sizeof(buffer), f);
+	sscanf(buffer, "%s\n", vote);
+	Protected* pr = str_to_protected(vote);
+	CellProtected* cpr = create_cell_protected(pr);
+	
+	while(fgets(buffer, sizeof(buffer), f)){
+		sscanf(buffer, "%s\n", vote);
+		Protected* pr = str_to_protected(vote);
+		add_en_tete_cp(&cpr, pr);
+	}
+	
+	b->author = key_author;
+	b->hash = hash;
+	b->previous_hash = previous_hash;
+	b->votes = cpr;
+	
+	return b;
+}
