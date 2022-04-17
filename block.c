@@ -107,4 +107,11 @@ void compute_proof_of_work(Block* b, int d){
 	}
 }
 
+int verify_block(Block* b, int d){
+	if(b->nonce == d){
+		return 1;
+	}
+	return 0;
+}
+
 
