@@ -21,3 +21,5 @@ void ecrire_block(char * filename, Block * b);
 Block* lire_block(char* filename);
 
 char * block_to_str(Block* b);
+
+char * hachage_SHA256(const unsigned char * s);
