@@ -20,3 +20,10 @@ Block* lire_block(char* filename){
 	FILE* f = fopen(filename, "r");
 	
 	Block* b=malloc(sizeof(Block));
+	
+	char buffer[256] = "";
+	char author[50];
+	unsigned char hash[50];
+	unsigned char p_hash[50];
+	char vote[50];
+	int nonce;
