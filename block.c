@@ -59,3 +59,20 @@ Block* lire_block(char* filename){
 	
 	return b;
 }
+
+char * block_to_str(Block* b){
+	char strb[1000];
+
+	char* author = key_to_str(b->author);
+	sprintf(strb, "%s\n%s\n\n%s\n%d\n\n", author, b->hash, b->previous_hash, b->nonce);
+	
+	while(b->votes != NULL){
+		char * vote = protected_to_str(b->votes->data);
+		sprintf(strb, "%s\n", vote);
+		b->votes = b->votes->next;
+	}
+	
+	return strdup(strb);
+}
+
+
