@@ -20,3 +20,6 @@ Base.o : Base.c
 
 Hachage.o : hachage.c
 	$(CC) -g -o Hachage.o -c $^
+
+block.o : block.c
+	$(CC) -g -o block.o -c $^
