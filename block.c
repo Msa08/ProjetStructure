@@ -91,4 +91,20 @@ char * hachage_SHA256(const unsigned char *s){
 	return tmp;	
 }
 
+void compute_proof_of_work(Block* b, int d){
+	int cpt = 0;
+	for(int i=0; i<strlen((const char*)b->hash); i++){
+		if(cpt == d){
+			return;
+		}
+		if(b->hash[i] != '0'){
+			cpt=0;
+		}
+		if (b->hash[i]=='0'){
+			cpt++;
+		}
+		(b->nonce)++;
+	}
+}
+
 
