@@ -27,3 +27,6 @@ char * hachage_SHA256(const unsigned char * s);
 void compute_proof_of_work(Block* b, int d);
 
 int verify_block(Block* b, int d);
+
+
+#endif
