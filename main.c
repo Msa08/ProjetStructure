@@ -5,6 +5,7 @@
 #include "key.h"
 #include "Base.h"
 #include "hachage.h"
+#include "block.h"
 #include <time.h>
 #include <string.h>
 
