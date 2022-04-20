@@ -21,7 +21,11 @@ void delete_hashcell(HashCell* c){
 }
 
 int hash_function(Key* key, int size){
-	return ((key->n)*(key->cle))%size;
+	if (key != NULL) {
+		return (key->val + key->n) % size;
+     	      //return ((key->n)*(key->cle))%size;
+	}
+	return 0;
 }
 /*int hash_function(Key* key, int size){
 	int r=((key->n)*(key->cle))%size;
