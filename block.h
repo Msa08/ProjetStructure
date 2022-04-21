@@ -1,7 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 #include "hachage.h"
-
+#include <openssl/sha.h>
 
 typedef struct block {
 	Key * author ;
