@@ -152,6 +152,48 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	//(free à ajouter ?)
 	return gagnant->key;
 }
-
+/*
+Key * compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV){
+	
+	HashTable* Hc = create_hashtable(candidates, sizeC);
+	HashTable* Hv = create_hashtable(voters, sizeV);
+	int positionV, positionC;
+	// comptage des votes
+	while(decl != NULL){
+		positionV = find_position(Hv, decl->data->pKey);
+		Key * Ckey = str_to_key(decl->data->mess);
+		positionC = find_position(Hc, Ckey);
+		printf("positionC = %d \n", positionC);
+		free(Ckey);
+		
+		//si le votant ou le candidat n'est pas dans leur liste alors on ne compte pas cette déclaration (le cas ou position = -1)
+		if(positionV >= 0 && positionC >= 0 && Hv->tab[positionV]->val == 0){
+			Hv->tab[positionV]->val = 1;
+			(Hc->tab[positionC]->val)++;
+		}
+		decl = decl->next;
+	}
+	
+	// détermine le gagnant en parcourant Hc
+	int position_winner = 0;
+	int cpt_winner = 0;
+	
+	for(int i=0; i<sizeC; i++){
+		if(Hc->tab[i]->val > cpt_winner){
+			position_winner = i;
+			cpt_winner = Hc->tab[i]->val;
+		}
+		printf("tab[%d] val = %d \n", i, Hc->tab[i]->val);
+	}
+	
+	Key * winner = malloc(sizeof(Key));
+	init_key(winner, Hc->tab[position_winner]->key->val, Hc->tab[position_winner]->key->n);
+	
+	delete_hashtable(Hc);
+	delete_hashtable(Hv);
+	return winner;
+	
+}
+*/
 
 //gcc -Wall  -o main base.c chiffrement.c hachage.c key.c prime_number.c
