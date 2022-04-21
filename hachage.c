@@ -11,7 +11,7 @@ HashCell* create_hashcell(Key* key){
 	HashCell* h = malloc(sizeof(HashCell));
 	h->key = key;
 	h->val = 0;
-	
+
 	return h;
 }
 
@@ -20,37 +20,51 @@ void delete_hashcell(HashCell* c){
 
 }
 
-int hash_function(Key* key, int size){
+/*int hash_function(Key* key, int size){
+	printf("entry hash_function\n");
 	if (key != NULL) {
-		return (key->val + key->n) % size;
+			printf("return hash_function\n");
+		return (key->cle + key->n) % size;
      	      //return ((key->n)*(key->cle))%size;
 	}
+	printf("return hash_function\n");
 	return 0;
-}
-/*int hash_function(Key* key, int size){
-	int r=((key->n)*(key->cle))%size;
-	if (r<0){
-		r=(-1)*r;
-	}
-	return r;
 }*/
+int hash_function(Key* key, int size){
+printf("entry hash_function\n");
+    char *cle = key_to_str(key);
+    float A=(sqrt(5)-1)/2.0;
+
+    int somme = 0;// pour additionner le nombre représentant chaque lettre de la cle
+    int i = 0;//index de tableau
+    while(cle[i]!='\0'){ //chaque chaîne de caractère finit par '\0'
+        somme+=(int)(cle[i]);//cast en int pour avoir le nombre et non la lettre
+        i++;
+    }
+
+    free(cle);
+			printf("return hash_function\n");
+    return (int)(size*((somme*A)-((int)(somme*A))));
+
+}
 
 
 
 /*int find_position(HashTable* t, Key* key){
 	//cherche dans t si key existe
-	
+
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
 		//si clé de la ième case de tab = la clé en argument alors return i
 		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
 			return i;
 		}
 	}
-	//sinon retourne la position ou elle aurait du etre 
+	//sinon retourne la position ou elle aurait du etre
 	return hash_function(key, t->size);
 }
-*/		
-int find_position(HashTable* t, Key* key){
+*/
+/*int find_position(HashTable* t, Key* key){
+ printf("entry find_position\n");
 	int h, i=0;
 	while(i != t->size){
 		h=(hash_function(key,t->size)+i)%t->size;
@@ -59,26 +73,39 @@ int find_position(HashTable* t, Key* key){
 		}
 		i++;
 	}
+	printf("return find_position\n");
 	return i;
+}*/
+int find_position(HashTable* t, Key* key){
+	printf("entry find_position\n");
+    for(int i=0; i<t->size; i++){ //parcours du tableau
+        if( ((t->tab[i])->key)->cle == key->cle && ((t->tab[i])->key)->n == key->n ) //test clé
+					printf("return find_position\n");
+            return i;
+    }
+    //printf("Pas de clé\n");
+		printf("return find_position\n");
+    return hash_function(key, t->size); //retourne la position où il aurait dû être
 }
 
 
 HashTable* create_hashtable(CellKey* keys, int size){
+	printf("entry create_hashtable\n");
 	HashTable * h = malloc(sizeof(HashTable));
 	//assert(h);
 	h->tab = malloc(sizeof(HashCell*)*size);
 	h->size = size;
-	
+
 	for(int i=0; i<size; i++){
 		h->tab[find_position(h, keys->data)] = create_hashcell(keys->data);
 		keys = keys->next;
 	}
-	
+	printf("return create_hashtable\n");
 	return h;
 }
 
 
-	
+
 void delete_hashtable(HashTable* t){
 	for(int i=0 ; i < t->size; i++){
 		free(t->tab[i]->key);
@@ -90,7 +117,7 @@ void delete_hashtable(HashTable* t){
 
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
 	//Creation de 2 tables de hachages
-	
+	printf("entry in compute_winner\n");
 	HashTable* hc= create_hashtable(candidates,sizeC);//pour la liste des candidats
 	printf("table de hachage des candidats cree\n");
 	HashTable* hv= create_hashtable(voters, sizeV);//pour la liste des votants
@@ -113,18 +140,18 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 		}
 		decl=decl->next;
 	}
-	
+
 	//On determine le vainqueur
 	HashCell* gagnant= hc->tab[0];//au debut gagnant = le premier candidat
 	for(int i=1; i<sizeC; i++){//on parcourt le tableau de candidat
-		if (hc->tab[i]->val > gagnant->val){//si le candidat courant a plus de vote que gagnant 
+		if (hc->tab[i]->val > gagnant->val){//si le candidat courant a plus de vote que gagnant
 			gagnant=hc->tab[i];//il devient le gagnant
 		}
 	}
 	//delete_hashtable_
 	//(free à ajouter ?)
 	return gagnant->key;
-} 
+}
 
 
 //gcc -Wall  -o main base.c chiffrement.c hachage.c key.c prime_number.c
