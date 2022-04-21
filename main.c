@@ -5,7 +5,6 @@
 #include "key.h"
 #include "Base.h"
 #include "hachage.h"
-#include "block.h"
 #include <time.h>
 #include <string.h>
 
@@ -191,7 +190,7 @@ int main(){
     free(sKeyC);
     free(sgn);
     free(pr);
-	  free(chaine);
+	free(chaine);
     free(mess);
     free(crypted);
     free(decoded);
@@ -215,8 +214,8 @@ int main(){
     //delete_cell_protected(LCP);
 
 
-     Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
-     printf("gagnant -> %s\n", key_to_str(gagnant));
+     /*Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
+     printf("gagnant -> %s\n", key_to_str(gagnant));*/
      return 0;
 }
     //on obtient 215000363

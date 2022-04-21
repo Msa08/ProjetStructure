@@ -1,6 +1,6 @@
 CC = gcc
 
-main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o block.o
+main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o
 	$(CC) -g -o main -lm $^
 
 main.o : main.c
@@ -20,6 +20,3 @@ Base.o : Base.c
 
 Hachage.o : hachage.c
 	$(CC) -g -o Hachage.o -c $^
-
-block.o : block.c
-	$(CC) -g -o block.o -c $^
