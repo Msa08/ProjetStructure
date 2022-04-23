@@ -20,17 +20,17 @@ void delete_hashcell(HashCell* c){
 
 }
 
-/*int hash_function(Key* key, int size){
+int hash_function(Key* key, int size){
 	printf("entry hash_function\n");
 	if (key != NULL) {
 			printf("return hash_function\n");
 		return (key->cle + key->n) % size;
      	      //return ((key->n)*(key->cle))%size;
 	}
-	printf("return hash_function\n");
+	printf("return hash_function2\n");
 	return 0;
-}*/
-int hash_function(Key* key, int size){
+}
+/*int hash_function(Key* key, int size){
 printf("entry hash_function\n");
     char *cle = key_to_str(key);
     float A=(sqrt(5)-1)/2.0;
@@ -46,37 +46,41 @@ printf("entry hash_function\n");
 			printf("return hash_function\n");
     return (int)(size*((somme*A)-((int)(somme*A))));
 
-}
+}*/
 
 
 
-/*int find_position(HashTable* t, Key* key){
+int find_position(HashTable* t, Key* key){
 	//cherche dans t si key existe
 
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
 		//si clé de la ième case de tab = la clé en argument alors return i
 		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
+			printf("return find pos\n");
 			return i;
 		}
 	}
 	//sinon retourne la position ou elle aurait du etre
+	printf("return1 findpos\n");
 	return hash_function(key, t->size);
 }
-*/
+
 /*int find_position(HashTable* t, Key* key){
  printf("entry find_position\n");
 	int h, i=0;
 	while(i != t->size){
 		h=(hash_function(key,t->size)+i)%t->size;
+		printf("h= %d\n",h);
 		if(t->tab[h]==NULL || (t->tab[h]->key->cle == key->cle && t->tab[h]->key->n == key->n)){
+			printf("return find_position\n");
 			return h;
 		}
 		i++;
 	}
-	printf("return find_position\n");
+	printf("return find_position2\n");
 	return i;
 }*/
-int find_position(HashTable* t, Key* key){
+/*int find_position(HashTable* t, Key* key){
 	printf("entry find_position\n");
     for(int i=0; i<t->size; i++){ //parcours du tableau
         if( ((t->tab[i])->key)->cle == key->cle && ((t->tab[i])->key)->n == key->n ) //test clé
@@ -86,10 +90,10 @@ int find_position(HashTable* t, Key* key){
     //printf("Pas de clé\n");
 		printf("return find_position\n");
     return hash_function(key, t->size); //retourne la position où il aurait dû être
-}
+}*/
 
 
-HashTable* create_hashtable(CellKey* keys, int size){
+/*HashTable* create_hashtable(CellKey* keys, int size){
 	printf("entry create_hashtable\n");
 	HashTable * h = malloc(sizeof(HashTable));
 	//assert(h);
@@ -102,6 +106,43 @@ HashTable* create_hashtable(CellKey* keys, int size){
 	}
 	printf("return create_hashtable\n");
 	return h;
+}*/
+
+
+HashTable* create_hashtable(CellKey* keys, int size){
+	printf("entry create_hashtable\n");
+    HashTable *t = (HashTable*)malloc(sizeof(HashTable));
+    t->tab = (HashCell**)malloc(sizeof(HashCell*)*size);
+    t->size=size;
+    
+    for(int i=0; i<t->size; i++){
+        t->tab[i]=create_hashcell(NULL);
+    }
+    int i = 0;
+    while(keys && i<size){
+        int pos = hash_function(keys->data, size);
+      
+        if( !t->tab[pos]->key ){
+            t->tab[pos]->key = keys->data;
+        
+        }else{
+            while(pos>=0){
+                if(pos == size)
+                    pos=0;
+
+                if( !t->tab[pos]->key){  
+                    t->tab[pos]->key = keys->data;
+                    break;
+                }
+
+                pos++;
+            }   
+        }
+        i++;
+        keys=keys->next;
+    }
+	printf("return create_hashtable\n");
+    return t;
 }
 
 
@@ -114,7 +155,6 @@ void delete_hashtable(HashTable* t){
 	free(t->tab);
 	free(t);
 }
-
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
 	//Creation de 2 tables de hachages
 	printf("entry in compute_winner\n");
@@ -125,7 +165,6 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	if(decl==NULL){
 		return NULL;
 	}
-
 	while(decl){//on parcourt la liste des déclarations
 		//Test si le votant a le droit de voté (il est dans hv?)
 		if(hv->tab[find_position(hv,(decl->data->pKey))]->key==decl->data->pKey){
@@ -150,17 +189,20 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	}
 	//delete_hashtable_
 	//(free à ajouter ?)
+	printf("return computewinner\n");
 	return gagnant->key;
 }
-/*
-Key * compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV){
-	
+
+/*Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV){
+	printf("entry in compute_winner\n");
 	HashTable* Hc = create_hashtable(candidates, sizeC);
 	HashTable* Hv = create_hashtable(voters, sizeV);
+	printf("table de hachage des votants cree\n");
 	int positionV, positionC;
 	// comptage des votes
 	while(decl != NULL){
 		positionV = find_position(Hv, decl->data->pKey);
+
 		Key * Ckey = str_to_key(decl->data->mess);
 		positionC = find_position(Hc, Ckey);
 		printf("positionC = %d \n", positionC);
@@ -187,13 +229,14 @@ Key * compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, 
 	}
 	
 	Key * winner = malloc(sizeof(Key));
-	init_key(winner, Hc->tab[position_winner]->key->val, Hc->tab[position_winner]->key->n);
+	init_key(winner, Hc->tab[position_winner]->key->cle, Hc->tab[position_winner]->key->n);
 	
 	delete_hashtable(Hc);
 	delete_hashtable(Hv);
+	printf("return computewinner\n");
 	return winner;
 	
-}
-*/
+}*/
+
 
 //gcc -Wall  -o main base.c chiffrement.c hachage.c key.c prime_number.c

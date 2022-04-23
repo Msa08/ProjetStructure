@@ -3,7 +3,7 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 #include "key.h"
-#include "Base.h"
+#include "Base2.h"
 #include "hachage.h"
 #include <time.h>
 #include <string.h>
@@ -18,7 +18,7 @@ void print_long_vector(long *result, int size){
 int main(){
     srand(time(NULL));
 
-/*____________________________TEST PARTIE 1__________________________________________________________*/
+/*____________________________TEST PARTIE 1__________________________________________________________
   printf("\n______________________________TEST PARTIE 1___________________________\n");
     // FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
     // FILE *f2=fopen("modpow2.txt", "w");
@@ -130,10 +130,10 @@ int main(){
     //dechiffrement
     printf("Dechiffrement\n");
     char* decoded=decrypt(crypted,len,u,n);//message decrypté
-    printf("Decoded = %s\n",decoded);
+    printf("Decoded = %s\n",decoded);*/
 
 
-    /*____________________________TEST PARTIE 2______________________________________________________*/
+    /*____________________________TEST PARTIE 2______________________________________________________
       printf("\n______________________________TEST PARTIE 2___________________________\n");
     //Testing Init Keys
     printf("\n-----------------Generation d'une paire de cle---------------------\n");
@@ -194,7 +194,7 @@ int main(){
     free(mess);
     free(crypted);
     free(decoded);
-    free(str);
+    free(str);*/
     /*____________________________TEST PARTIE 3______________________________________________________*/
     printf("\n______________________________TEST PARTIE 3___________________________\n");
     generate_random_data(4,2);
@@ -214,8 +214,8 @@ int main(){
     //delete_cell_protected(LCP);
 
 
-     /*Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
-     printf("gagnant -> %s\n", key_to_str(gagnant));*/
+     Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
+     printf("gagnant -> %s\n", key_to_str(gagnant));
      return 0;
 }
     //on obtient 215000363
