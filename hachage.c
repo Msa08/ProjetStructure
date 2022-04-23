@@ -49,8 +49,8 @@ printf("entry hash_function\n");
 }*/
 
 
-
-int find_position(HashTable* t, Key* key){
+//influe pas
+/*int find_position(HashTable* t, Key* key){
 	//cherche dans t si key existe
 
 	for(int i=0; i<t->size; i++){//parcourt la table de hachage
@@ -63,9 +63,9 @@ int find_position(HashTable* t, Key* key){
 	//sinon retourne la position ou elle aurait du etre
 	printf("return1 findpos\n");
 	return hash_function(key, t->size);
-}
+}*/
 
-/*int find_position(HashTable* t, Key* key){
+int find_position(HashTable* t, Key* key){
  printf("entry find_position\n");
 	int h, i=0;
 	while(i != t->size){
@@ -79,7 +79,7 @@ int find_position(HashTable* t, Key* key){
 	}
 	printf("return find_position2\n");
 	return i;
-}*/
+}
 /*int find_position(HashTable* t, Key* key){
 	printf("entry find_position\n");
     for(int i=0; i<t->size; i++){ //parcours du tableau
@@ -93,9 +93,9 @@ int find_position(HashTable* t, Key* key){
 }*/
 
 
-/*HashTable* create_hashtable(CellKey* keys, int size){
+HashTable* create_hashtable(CellKey* keys, int size){
 	printf("entry create_hashtable\n");
-	HashTable * h = malloc(sizeof(HashTable));
+	HashTable* h =(HashTable*) malloc(sizeof(HashTable));
 	//assert(h);
 	h->tab = malloc(sizeof(HashCell*)*size);
 	h->size = size;
@@ -106,10 +106,10 @@ int find_position(HashTable* t, Key* key){
 	}
 	printf("return create_hashtable\n");
 	return h;
-}*/
+}
 
-
-HashTable* create_hashtable(CellKey* keys, int size){
+//influe pas
+/*HashTable* create_hashtable(CellKey* keys, int size){
 	printf("entry create_hashtable\n");
     HashTable *t = (HashTable*)malloc(sizeof(HashTable));
     t->tab = (HashCell**)malloc(sizeof(HashCell*)*size);
@@ -134,7 +134,6 @@ HashTable* create_hashtable(CellKey* keys, int size){
                     t->tab[pos]->key = keys->data;
                     break;
                 }
-
                 pos++;
             }   
         }
@@ -143,7 +142,7 @@ HashTable* create_hashtable(CellKey* keys, int size){
     }
 	printf("return create_hashtable\n");
     return t;
-}
+}*/
 
 
 

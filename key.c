@@ -146,7 +146,7 @@ Protected* str_to_protected(char* str){
      return pr;
 }
 
-void generate_random_data(int nv, int nc){
+/*void generate_random_data(int nv, int nc){
     srand(time(NULL));
     char* pKeychar;
     char* sKeychar;
@@ -240,4 +240,118 @@ void generate_random_data(int nv, int nc){
     fclose(f6);
     free(ligne2);
     free(sKey);
+}*/
+
+void generate_random_data(int nv, int nc){
+
+    Key *pKey = NULL;
+    Key *sKey = NULL; 
+
+    FILE *f = fopen("keys.txt", "w");
+
+    // on genere des cles et on ajoute leur representation caractere dans le fichier <keys.txt>
+    for (int i=0; i<nv; i++){
+        pKey = (Key*)malloc(sizeof(Key));
+        sKey = (Key*)malloc(sizeof(Key)); 
+        init_pair_keys(pKey, sKey, 3, 7);
+        fprintf(f, "%s %s\n", key_to_str(pKey), key_to_str(sKey));
+        free(pKey);
+        free(sKey);
+    }
+    fclose(f);
+
+    // RECUPERE les cles publiques dans le fichier Keys 
+    // et les ajoute dans le fichier CANDIDATES
+
+    FILE *fk = fopen("keys.txt", "r");
+    FILE *fc = fopen("candidates.txt", "w");
+
+    //int rand = rand_long(1, nv);
+    char **tabCandidats = (char**)malloc(sizeof(char*)*nc);
+    for (int i =0; i<nc; i++){
+        tabCandidats[i]=malloc(sizeof(char));
+    }
+
+    char buffer[100];
+    char str[100];
+    int it = 0;
+    int irand;
+    int *tabRand = (int*)malloc(sizeof(int)*nc);
+    int itr = 0;
+    int estDedans = 0;
+
+    while(it<nc){
+        irand = rand() % nv;
+        while(itr<it){
+            if(tabRand[itr] == irand){
+                estDedans++;
+                break;
+            }
+            itr++;
+        }
+        if(estDedans == 0){
+            tabRand[it] = irand; 
+            it++;
+        }
+        itr = 0;
+        estDedans = 0;
+        irand = 0;
+
+    }
+
+    int tmp;
+    for(int i = 0; i < nc; ++i){
+        for(int j = i + 1; j < nc; ++j){
+            if(tabRand[i] > tabRand[j]){
+                tmp = tabRand[i];
+                tabRand[i] = tabRand[j];
+                tabRand[j] = tmp;
+            }
+        }
+    }
+   
+    it = 0;
+    itr = 0;
+    while(fgets(buffer, 100, fk)){
+        if(it == tabRand[itr]){
+            if (sscanf(buffer, " %s\n", str)==1){
+                strcpy(tabCandidats[itr], str);
+                fprintf(fc, "%s\n", tabCandidats[itr]);
+            }
+            itr++;
+        }
+        it++;
+    }
+
+    fclose(fk);
+    fclose(fc);
+
+    // GENERE les declarations de vote (a partir de Keys) et les
+    // enregistre dans un fichier Declaration.txt
+
+    FILE *fkr = fopen("keys.txt", "r");
+    FILE *fs = fopen("declarations.txt", "w");
+    char str2[100];
+    char str3[100];
+    while(fgets(buffer, 256, fkr)){
+        if (sscanf(buffer, " %s %s \n", str2, str3)==2){
+            sKey = str_to_key(str3);
+            long rand = rand_long(0, nc-1);
+            fprintf(fs, "%s %s %s \n", str2, 
+            tabCandidats[rand], 
+            signature_to_str(sign(tabCandidats[rand], sKey)));
+            free(sKey);
+        }
+    }
+    fclose(fkr);
+    fclose(fs);
+    printf("t\n");
+    // for(int i=0; i<nc;i++){
+    //     free(tabCandidats[i]);
+    // }
+        
+    // free(tabCandidats);
+
+    // free(tabRand);  
+    
 }
