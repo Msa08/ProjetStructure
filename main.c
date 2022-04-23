@@ -3,7 +3,7 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 #include "key.h"
-#include "Base2.h"
+#include "Base.h"
 #include "hachage.h"
 #include <time.h>
 #include <string.h>
