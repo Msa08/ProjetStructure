@@ -14,45 +14,71 @@ CellKey* create_cell_key(Key* key){
 }
 
 
-void add_cell_key(CellKey** cellKey, Key* key){
-	/*ajout d'une clé en tete de liste*/
-	if (!(*cellKey) || !key){
-		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
-		return;
-	}
-	CellKey* newCellKey = create_cell_key(key);
-	newCellKey->next = (*cellKey); 
-	(*cellKey) = newCellKey;
-	return;
+// void add_cell_key(CellKey** cellKey, Key* key){
+// 	/*ajout d'une clé en tete de liste*/
+// 	if (!(*cellKey) || !key){
+// 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
+// 		return;
+// 	}
+// 	CellKey* newCellKey = create_cell_key(key);
+// 	newCellKey->next = (*cellKey); 
+// 	(*cellKey) = newCellKey;
+// 	return;
+// }
+CellKey* add_cell_key(CellKey* cellkey, Key* key){
+    if (!cellkey->data)
+        return create_cell_key(key);
+    
+    CellKey* ck = create_cell_key(key);
+    ck->next = cellkey;
+    return ck;
 }
 
-CellKey* read_public_keys(char* fichier){
-    /*retourne une liste chainée contenant toutes les clés du fichier en paramètre*/
-    if(strcmp(fichier,"keys.txt")!=0 && strcmp(fichier,"candidates.txt")!=0){
-        printf("mauvais fichier\n");
+// CellKey* read_public_keys(char* fichier){
+//     /*retourne une liste chainée contenant toutes les clés du fichier en paramètre*/
+//     if(strcmp(fichier,"keys.txt")!=0 && strcmp(fichier,"candidates.txt")!=0){
+//         printf("mauvais fichier\n");
+//         return NULL;
+//     }
+//     FILE *f=fopen(fichier,"r");
+//     char ligne[50];
+//     char poubelle[50];
+//     char pKey[50];
+//     Key* pkey2;
+//     CellKey* liste = malloc(sizeof(CellKey));
+//     liste->data=NULL;
+//     liste->next=NULL;
+//     while(!feof(f)){
+//         fgets(ligne,50,f);
+//         sscanf(ligne,"%s %s",pKey,poubelle);
+//         pkey2=str_to_key(pKey);
+//         if(liste->data==NULL){
+//             liste->data=str_to_key(pKey);
+//         }
+//         else{
+//             add_cell_key(&liste, pkey2);
+//         }
+//     }
+//     return liste;
+// }
+CellKey *read_public_keys(char *nomFic){
+    FILE *f = fopen(nomFic, "r");
+    if (f == NULL){
+        printf("Erreur : ouverture fichier\n");
         return NULL;
     }
-    FILE *f=fopen(fichier,"r");
-    char ligne[50];
-    char poubelle[50];
-    char pKey[50];
-    Key* pkey2;
-    CellKey* liste = malloc(sizeof(CellKey));
-    liste->data=NULL;
-    liste->next=NULL;
-    while(!feof(f)){
-        fgets(ligne,50,f);
-        sscanf(ligne,"%s %s",pKey,poubelle);
-        pkey2=str_to_key(pKey);
-        if(liste->data==NULL){
-            liste->data=str_to_key(pKey);
-        }
-        else{
-            add_cell_key(&liste, pkey2);
+    char buffer[100];
+    CellKey* ck;
+    ck=create_cell_key(NULL);
+    char str[100];
+    while(fgets(buffer, 100, f)){
+        if (sscanf(buffer, " %s\n", str)==1){
+            ck = add_cell_key(ck, str_to_key(str));
         }
     }
-    return liste;
+    return ck;
 }
+
 
 void print_list_keys(CellKey* LCK){
     /* affiche la liste des clés LCK*/
@@ -91,45 +117,73 @@ CellProtected* create_cell_protected(Protected* pr){
     return cell_p;
 }
 
-void add_cell_protected(CellProtected** cellPro, Protected* pr){
-	/* ajoute une déclaration signée en tête de liste*/
-	if (!(*cellPro) || !pr){
-		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
-		return;
-	}
-	CellProtected* newCellProtected = create_cell_protected(pr);
-	newCellProtected->next = (*cellPro); 
-	(*cellPro) = newCellProtected;
-	return;
+// void add_cell_protected(CellProtected** cellPro, Protected* pr){
+// 	/* ajoute une déclaration signée en tête de liste*/
+// 	if (!(*cellPro) || !pr){
+// 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
+// 		return;
+// 	}
+// 	CellProtected* newCellProtected = create_cell_protected(pr);
+// 	newCellProtected->next = (*cellPro); 
+// 	(*cellPro) = newCellProtected;
+// 	return;
+// }
+
+CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr){
+    if (!cellpr->data)
+        return create_cell_protected(pr);
+
+    if(!pr)
+        return NULL;
+    
+    CellProtected *cp = create_cell_protected(pr);
+    cp->next = cellpr;
+    cellpr=cp;
+
+    return cellpr;
 }
 
-CellProtected* read_protected(char* fic){
-    /* retourne une liste chaînée contenant toutes les déclarations signées du fichier
-    “declarations.txt” */
-    if(strcmp(fic,"declarations.txt")!=0){
-        printf("mauvais fichier\n");
+// CellProtected* read_protected(char* fic){
+//     /* retourne une liste chaînée contenant toutes les déclarations signées du fichier
+//     “declarations.txt” */
+//     if(strcmp(fic,"declarations.txt")!=0){
+//         printf("mauvais fichier\n");
+//         return NULL;
+//     }
+//     FILE *f = fopen(fic,"r");
+//     CellProtected* liste=malloc(sizeof(CellProtected));
+//     liste->data=NULL;
+//     liste->next=NULL;
+//     char ligne[50];
+//     char poubelle[50];
+//     char protected[50];
+//     Protected* pr2;
+//     while(!feof(f)){
+//         fgets(ligne,50,f);
+//         sscanf(ligne,"%s %s",protected,poubelle);
+//         pr2=str_to_protected(protected);
+//         if(liste->data==NULL){
+//             liste->data=str_to_protected(protected);
+//         }
+//         else{
+//             add_cell_protected(&liste, pr2);
+//         }
+//     }
+//     return liste;
+// }
+CellProtected *read_protected(char *nomFichier){
+    FILE *f = fopen(nomFichier, "r");
+    if (f == NULL){
+        printf("Erreur : ouverture fichier\n");
         return NULL;
     }
-    FILE *f = fopen(fic,"r");
-    CellProtected* liste=malloc(sizeof(CellProtected));
-    liste->data=NULL;
-    liste->next=NULL;
-    char ligne[50];
-    char poubelle[50];
-    char protected[50];
-    Protected* pr2;
-    while(!feof(f)){
-        fgets(ligne,50,f);
-        sscanf(ligne,"%s %s",protected,poubelle);
-        pr2=str_to_protected(protected);
-        if(liste->data==NULL){
-            liste->data=str_to_protected(protected);
-        }
-        else{
-            add_cell_protected(&liste, pr2);
-        }
+    char buffer[256];
+    CellProtected *cellpr = create_cell_protected(NULL);
+    while(fgets(buffer, 256, f)){
+        cellpr = add_cell_protected(cellpr, str_to_protected(buffer));
     }
-    return liste;
+    fclose(f);
+    return cellpr;
 }
 
 void print_list_protected(CellProtected* LCP){
