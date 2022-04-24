@@ -68,10 +68,11 @@ printf("entry hash_function\n");
 int find_position(HashTable* t, Key* key){
  printf("entry find_position\n");
 	int h, i=0;
-	while(i != t->size){
+	while(i < t->size){
 		h=(hash_function(key,t->size)+i)%t->size;
 		printf("h= %d\n",h);
-		if(t->tab[h]==NULL || (t->tab[h]->key->cle == key->cle && t->tab[h]->key->n == key->n)){
+		printf("%ld, %ld\n",t->tab[h]->key->cle, t->tab[h]->key->n);
+		if(t->tab[h]!=NULL && (t->tab[h]->key->cle == key->cle) && (t->tab[h]->key->n == key->n)){
 			printf("return find_position\n");
 			return h;
 		}
@@ -80,6 +81,7 @@ int find_position(HashTable* t, Key* key){
 	printf("return find_position2\n");
 	return i;
 }
+
 /*int find_position(HashTable* t, Key* key){
 	printf("entry find_position\n");
     for(int i=0; i<t->size; i++){ //parcours du tableau
@@ -90,7 +92,7 @@ int find_position(HashTable* t, Key* key){
     //printf("Pas de clé\n");
 		printf("return find_position\n");
     return hash_function(key, t->size); //retourne la position où il aurait dû être
-}*/
+}
 
 
 HashTable* create_hashtable(CellKey* keys, int size){
@@ -106,10 +108,10 @@ HashTable* create_hashtable(CellKey* keys, int size){
 	}
 	printf("return create_hashtable\n");
 	return h;
-}
+}*/
 
 //influe pas
-/*HashTable* create_hashtable(CellKey* keys, int size){
+HashTable* create_hashtable(CellKey* keys, int size){
 	printf("entry create_hashtable\n");
     HashTable *t = (HashTable*)malloc(sizeof(HashTable));
     t->tab = (HashCell**)malloc(sizeof(HashCell*)*size);
@@ -142,7 +144,7 @@ HashTable* create_hashtable(CellKey* keys, int size){
     }
 	printf("return create_hashtable\n");
     return t;
-}*/
+}
 
 
 
