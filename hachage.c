@@ -17,7 +17,6 @@ HashCell* create_hashcell(Key* key){
 
 void delete_hashcell(HashCell* c){
 	free(c);
-
 }
 
 int hash_function(Key* key, int size){
