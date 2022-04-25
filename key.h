@@ -12,9 +12,9 @@ typedef struct Signature{
 }Signature;
 
 typedef struct Protected{
-    Key* pKey;
-    char* mess;
-    Signature* sgn;
+    Key* pKey;//cle publique de l'emettuer
+    char* mess;//son message -> key_to_str(pkey du candidat)
+    Signature* sgn;//sa signature -> mess chiffré avec cle secrete de l'emetteur
 }Protected;
 
 void init_key(Key* key, long val, long n);

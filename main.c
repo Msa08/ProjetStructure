@@ -197,7 +197,7 @@ int main(){
     free(str);*/
     /*____________________________TEST PARTIE 3______________________________________________________*/
     printf("\n______________________________TEST PARTIE 3___________________________\n");
-    generate_random_data(10,3);
+    generate_random_data(10,5);
     printf("\ngenerate keys\n");
     CellKey* voters=read_public_keys("keys.txt");
     print_list_keys(voters);
@@ -214,7 +214,7 @@ int main(){
     //delete_cell_protected(LCP);
 
 
-     Key* gagnant = compute_winner(decl,candidates,voters, 3,10);
+     Key* gagnant = compute_winner(decl,candidates,voters, 5,10);
      printf("gagnant -> %s\n", key_to_str(gagnant));
      return 0;
 }
