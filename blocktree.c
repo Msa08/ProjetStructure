@@ -125,3 +125,16 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
     cell1->next = cell2;
     return cell1;
 }
+
+
+//8.9
+CellProtected* fusion(CellTree* cell){
+    CellProtected* cell1 = cell->block->votes;
+    CellTree* courant = highest_child(cell);
+    while (courant != NULL){
+        CellProtected* cell2 = courant->block->votes;
+        cell1 = fusion_declaration(cell1, cell2);
+        courant = highest_child(courant);
+    }
+    return cell1;
+}
