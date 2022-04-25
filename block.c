@@ -5,6 +5,7 @@
 #include "key.h"
 #include "chiffrement.h"
 #include "Block.h"
+#include <openssl/sha.h>
 //kacem
 //la methode fonctionne mais n'ecris pas de la mm facon que dans le block original
 /*void ecrire_block(char * filename, Block * b){

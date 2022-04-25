@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "prime_number.h"
@@ -9,6 +9,7 @@
 #include "Block.h"
 #include <time.h>
 #include <string.h>
+#include <openssl/sha.h>
 
 void print_long_vector(long *result, int size){
     printf("Vector: [");
