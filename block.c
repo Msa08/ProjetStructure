@@ -104,7 +104,7 @@ Block* lire_block(char* filename){
 
     fclose(f);
 
-    while(block->votes){
+    while(block->votes->next){
         droit=add_cell_protected(droit, block->votes->data);
         block->votes=block->votes->next;
     }

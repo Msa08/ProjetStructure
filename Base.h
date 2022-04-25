@@ -10,9 +10,7 @@ typedef struct cellKey{
 } CellKey;
 
 CellKey* create_cell_key(Key* key);
-//void add_cell_key(CellKey** cellKey, Key* key);
 CellKey* add_cell_key(CellKey* cellkey, Key* key);
-//CellKey* read_public_keys(char* fichier);
 CellKey *read_public_keys(char *nomFic);
 void print_list_keys(CellKey* LCK);
 void delete_list_keys(CellKey* LCK);
@@ -24,9 +22,7 @@ typedef struct cellProtected{
 } CellProtected;
 
 CellProtected* create_cell_protected(Protected* pr);
-//void add_cell_protected(CellProtected** cellPro, Protected* pr);
 CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr);
-//CellProtected* read_protected(char* fic);
 CellProtected *read_protected(char *nomFichier);
 void print_list_protected(CellProtected* LCP);
 void delete_cell_protected(CellProtected* cp);

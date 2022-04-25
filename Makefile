@@ -1,7 +1,7 @@
 CC = gcc
 
-main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o
-	$(CC) -g -o main -lm $^
+main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o Block.o
+	$(CC) -g -o main  $^ -lm -lssl -lcrypto
 
 main.o : main.c
 	$(CC) -g -o main.o -c $^
@@ -20,3 +20,6 @@ Base.o : Base.c
 
 Hachage.o : hachage.c
 	$(CC) -g -o Hachage.o -c $^
+
+Block.o :block.c
+	$(CC) -g -o Block.o -c $^ -lssl -lcrypto
