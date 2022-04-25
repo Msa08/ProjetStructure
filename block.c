@@ -6,6 +6,7 @@
 #include "chiffrement.h"
 #include "Block.h"
 //kacem
+//la methode fonctionne mais n'ecris pas de la mm facon que dans le block original
 /*void ecrire_block(char * filename, Block * b){
 	FILE* f = fopen(filename, "w");
 	
@@ -112,7 +113,8 @@ Block* lire_block(char* filename){
     block->votes=droit;
     return block;
 }
-//kacem 
+//kacem
+//fonctionne pas 
 /*Block* lire_block(char* filename){
 	FILE* f = fopen(filename, "r");
 	
