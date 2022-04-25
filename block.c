@@ -160,7 +160,34 @@ Block* lire_block(char* filename){
 	return b;
 }*/
 
+
+
 char * block_to_str(Block* b){
+	char * res = (char *) malloc(sizeof(char) * 256 );
+	char * author = key_to_str(b->author);
+	char * previous_hash = strdup(b->previous_hash);
+	char * vote;
+
+	sprintf(res, "%s %s ", author, previous_hash);
+
+	CellProtected * votes = b->votes;
+	while (votes != NULL) {
+		vote = protected_to_str(b->vote);
+		sprintf(res, "%s ", vote);
+		free(vote);
+	}
+
+	sprintf(res, "%d", b->nonce);
+
+	//Libération mémoire
+	free(author);
+	free(previous_hash);
+
+	return res;
+}
+
+
+/*char * block_to_str(Block* b){
 	char strb[1000];
 
 	char* author = key_to_str(b->author);
@@ -174,7 +201,7 @@ char * block_to_str(Block* b){
 	
 	return strdup(strb);
 }
-
+*/
 char * hachage_SHA256(const unsigned char *s){
 	unsigned char *d = SHA256(s, strlen((const char*)s),0);
 	
