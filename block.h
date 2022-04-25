@@ -12,10 +12,6 @@ typedef struct block {
 } Block ;
 
 
-
-
-
-
 void ecrire_block(char * filename, Block * b);
 
 Block* lire_block(char* filename);
@@ -28,5 +24,6 @@ void compute_proof_of_work(Block* b, int d);
 
 int verify_block(Block* b, int d);
 
-
+void delete_block(Block *b);
+	
 #endif
