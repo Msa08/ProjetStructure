@@ -214,21 +214,23 @@ Protected* str_to_protected(char* str){
     FILE *f5=fopen("candidates.txt","r");
     char* ligne2=malloc(60*sizeof(char));
     char* protected;
+    char* keystr;
     for(int i=0;i<nv;i++){
         fgets(ligne2,50,f6);
         j=rand_long(1,nc);
+        rewind(f5);
         for(int h=0;h<j;h++){
             fgets(ligne,50,f5);
         }
-        sscanf(ligne2,"(%s,%s)",poubelle, pKey2);
+        sscanf(ligne,"(%s,%s)",poubelle, pKey2);
         pKey=str_to_key(ligne2);
-        signature=sign(ligne,pKey);
+        signature=sign(pKey2,pKey);
         free(pKey);
         pKey=str_to_key(pKey2);
         Protected *pr=init_protected(pKey,ligne,signature);
         protected=protected_to_str(pr);
-        free(pKey);
         fprintf(f3,"%s\n",protected);
+        free(pKey);
         free(signature->content);
         free(signature);
         free(protected);
@@ -246,6 +248,8 @@ void generate_random_data(int nv, int nc){
 
     Key *pKey = NULL;
     Key *sKey = NULL; 
+    char* pKey2;
+    char* sKey2;
 
     FILE *f = fopen("keys.txt", "w");
 
@@ -254,7 +258,11 @@ void generate_random_data(int nv, int nc){
         pKey = (Key*)malloc(sizeof(Key));
         sKey = (Key*)malloc(sizeof(Key)); 
         init_pair_keys(pKey, sKey, 3, 7);
-        fprintf(f, "%s %s\n", key_to_str(pKey), key_to_str(sKey));
+        pKey2=key_to_str(pKey);
+        sKey2=key_to_str(sKey);
+        fprintf(f, "%s %s\n", pKey2,sKey2);
+        free(pKey2);
+        free(sKey2);
         free(pKey);
         free(sKey);
     }
@@ -269,11 +277,11 @@ void generate_random_data(int nv, int nc){
     //int rand = rand_long(1, nv);
     char **tabCandidats = (char**)malloc(sizeof(char*)*nc);
     for (int i =0; i<nc; i++){
-        tabCandidats[i]=malloc(sizeof(char));
+        tabCandidats[i]=malloc(150*sizeof(char));
     }
 
-    char buffer[100];
-    char str[100];
+    char buffer[150];
+    char str[150];
     int it = 0;
     int irand;
     int *tabRand = (int*)malloc(sizeof(int)*nc);
@@ -312,7 +320,7 @@ void generate_random_data(int nv, int nc){
    
     it = 0;
     itr = 0;
-    while(fgets(buffer, 100, fk)){
+    while(fgets(buffer, 100, fk) && (itr<nc)){
         if(it == tabRand[itr]){
             if (sscanf(buffer, " %s\n", str)==1){
                 strcpy(tabCandidats[itr], str);
@@ -331,27 +339,32 @@ void generate_random_data(int nv, int nc){
 
     FILE *fkr = fopen("keys.txt", "r");
     FILE *fs = fopen("declarations.txt", "w");
+    char* signature;
     char str2[100];
     char str3[100];
+    Signature* sgn;
     while(fgets(buffer, 256, fkr)){
         if (sscanf(buffer, " %s %s \n", str2, str3)==2){
             sKey = str_to_key(str3);
             long rand = rand_long(0, nc-1);
-            fprintf(fs, "%s %s %s \n", str2, 
-            tabCandidats[rand], 
-            signature_to_str(sign(tabCandidats[rand], sKey)));
+            sgn=sign(tabCandidats[rand], sKey);
+            signature=signature_to_str(sgn);
+            fprintf(fs, "%s %s %s \n", str2, tabCandidats[rand], signature);
             free(sKey);
+            free(signature);
+            free(sgn->content);
+            free(sgn);
         }
     }
     fclose(fkr);
     fclose(fs);
     printf("t\n");
-    // for(int i=0; i<nc;i++){
-    //     free(tabCandidats[i]);
-    // }
+    for(int i=0; i<nc;i++){
+        free(tabCandidats[i]);
+    }
         
-    // free(tabCandidats);
+    free(tabCandidats);
 
-    // free(tabRand);  
+    free(tabRand);  
     
 }

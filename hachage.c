@@ -127,9 +127,13 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 		if (hc->tab[i]->val > gagnant->val){//si le candidat courant a plus de vote que gagnant
 			gagnant=hc->tab[i];//il devient le gagnant
 		}
-		printf("tab[%s] val = %d \n",key_to_str( hc->tab[i]->key), hc->tab[i]->val);
 	}
-	return gagnant->key;
+	char* keyg=key_to_str(gagnant->key);
+	delete_hashtable(hc);
+	delete_hashtable(hv);
+	Key* key_gagnant=str_to_key(keyg);
+	free(keyg);
+	return key_gagnant;
 }
 
 
