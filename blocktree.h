@@ -21,7 +21,7 @@ void delete_tree(CellTree* tree);
 CellTree* highest_child(CellTree * cell);
 CellTree* last_node(CellTree* cell);
 CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2);
-
+CellProtected* fusion(CellTree* cell);
 
 
 #endif
