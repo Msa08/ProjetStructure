@@ -221,35 +221,15 @@ int main(){
     /*____________________________TEST PARTIE 4______________________________________________________*/
     printf("\n______________________________TEST PARTIE 4___________________________\n");
     
-    // printf("hachage avec SHA_256\n");
-    // const unsigned char *s= "Rosetta code" ;
-    // printf("%s \n",hachage_SHA256(s) );
+    printf("hachage avec SHA_256: \n");
+    const unsigned char *s= "Rosetta code" ;
+    printf("%s\n hachage...\n",s);
+    printf("%s \n",hachage_SHA256(s) );
 
     Block *b=lire_block("Block_0");
-    // FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
-    // float debut;
-    // float fin;
-    // debut=clock();
-    // fin=clock();
-    // for (int i=1;i<4;i++){
-    //     debut=clock();
-    //     compute_proof_of_work(b,i);
-    //     fin=clock();
-    //     fprintf(resultats_1,"%d %f\n",i,(float)(fin-debut)/(CLOCKS_PER_SEC));
-    //     printf("%d\n",i);
-    //     printf("%f\n",(fin-debut)/(CLOCKS_PER_SEC));
-    // }
-    // if(verify_block(b,3)==1){
-    //     printf("LE  BLOC EST VALIDE !!\n");
-    // }
-    // else{
-    //     printf("LE BLOC N'EST PAS VALIDE\n");
-    // }
-    printf("test\n");
-     ecrire_block("test_exo7_2",b);
-    // printf("*************************************\n");
-    // Block *b2=lire_block("test_exo7_2.txt");
-    // ecrire_block("test_exo7_3.txt",b2);
+    ecrire_block("Block_0_bis",b);
+
+    
      return 0;
 }
     //on obtient 215000363
@@ -259,5 +239,31 @@ int main(){
     -Il y a 5 cle public dans keys.txt
     -Il y a 3 cle public dans candidates.txt
     -Il y a beaucoup plus de 5 declarations dans declarations.txt
-    -compute_winner genere une fois sur deux  hc*/
-//e1ae86d0
+    -compute_winner genere une fois sur deux  hc
+    
+    
+    
+    Block *b=lire_block("Block_0");
+    FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
+    float debut;
+    float fin;
+    debut=clock();
+    fin=clock();
+    for (int i=1;i<4;i++){
+        debut=clock();
+        compute_proof_of_work(b,i);
+        fin=clock();
+        fprintf(resultats_1,"%d %f\n",i,(float)(fin-debut)/(CLOCKS_PER_SEC));
+        printf("%d\n",i);
+        printf("%f\n",(fin-debut)/(CLOCKS_PER_SEC));
+    }
+    if(verify_block(b,3)==1){
+        printf("LE  BLOC EST VALIDE !!\n");
+    }
+    else{
+        printf("LE BLOC N'EST PAS VALIDE\n");
+    }
+     ecrire_block("test_exo7_2",b);
+    printf("*************************************\n");
+    Block *b2=lire_block("test_exo7_2.txt");
+    ecrire_block("test_exo7_3.txt",b2);*/
