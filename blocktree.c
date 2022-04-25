@@ -58,3 +58,70 @@ void add_child(CellTree* father, CellTree* child){
         father = father->father;
     }
 }
+
+void print_tree(CellTree * tree){
+    /* Affiche l'arbre : pour chaques noeuds, la hauteur du noeud et la valeur hachee du bloc
+       son affiche.
+    */
+
+    if (tree == NULL){
+        return;
+    }
+    CellTree* courant = tree;
+    while (courant) {
+        printf("Hauteur = %d , Hash = %s\n", courant->height, courant->block->hash);
+        courant = courant->nextBro;
+    }
+    printf("\n");
+
+    print_tree(tree->firstChild);
+}
+
+
+void delete_node(CellTree* node){
+    delete_block(node->block);
+    free(node);
+}
+
+void delete_tree(CellTree* tree){
+    if (tree == NULL){
+        return;
+    }
+    delete_tree(tree->firstChild);
+    delete_tree(tree->nextBro);
+
+    delete_node(tree);
+}
+CellTree* highest_child(CellTree* cell){
+    if (cell == NULL){
+        return NULL;
+    }
+    CellTree* filsCourant = cell->firstChild;
+    while (filsCourant != NULL && filsCourant->height != cell->height-1 ){
+        filsCourant = filsCourant->nextBro;
+    }
+    return filsCourant;
+}
+
+CellTree* last_node(CellTree* cell){
+    CellTree* filsCourant = highest_child(cell);
+    if (filsCourant == NULL){
+        return cell;
+    }
+
+    while (filsCourant->firstChild != NULL) {
+        filsCourant = highest_child(filsCourant);
+    }
+    return filsCourant;
+}
+
+CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
+    if (cell1 == NULL){
+        return cell2;
+    }
+    while(cell1->next){
+        cell1 = cell1->next;
+    }
+    cell1->next = cell2;
+    return cell1;
+}

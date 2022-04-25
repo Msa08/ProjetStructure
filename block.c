@@ -6,6 +6,11 @@ void ecrire_block(char * filename, Block * b){
 	char* author = key_to_str(b->author);
 	fprintf(f, "%s\n%s\n%s\n%d\n\n",author, b->hash, b->previous_hash, b->nonce);
 	
+	if (b == NULL){
+        printf("Bloc nul dont écriture impossible!\n");
+		return;
+	}
+	
 	while(b->votes != NULL){
 		char * vote = protected_to_str(b->votes->data);
 		fprintf(f, "%s\n", vote);
@@ -14,6 +19,7 @@ void ecrire_block(char * filename, Block * b){
 		b->votes = b->votes->next;
 	}
 }
+	
 
 
 Block* lire_block(char* filename){
@@ -107,11 +113,31 @@ void compute_proof_of_work(Block* b, int d){
 	}
 }
 
-int verify_block(Block* b, int d){
+/*int verify_block(Block* b, int d){
 	if(b->nonce == d){
 		return 1;
 	}
 	return 0;
 }
 
+*/
+int verify_block(Block* b, int d){
+    /* Verifie que le bloc b est correct.
+    */
+    char* str_b = block_to_str(b);
+    unsigned char* hash_value = hachage_SHA256(str_b);
+
+    for (int i = 0; i < d; i++){
+        if (hash_value[i] != '0'){
+            free(str_b);
+            return 0;
+        }
+    }
+    if ((strcmp((const char*)b->hash, (const char*)hash_value)) != 0) {
+        free(str_b);
+        return 0;
+    }
+    free(str_b);
+    return 1;
+}
 
