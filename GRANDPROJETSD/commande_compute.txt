@@ -1,0 +1,4 @@
+plot "BENCH_compute_PoW.txt" using 1:2 title 'Performance : compute_proof_of_work()' with lines
+set term postscript portrait
+set output "Performance_compute_PoW.txt.ps"
+set size 0.7,0.7 
