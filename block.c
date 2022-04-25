@@ -141,3 +141,26 @@ int verify_block(Block* b, int d){
     return 1;
 }
 
+
+//qst7.9
+void delete_block(Block *b){
+	/*supprime un bloc*/
+    if (b != NULL){
+        CellProtected* tmp;
+        CellProtected* vote;
+        vote = b->votes;
+        while(vote){
+            tmp = vote;
+            vote = vote->next;
+            free(tmp);
+        }
+
+        free(b->hash);
+        free(b->previous_hash);
+        free(b);
+    }
+}
+
+
+
+
