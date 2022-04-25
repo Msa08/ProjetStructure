@@ -1,4 +1,10 @@
-#include "block.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Base.h"
+#include "key.h"
+#include "chiffrement.h"
+#include "Block.h"
 
 void ecrire_block(char * filename, Block * b){
 	FILE* f = fopen(filename, "w");
@@ -42,7 +48,7 @@ Block* lire_block(char* filename){
 	sscanf(buffer, "%s\n", hash);
 	
 	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", previous_hash);
+	sscanf(buffer, "%s\n", p_hash);
 	
 	fgets(buffer, sizeof(buffer), f);
 	sscanf(buffer, "%d\n", &nonce);
@@ -55,12 +61,12 @@ Block* lire_block(char* filename){
 	while(fgets(buffer, sizeof(buffer), f)){
 		sscanf(buffer, "%s\n", vote);
 		Protected* pr = str_to_protected(vote);
-		add_en_tete_cp(&cpr, pr);
+		add_cell_protected(cpr, pr);
 	}
 	
 	b->author = key_author;
 	b->hash = hash;
-	b->previous_hash = previous_hash;
+	b->previous_hash = p_hash;
 	b->votes = cpr;
 	
 	return b;

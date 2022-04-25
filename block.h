@@ -13,9 +13,6 @@ typedef struct block {
 
 
 
-
-
-
 void ecrire_block(char * filename, Block * b);
 
 Block* lire_block(char* filename);
