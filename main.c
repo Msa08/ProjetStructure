@@ -6,7 +6,7 @@
 #include "key.h"
 #include "Base.h"
 #include "hachage.h"
-#include "Block.h"
+#include "block.h"
 #include <time.h>
 #include <string.h>
 #include <openssl/sha.h>
@@ -227,10 +227,15 @@ int main(){
     const unsigned char *s= "Rosetta code" ;
     printf("%s\n hachage...\n",s);
     printf("%s \n",hachage_SHA256(s) );
-
+    char *buffer;
+    
     Block *b=lire_block("Block_0");
+    printf("coucou\n");
+    buffer=block_to_str(b);
+    printf("coucou\n");
+    printf("block to str :%s\n",buffer);
     ecrire_block("Block_0_bis",b);
-
+    free(buffer);
     
      return 0;
 }

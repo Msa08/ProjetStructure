@@ -4,7 +4,7 @@
 #include "Base.h"
 #include "key.h"
 #include "chiffrement.h"
-#include "Block.h"
+#include "block.h"
 #include <openssl/sha.h>
 //kacem
 //la methode fonctionne mais n'ecris pas de la mm facon que dans le block original
@@ -167,17 +167,39 @@ char * block_to_str(Block* b){
 	char * author = key_to_str(b->author);
 	char * previous_hash = strdup(b->previous_hash);
 	char * vote;
+    int i=0;
 
-	sprintf(res, "%s %s ", author, previous_hash);
+    if(!res){
+        printf("probleme d'allocation mémoire\n");
+        exit(EXIT_FAILURE);
+    }
 
+    for(int j=0;j < strlen(author);j++){
+        res[i]=author[j];
+        i++;
+    }
+    res[i]=' ';
+    i++;
+
+    for(int j=0; j < strlen(previous_hash); j++){
+        res[i]=previous_hash[j];
+        i++;
+    }
+    res[i]=' ';
+    i++;
+	
 	CellProtected * votes = b->votes;
 	while (votes != NULL) {
-		vote = protected_to_str(b->vote);
-		sprintf(res, "%s ", vote);
-		free(vote);
-	}
-
-	sprintf(res, "%d", b->nonce);
+		vote = protected_to_str(votes->data);
+		for(int j=0; j < strlen(vote); j++){
+            res[i]=vote[j];
+            i++;
+        }
+        res[i]=' ';
+        i++;
+        votes=votes->next;
+    }
+    res[i]='\0';
 
 	//Libération mémoire
 	free(author);
