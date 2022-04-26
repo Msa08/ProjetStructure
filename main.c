@@ -256,14 +256,18 @@ int main(){
     FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
     float debut;
     float fin;
+    float time=0;
     debut=clock();
     fin=clock();
-    for (int i=1;i<4;i++){
+    int i=1;
+    while (time<1){
         debut=clock();
         compute_proof_of_work(b,i);
         fin=clock();
-        fprintf(resultats_1,"%d %f\n",i,(float)(fin-debut)/(CLOCKS_PER_SEC));
-        printf("%d zero, temps de calcul =%f \n",i,(fin-debut)/(CLOCKS_PER_SEC));
+        time=(fin-debut)/(CLOCKS_PER_SEC);
+        fprintf(resultats_1,"%d %f\n",i,time);
+        printf("%d zero, temps de calcul =%f \n",i,time);
+        i++;
     }
   
     delete_block(b);
