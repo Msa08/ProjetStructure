@@ -205,21 +205,25 @@ int main(){
     printf("\ngenerate keys\n");
     CellKey* voters=read_public_keys("keys.txt");
     print_list_keys(voters);
-    //delete_list_keys(voters);
 
     printf("\ngenerate candidates\n");
     CellKey* candidates=read_public_keys("candidates.txt");
     print_list_keys(candidates);
-    //delete_list_keys(candidates);
 
     printf("\ngenerate protected\n");
     CellProtected* decl=read_protected("declarations.txt");
     print_list_protected(decl);
-    //delete_cell_protected(LCP);
 
 
-     Key* gagnant = compute_winner(decl,candidates,voters, 5,30);
-     printf("gagnant -> %s\n", key_to_str(gagnant));
+    Key* gagnant = compute_winner(decl,candidates,voters, 5,30);
+    char* keyg=key_to_str(gagnant);
+    printf("gagnant -> %s\n", keyg);
+    free(keyg);
+    free(gagnant);
+    delete_list_protected(decl);
+    //delete_list_keys(candidates);
+    //delete_list_keys(voters);
+    
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
     printf("\n______________________________TEST PARTIE 4___________________________\n");

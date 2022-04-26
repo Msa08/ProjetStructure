@@ -12,6 +12,8 @@ typedef struct hashtable{
 	int size;
 }HashTable;
 
+void filter(CellProtected** LCP);
+
 HashCell* create_hashcell(Key* key);
 
 int hash_function(Key* key, int size);

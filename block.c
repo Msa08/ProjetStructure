@@ -107,7 +107,7 @@ Block* lire_block(char* filename){
 
 
 
-char * block_to_str(Block* b){
+/*char * block_to_str(Block* b){
 	char * res = (char *) malloc(sizeof(char) * 1059 );
 	char * author = key_to_str(b->author);
 	char * previous_hash = strdup(b->previous_hash);
@@ -144,11 +144,41 @@ char * block_to_str(Block* b){
         i++;
         votes=votes->next;
     }
-    res[i--]='\0';
-
+    res[i]=
 	//Libération mémoire
-
+    free(author);
+    free(previous_hash);
+    free(vote);
 	return res;
+}*/
+
+char* block_to_str(Block* block){
+    char* strblock = (char *)malloc(sizeof(char)*1000);
+    char* tmp = key_to_str(block->author);
+    strcpy(strblock, tmp);
+    free(tmp);
+    strcat(strblock, " ");
+    strcat(strblock, block->previous_hash);
+    
+    strcat(strblock, " ");
+    
+    CellProtected *it = block->votes;
+    while(it){
+
+        char *pr = protected_to_str(it->data);
+        strcat(strblock, pr);
+        strcat(strblock, " ");
+        free(pr);
+        it = it->next;
+    }
+
+    char *c = malloc(sizeof(char)*10);
+    sprintf(c, "%d\0", block->nonce);
+    strcat(strblock, c);
+    
+    
+    return strblock;
+
 }
 
 
@@ -168,89 +198,62 @@ char * hachage_SHA256(const unsigned char *s){
 	return tmp;	
 }
 
-void compute_proof_of_work(Block *b, int d)
-{
-  b->nonce = 0;
+void compute_proof_of_work(Block *B, int d){
+    B->nonce = 0;
+    int valide = 0;
+    char* block;
+    unsigned char *tmp;
+    while(B->nonce >= 0){
+        block = block_to_str(B);
+        tmp = str_to_hash(block);
+        for (int i = 0; i<d; i++){
+            if(tmp[i] != '0'){
+                valide++;
+                B->nonce++;
+                break;
+            }
+        }
 
-  if (b->hash == NULL)
-  {
-    char *chaine = block_to_str(b);
-    b->hash = decrypt_sha(chaine);
-    free(chaine);
-  }
-
-  unsigned char temp[256];
-  unsigned char nonce[128];
-  int cpt = 0, i = 0;
-  //on va créer une sous chaine et la hachée
-  sprintf(nonce, "%d", b->nonce);
-  strcpy(temp, b->hash);
-  strcat(temp, nonce);
-  unsigned char *decrypt = decrypt_sha(temp);
-
-  //on vérifie que la valeur hachée possède bien d 0 successifs
-  while (cpt < d)
-  {
-    if (decrypt[i++] == '0')
-    {
-      cpt++; //si on trouve un 0 on ajoute 1 au compteur
+        if(valide == 0)
+            break;
+        free(block);
+        valide = 0; 
     }
-    else
-    //si on ne trouve pas de 0 alors on réinitialise le compteur à 0, on incrémente b->nonce de 1, et on crée une nouvelle sous-chaine
-    {
-      b->nonce++;
-      i = 0;
-      cpt = 0;
-      free(decrypt);
-      sprintf(nonce, "%d", b->nonce);
-      strcpy(temp, b->hash);
-      strcat(temp, nonce);
-      decrypt = decrypt_sha(temp);
-
-    }
-  }
-  printf("La sous chaine finale qui permet de rendre le block valide : %d %s\n", b->nonce, decrypt);
-  free(decrypt);
+    
+    /*
+    for (int it = 0; it<SHA256_DIGEST_LENGTH; it++)
+        printf("%c", tmp[it]);
+    putchar('\n');
+    */
+    
 }
 
-unsigned char *decrypt_sha(const char *chaine){
-  unsigned char *d = SHA256(chaine, strlen(chaine), 0);
-  unsigned char temp[8];
-
-  //chaine2 sera la chaine que l'on va retourner
-  unsigned char *chaine2 = (unsigned char *)malloc(256 * sizeof(unsigned char));
-
-  //on vérifie si pas d'erreurs lors de l'allocation
-  if (chaine2 == NULL)
-  {
-    printf("Erreur lors de l'allocation");
-    exit(EXIT_FAILURE);
-  }
-  //fin de chaine2
-  chaine2[0] = '\0';
-  //on ajoute chaque caractère de d dans chaine2 au format hexadécimal
-  for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-  {
-    sprintf(temp, "%02x", d[i]);
-    strcat(chaine2, temp);
-  }
-
-  return chaine2;
-}
-
-int verify_block(Block* b, int d){ 
-    char* chaine = block_to_str(b);
-    unsigned char* hashage = decrypt_sha(chaine);
-    for(int i = 0; i < 4*d; i++){ //on vérifie qu'il y a bien 4d 0 successifs
-        if(hashage[i] != 0){
-            return 1; //ne rempli pas les conditions du block donc on renvoie 1 (pas valide)
+int verify_block(Block* b, int d){
+    // retourne 1 si le block est valide, 0 sinon
+    char* block;
+    unsigned char *tmp;
+    block = block_to_str(b);
+    tmp = str_to_hash(block);
+ 
+    for (int i = 0; i<d; i++){
+        if(tmp[i] != '0'){
+            return 0;
         }
     }
-    free(chaine);
-    free(hashage);
-    return 0; //sinon on renvoie 0 si le block est valide
+    return 1;
 }
 
+unsigned char *str_to_hash(const char * str){
+
+    unsigned char *d = SHA256(str, strlen(str), 0);
+    char *string = malloc(sizeof(char)*(SHA256_DIGEST_LENGTH*2+1));
+    int cpt=0;
+    for(int it = 0; it<SHA256_DIGEST_LENGTH; it++){
+        sprintf(string+cpt, "%02x", d[it]);
+        cpt+=2;
+    }
+    return string;
+}
 /*int verify_block(Block* b, int d){
     /* Verifie que le bloc b est correct.
     

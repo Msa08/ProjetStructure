@@ -246,6 +246,8 @@ void generate_random_data(int nv, int nc){
 
     Key *pKey = NULL;
     Key *sKey = NULL; 
+    char* pKeyc;
+    char* sKeyc;
 
     FILE *f = fopen("keys.txt", "w");
 
@@ -254,9 +256,13 @@ void generate_random_data(int nv, int nc){
         pKey = (Key*)malloc(sizeof(Key));
         sKey = (Key*)malloc(sizeof(Key)); 
         init_pair_keys(pKey, sKey, 3, 7);
-        fprintf(f, "%s %s\n", key_to_str(pKey), key_to_str(sKey));
+        pKeyc = key_to_str(pKey);
+        sKeyc = key_to_str(sKey),
+        fprintf(f, "%s %s\n", pKeyc, sKeyc);
         free(pKey);
         free(sKey);
+        free(pKeyc);
+        free(sKeyc);
     }
     fclose(f);
 
@@ -269,11 +275,11 @@ void generate_random_data(int nv, int nc){
     //int rand = rand_long(1, nv);
     char **tabCandidats = (char**)malloc(sizeof(char*)*nc);
     for (int i =0; i<nc; i++){
-        tabCandidats[i]=malloc(sizeof(char));
+        tabCandidats[i]=malloc(150*sizeof(char));
     }
 
-    char buffer[100];
-    char str[100];
+    char buffer[150];
+    char str[150];
     int it = 0;
     int irand;
     int *tabRand = (int*)malloc(sizeof(int)*nc);
@@ -333,25 +339,28 @@ void generate_random_data(int nv, int nc){
     FILE *fs = fopen("declarations.txt", "w");
     char str2[100];
     char str3[100];
+    char* signature;
+    Signature* sgn;
     while(fgets(buffer, 256, fkr)){
         if (sscanf(buffer, " %s %s \n", str2, str3)==2){
             sKey = str_to_key(str3);
             long rand = rand_long(0, nc-1);
-            fprintf(fs, "%s %s %s \n", str2, 
-            tabCandidats[rand], 
-            signature_to_str(sign(tabCandidats[rand], sKey)));
+            sgn=sign(tabCandidats[rand], sKey);
+            signature=signature_to_str(sgn);
+            fprintf(fs, "%s %s %s \n", str2, tabCandidats[rand], signature);
             free(sKey);
+            free(sgn->content);
+            free(sgn);
+            free(signature);
         }
     }
     fclose(fkr);
     fclose(fs);
     printf("t\n");
-    // for(int i=0; i<nc;i++){
-    //     free(tabCandidats[i]);
-    // }
-        
-    // free(tabCandidats);
-
-    // free(tabRand);  
+    for(int i=0; i<nc;i++){
+         free(tabCandidats[i]);
+    }   
+    free(tabCandidats);
+    free(tabRand);  
     
 }

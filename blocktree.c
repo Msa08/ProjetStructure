@@ -3,7 +3,7 @@
 #include <string.h>
 #include "blocktree.h"
 
-CellTree * create_node(Block* b){
+/*CellTree * create_node(Block* b){
     CellTree * res = (CellTree *) malloc(sizeof(CellTree));
     if (res == NULL){
         printf("Erreur d'allocation\n");
@@ -22,7 +22,7 @@ CellTree * create_node(Block* b){
 int update_height(CellTree * father, CellTree * child){
     /* Retourne 0 si on a modifie la taille du pere.
     Retourne 1 sinon.
-    */
+    
     if (father->height > child->height+1){
         return 0;
     }
@@ -33,7 +33,7 @@ int update_height(CellTree * father, CellTree * child){
 void add_child(CellTree* father, CellTree* child){
     /* Ajoute un fils à un noeud en mettant à jour la
     hauteur de tous les ascendants.
-    */
+    
     if (father->firstChild == NULL){
         father->firstChild = child;
         child->father = father;
@@ -49,7 +49,7 @@ void add_child(CellTree* father, CellTree* child){
             courant = courant->nextBro;
         }
         courant->nextBro = child;
-        */
+        
 
     }
 
@@ -62,7 +62,7 @@ void add_child(CellTree* father, CellTree* child){
 void print_tree(CellTree * tree){
     /* Affiche l'arbre : pour chaques noeuds, la hauteur du noeud et la valeur hachee du bloc
        son affiche.
-    */
+    
 
     if (tree == NULL){
         return;
@@ -125,8 +125,10 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
     cell1->next = cell2;
     return cell1;
 }
+*/
 
-/*
+//Exercice 8  –  Structure arborescente
+
 /=========================== Question 8.1 ======================================/
 
 CellTree* create_node(Block* b){
@@ -225,7 +227,7 @@ void delete_node(CellTree* node){
         free(node->firstChild);
     if(node->nextBro)
         free(node->nextBro);
-
+*/
 } 
 
 void delete_tree(CellTree** abr){
@@ -352,7 +354,7 @@ CellProtected * fusion_votehigh(CellTree * tree){
     /*tmp = fusion_listpr(tmp,tree->block->votes);
     if(tmp == NULL){
         return NULL;
-    }
+    }*/
     CellTree * h = highest_child(tree);
     printf(" high : %d et hash %02x \n",h->height,h->block->hash);
     printf("test2\n");
@@ -368,4 +370,3 @@ CellProtected * fusion_votehigh(CellTree * tree){
     }
     return tmp;
 }
-*/
