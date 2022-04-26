@@ -40,8 +40,8 @@ Block* lire_block(char* filename){
     }
 
     char buffer[256];
-    block->votes = create_cell_protected(NULL);
-    CellProtected *droit = create_cell_protected(NULL);
+    block->votes = malloc(sizeof(CellProtected));
+    CellProtected *droit = malloc(sizeof(CellProtected));
     int nonce;
 
     if(fgets(buffer, 256, f)){
@@ -70,6 +70,7 @@ Block* lire_block(char* filename){
         else{
             free(tmp);
             block->hash=strdup(tmp1);
+            free(tmp1);
             free(tmp2);
             free(tmp3);
             break;
@@ -102,55 +103,10 @@ Block* lire_block(char* filename){
     droit=add_cell_protected(droit, block->votes->data);
     //printf("%s\n",protected_to_str(droit->data));
     block->votes=droit;
+    //delete_list_protected(droit);
     return block;
 }
 
-
-
-/*char * block_to_str(Block* b){
-	char * res = (char *) malloc(sizeof(char) * 1059 );
-	char * author = key_to_str(b->author);
-	char * previous_hash = strdup(b->previous_hash);
-	char * vote;
-    int i=0;
-
-    if(!res){
-        printf("probleme d'allocation mémoire\n");
-        exit(EXIT_FAILURE);
-    }
-
-    for(int j=0;j < strlen(author);j++){
-        res[i]=author[j];
-        i++;
-    }
-    res[i]=' ';
-    i++;
-
-    for(int j=0; j < strlen(previous_hash); j++){
-        res[i]=previous_hash[j];
-        i++;
-    }
-    res[i]=' ';
-    i++; 
-	
-	CellProtected * votes = b->votes;
-	while (votes != NULL) {
-		vote = protected_to_str(votes->data);
-		for(int j=0; j < strlen(vote); j++){
-            res[i]=vote[j];
-            i++;
-        }
-        res[i]=' ';
-        i++;
-        votes=votes->next;
-    }
-    res[i]=
-	//Libération mémoire
-    free(author);
-    free(previous_hash);
-    free(vote);
-	return res;
-}*/
 
 char* block_to_str(Block* block){
     char* strblock = (char *)malloc(sizeof(char)*1000);
@@ -274,28 +230,8 @@ int verify_block(Block* b, int d){
     free(tmp);
     return 1;
 }
-/*int verify_block(Block* b, int d){
-    /* Verifie que le bloc b est correct.
-    
-    char* str_b = block_to_str(b);
-    unsigned char* hash_value = hachage_SHA256(str_b);
-
-    for (int i = 0; i < d; i++){
-        if (hash_value[i] != '0'){
-            free(str_b);
-            return 0;
-        }
-    }
-    if ((strcmp((const char*)b->hash, (const char*)hash_value)) != 0) {
-        free(str_b);
-        return 0;
-    }
-    free(str_b);
-    return 1;
-}*/
 
 
-//qst7.9
 void delete_block(Block *b){
 	/*supprime un bloc*/
     printf("bjr1\n");
