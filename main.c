@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "prime_number.h"
-#include "chiffrement.h"
+#include "chiffrement.h" 
 #include "key.h"
 #include "Base.h"
 #include "hachage.h"
 #include "block.h"
+#include "blocktree.h"
 #include <time.h>
 #include <string.h>
 #include <openssl/sha.h>
