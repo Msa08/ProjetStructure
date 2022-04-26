@@ -278,7 +278,7 @@ void generate_random_data(int nv, int nc){
         tabCandidats[i]=malloc(150*sizeof(char));
     }
 
-    char buffer[150];
+    char buffer[250];
     char str[150];
     int it = 0;
     int irand;
@@ -318,7 +318,7 @@ void generate_random_data(int nv, int nc){
    
     it = 0;
     itr = 0;
-    while(fgets(buffer, 100, fk)){
+    while(fgets(buffer, 100, fk) && itr<nc){
         if(it == tabRand[itr]){
             if (sscanf(buffer, " %s\n", str)==1){
                 strcpy(tabCandidats[itr], str);
