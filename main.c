@@ -205,21 +205,25 @@ int main(){
     printf("\ngenerate keys\n");
     CellKey* voters=read_public_keys("keys.txt");
     print_list_keys(voters);
-    //delete_list_keys(voters);
 
     printf("\ngenerate candidates\n");
     CellKey* candidates=read_public_keys("candidates.txt");
     print_list_keys(candidates);
-    //delete_list_keys(candidates);
 
     printf("\ngenerate protected\n");
     CellProtected* decl=read_protected("declarations.txt");
     print_list_protected(decl);
-    //delete_cell_protected(LCP);
 
 
-     Key* gagnant = compute_winner(decl,candidates,voters, 5,30);
-     printf("gagnant -> %s\n", key_to_str(gagnant));
+    Key* gagnant = compute_winner(decl,candidates,voters, 5,30);
+    char* keyg=key_to_str(gagnant);
+    printf("gagnant -> %s\n", keyg);
+    free(keyg);
+    free(gagnant);
+    delete_list_protected(decl);
+    //delete_list_keys(candidates);
+    //delete_list_keys(voters);
+    
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
     printf("\n______________________________TEST PARTIE 4___________________________\n");
@@ -227,7 +231,8 @@ int main(){
     printf("hachage avec SHA_256: \n");
     const unsigned char *s= "Rosetta code" ;
     printf("%s\n hachage...\n",s);
-    printf("%s \n",hachage_SHA256(s) );
+    char* hash=hachage_SHA256(s);
+    printf("%s \n", hash);
     char *buffer;
     printf("coucou0\n");
     Block *b=lire_block("Block_0");
@@ -241,7 +246,7 @@ int main(){
     printf("%d\n",i);
     ecrire_block("Block_0_bis",b);
     delete_block(b);
-    printf("%s\n",key_to_str(b->author));
+    free(buffer);
 
     return 0;
 }

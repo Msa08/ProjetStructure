@@ -27,7 +27,7 @@ int verify_block(Block* b, int d);
 
 void delete_block(Block *b);
 
-unsigned char *decrypt_sha(const char *chaine);
+unsigned char *str_to_hash(const char * str);
 
 
 #endif

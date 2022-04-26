@@ -86,9 +86,12 @@ void print_list_keys(CellKey* LCK){
         printf("erreur\n");
         return;
     }
+    char* keys;
     while(LCK!=NULL){
-        printf("%s \t",key_to_str((LCK->data)));
+        keys=key_to_str((LCK->data));
+        printf("%s \t",keys);
         LCK=LCK->next;
+        free(keys);
     }
     printf("\n");
 }
@@ -178,10 +181,13 @@ CellProtected *read_protected(char *nomFichier){
         return NULL;
     }
     char buffer[256];
+    Protected* pr;
     CellProtected *cellpr = create_cell_protected(NULL);
     while(fgets(buffer, 256, f)){
-        cellpr = add_cell_protected(cellpr, str_to_protected(buffer));
+        pr=str_to_protected(buffer);
+        cellpr = add_cell_protected(cellpr, pr);
     }
+    
     fclose(f);
     return cellpr;
 }
@@ -192,9 +198,12 @@ void print_list_protected(CellProtected* LCP){
         printf("erreur\n");
         return;
     }
+    char* keys;
     while(LCP!=NULL){
-        printf("%s \n",protected_to_str((LCP->data)));
+        keys = protected_to_str((LCP->data));
+        printf("%s \n",keys);
         LCP=LCP->next;
+        free(keys);
     }
     printf("\n");
 }
@@ -203,17 +212,24 @@ void delete_cell_protected(CellProtected* cp){
     /* supprime une cellule de liste chaînée de déclarations signées */
     free(cp->data->pKey);
     free(cp->data->mess);
+    free(cp->data->sgn->content);
     free(cp->data->sgn);
+    free(cp->data);
     free(cp);
 }
 
-void delete_list_protected(CellProtected* LCP){
+void delete_list_protected(CellProtected* c){
     /* supprime la liste chaînée de déclarations signées */
     CellProtected* LCP2;
-    while(LCP!=NULL){
-        LCP2=LCP->next;
-        delete_cell_protected(LCP);
-        LCP=LCP2;
+    CellProtected *temp = c;
+    if(!c->data){
+        printf("Liste vide\n");
+        return;
+    }
+    while(c){
+        temp=c->next;
+        delete_cell_protected(c);
+        c=temp;
     }
 }
 void deleted_invalid_sign(CellProtected *LCP) {
