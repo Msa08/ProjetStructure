@@ -25,5 +25,9 @@ void compute_proof_of_work(Block* b, int d);
 
 int verify_block(Block* b, int d);
 
+void delete_block(Block *b);
+
+unsigned char *decrypt_sha(const char *chaine);
+
 
 #endif

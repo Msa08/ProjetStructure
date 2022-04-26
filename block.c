@@ -6,56 +6,27 @@
 #include "chiffrement.h"
 #include "block.h"
 #include <openssl/sha.h>
-//kacem
-//la methode fonctionne mais n'ecris pas de la mm facon que dans le block original
-/*void ecrire_block(char * filename, Block * b){
-	FILE* f = fopen(filename, "w");
-	
-	char* author = key_to_str(b->author);
-	fprintf(f, "%s\n%s\n%s\n%d\n\n",author, b->hash, b->previous_hash, b->nonce);
-	
-	if (b == NULL){
-        printf("Bloc nul dont écriture impossible!\n");
-		return;
-	}
-	
-	while(b->votes != NULL){
-		char * vote = protected_to_str(b->votes->data);
-		fprintf(f, "%s\n", vote);
-		free(vote);
-		
-		b->votes = b->votes->next;
-	}
-}*/
-
 
 void ecrire_block(char * filename, Block * block){
     FILE *f = fopen(filename, "w");
     char *auth = key_to_str(block->author);
     fprintf(f, "%s\n", auth);
-    printf("coucou1\n");
     free(auth);
-    printf("coucou2\n");
     CellProtected *tmp = block->votes;
-    printf("coucou3\n");
     while(tmp){
         char *pr = protected_to_str(tmp->data);
-        printf("coucou4.1\n");
+
         fprintf(f, "%s\n", pr);
-        printf("coucou4.2\n");
+
         free(pr);
-        printf("coucou4.3\n");
+
         tmp = tmp->next;
-        printf("coucou4.4\n");
+
     }
     fprintf(f, "%s\n", block->hash);
-    printf("coucou5\n");
     fprintf(f, "%s\n", block->previous_hash);
-    printf("coucou6\n");
     fprintf(f, "%d\n", block->nonce);
-    printf("coucou7\n");
     fclose(f);
-    printf("coucou8\n");
 }
 	
 
@@ -133,51 +104,6 @@ Block* lire_block(char* filename){
     block->votes=droit;
     return block;
 }
-//kacem
-//fonctionne pas 
-/*Block* lire_block(char* filename){
-	FILE* f = fopen(filename, "r");
-	
-	Block* b=malloc(sizeof(Block));
-	
-	char buffer[256] = "";
-	char author[50];
-	unsigned char hash[50];
-	unsigned char p_hash[50];
-	char vote[50];
-	int nonce;
-	
-	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", author);
-	Key* key_author = str_to_key(author);
-	
-	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", hash);
-	
-	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", p_hash);
-	
-	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%d\n", &nonce);
-	
-	fgets(buffer, sizeof(buffer), f);
-	sscanf(buffer, "%s\n", vote);
-	Protected* pr = str_to_protected(vote);
-	CellProtected* cpr = create_cell_protected(pr);
-	
-	while(fgets(buffer, sizeof(buffer), f)){
-		sscanf(buffer, "%s\n", vote);
-		Protected* pr = str_to_protected(vote);
-		add_cell_protected(cpr, pr);
-	}
-	
-	b->author = key_author;
-	b->hash = hash;
-	b->previous_hash = p_hash;
-	b->votes = cpr;
-	
-	return b;
-}*/
 
 
 
@@ -226,21 +152,6 @@ char * block_to_str(Block* b){
 }
 
 
-/*char * block_to_str(Block* b){
-	char strb[1000];
-
-	char* author = key_to_str(b->author);
-	sprintf(strb, "%s\n%s\n\n%s\n%d\n\n", author, b->hash, b->previous_hash, b->nonce);
-	
-	while(b->votes != NULL){
-		char * vote = protected_to_str(b->votes->data);
-		sprintf(strb, "%s\n", vote);
-		b->votes = b->votes->next;
-	}
-	
-	return strdup(strb);
-}
-*/
 char * hachage_SHA256(const unsigned char *s){
 	unsigned char *d = SHA256(s, strlen((const char*)s),0);
 	
@@ -257,21 +168,132 @@ char * hachage_SHA256(const unsigned char *s){
 	return tmp;	
 }
 
-void compute_proof_of_work(Block* b, int d){
-	int cpt = 0;
-	for(int i=0; i<strlen((const char*)b->hash); i++){
-		if(cpt == d){
-			return;
-		}
-		if(b->hash[i] != '0'){
-			cpt=0;
-		}
-		if (b->hash[i]=='0'){
-			cpt++;
-		}
-		(b->nonce)++;
-	}
+void compute_proof_of_work(Block *b, int d)
+{
+  b->nonce = 0;
+
+  if (b->hash == NULL)
+  {
+    char *chaine = block_to_str(b);
+    b->hash = decrypt_sha(chaine);
+    free(chaine);
+  }
+
+  unsigned char temp[256];
+  unsigned char nonce[128];
+  int cpt = 0, i = 0;
+  //on va créer une sous chaine et la hachée
+  sprintf(nonce, "%d", b->nonce);
+  strcpy(temp, b->hash);
+  strcat(temp, nonce);
+  unsigned char *decrypt = decrypt_sha(temp);
+
+  //on vérifie que la valeur hachée possède bien d 0 successifs
+  while (cpt < d)
+  {
+    if (decrypt[i++] == '0')
+    {
+      cpt++; //si on trouve un 0 on ajoute 1 au compteur
+    }
+    else
+    //si on ne trouve pas de 0 alors on réinitialise le compteur à 0, on incrémente b->nonce de 1, et on crée une nouvelle sous-chaine
+    {
+      b->nonce++;
+      i = 0;
+      cpt = 0;
+      free(decrypt);
+      sprintf(nonce, "%d", b->nonce);
+      strcpy(temp, b->hash);
+      strcat(temp, nonce);
+      decrypt = decrypt_sha(temp);
+
+    }
+  }
+  printf("La sous chaine finale qui permet de rendre le block valide : %d %s\n", b->nonce, decrypt);
+  free(decrypt);
 }
+
+unsigned char *decrypt_sha(const char *chaine){
+  unsigned char *d = SHA256(chaine, strlen(chaine), 0);
+  unsigned char temp[8];
+
+  //chaine2 sera la chaine que l'on va retourner
+  unsigned char *chaine2 = (unsigned char *)malloc(256 * sizeof(unsigned char));
+
+  //on vérifie si pas d'erreurs lors de l'allocation
+  if (chaine2 == NULL)
+  {
+    printf("Erreur lors de l'allocation");
+    exit(EXIT_FAILURE);
+  }
+  //fin de chaine2
+  chaine2[0] = '\0';
+  //on ajoute chaque caractère de d dans chaine2 au format hexadécimal
+  for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+  {
+    sprintf(temp, "%02x", d[i]);
+    strcat(chaine2, temp);
+  }
+
+  return chaine2;
+}
+
+int verify_block(Block* b, int d){ 
+    char* chaine = block_to_str(b);
+    unsigned char* hashage = decrypt_sha(chaine);
+    for(int i = 0; i < 4*d; i++){ //on vérifie qu'il y a bien 4d 0 successifs
+        if(hashage[i] != 0){
+            return 1; //ne rempli pas les conditions du block donc on renvoie 1 (pas valide)
+        }
+    }
+    free(chaine);
+    free(hashage);
+    return 0; //sinon on renvoie 0 si le block est valide
+}
+
+
+/*b->nonce = 0;
+
+  if (b->hash == NULL)
+  {
+    char *chaine = block_to_str(b);
+    b->hash = decrypt_sha(chaine);
+    free(chaine);
+  }
+
+  unsigned char temp[256];
+  unsigned char nonce[128];
+  int cpt = 0, i = 0;
+  //on va créer une sous chaine et la hachée
+  sprintf(nonce, "%d", b->nonce);
+  strcpy(temp, b->hash);
+  strcat(temp, nonce);
+  unsigned char *decrypt = decrypt_sha(temp);
+
+  //on vérifie que la valeur hachée possède bien d 0 successifs
+  while (cpt < d)
+  {
+    if (decrypt[i++] == '0')
+    {
+      cpt++; //si on trouve un 0 on ajoute 1 au compteur
+    }
+    else
+    //si on ne trouve pas de 0 alors on réinitialise le compteur à 0, on incrémente b->nonce de 1, et on crée une nouvelle sous-chaine
+    {
+      b->nonce++;
+      i = 0;
+      cpt = 0;
+      free(decrypt);
+      sprintf(nonce, "%d", b->nonce);
+      strcpy(temp, b->hash);
+      strcat(temp, nonce);
+      decrypt = decrypt_sha(temp);
+
+    }
+  }
+  printf("La sous chaine finale qui permet de rendre le block valide : %d %s\n", b->nonce, decrypt);
+  free(decrypt);
+*/
 
 /*int verify_block(Block* b, int d){
 	if(b->nonce == d){
@@ -281,9 +303,9 @@ void compute_proof_of_work(Block* b, int d){
 }
 
 */
-int verify_block(Block* b, int d){
+/*int verify_block(Block* b, int d){
     /* Verifie que le bloc b est correct.
-    */
+    
     char* str_b = block_to_str(b);
     unsigned char* hash_value = hachage_SHA256(str_b);
 
@@ -299,26 +321,18 @@ int verify_block(Block* b, int d){
     }
     free(str_b);
     return 1;
-}
+}*/
 
 
 //qst7.9
 void delete_block(Block *b){
 	/*supprime un bloc*/
-    if (b != NULL){
-        CellProtected* tmp;
-        CellProtected* vote;
-        vote = b->votes;
-        while(vote){
-            tmp = vote;
-            vote = vote->next;
-            free(tmp);
-        }
-
-        free(b->hash);
-        free(b->previous_hash);
-        free(b);
-    }
+    delete_list_protected(b->votes);
+    free(b->author);
+    free(b->hash);
+    free(b->previous_hash);
+    free(b);
+    
 }
 
 

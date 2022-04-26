@@ -235,9 +235,14 @@ int main(){
     printf("coucou0.2\n");
     printf("block to str :%s\n",buffer);
     printf("coucou0.3\n");
+    compute_proof_of_work(b,4);
+    int i=verify_block(b,4);
+    printf("%d\n",i);
     ecrire_block("Block_0_bis",b);
-    
-     return 0;
+    delete_block(b);
+    printf("%s\n",key_to_str(b->author));
+
+    return 0;
 }
     //on obtient 215000363
 
