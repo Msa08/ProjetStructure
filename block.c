@@ -229,6 +229,18 @@ void compute_proof_of_work(Block *B, int d){
     
 }
 
+unsigned char *str_to_hash(const char * str){
+
+    unsigned char *d = SHA256(str, strlen(str), 0);
+    char *string = malloc(sizeof(char)*(SHA256_DIGEST_LENGTH*2+1));
+    int cpt=0;
+    for(int it = 0; it<SHA256_DIGEST_LENGTH; it++){
+        sprintf(string+cpt, "%02x", d[it]);
+        cpt+=2;
+    }
+    return string;
+}
+
 int verify_block(Block* b, int d){
     // retourne 1 si le block est valide, 0 sinon
     char* block;
