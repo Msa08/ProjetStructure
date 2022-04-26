@@ -235,23 +235,24 @@ int main(){
     
 
     Block *b=lire_block("Block_0");
-    printf("Lecture du Block_0 ...\n");
+    //printf("Lecture du Block_0 ...\n");
     ecrire_block("Block_0_bis",b);
-    printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
+    //printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
     
+
+
     char *buffer;
     buffer=block_to_str(b);
-    printf("block_to_str(Block_0) :\n%s\n",buffer);
+    //printf("block_to_str(Block_0) :\n%s\n",buffer);
 
-    printf("hachage avec SHA_256... \n");
-    printf("%s \n",hachage_SHA256(buffer) );
+    compute_proof_of_work(b,4);
+    printf("nonce = %d\n",b->nonce);
     
-    // compute_proof_of_work(b,4);
-    // int i=verify_block(b,4);
-    // printf("%d\n",i);
+    int i=verify_block(b,4);
+    printf("%d\n",i);
     
-    // delete_block(b);
-    // printf("%s\n",key_to_str(b->author));
+    delete_block(b);
+    printf("%s\n",key_to_str(b->author));
 
     return 0;
 }
