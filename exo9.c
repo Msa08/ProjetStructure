@@ -123,7 +123,187 @@ Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int
 
 
 
+// AUTRE VERSION
+/*
+void submit_vote(Protected* p){
+    FILE* f = fopen("Pending_votes.txt","a");
+    if(f==NULL){
+        printf("Erreur à l'ouverture du fichier Pending_votes.txt");
+        return;
+    }
+    char* c=protected_to_str(p);
+    fprintf(f,"%s\n",c);
 
+    free(c);
+    fclose(f);
+    return;
+}
+
+void create_block(CellTree* tree, Key* author, int d){
+
+    //Recuperation des votes
+    CellProtected* votes = read_protected("Pending_votes.txt");
+
+    CellTree* ln=last_node(tree);
+
+    //Creation du nouveau block
+    Block* b = (Block*) malloc(sizeof(Block));
+
+    b->author=author;
+    b->votes=votes;
+    if(ln!=NULL){
+        b->previous_hash=ln->block->hash;
+    }
+    else{b->previous_hash=NULL;}
+    b->nonce=0;
+
+    compute_proof_of_work(b,d);
+
+    //Ajout du block a la fin de l'arbre et update de la taille
+    ln->firstChild = create_node(b);
+    update_height(ln,ln->firstChild);
+
+    write_block(b,"Pending_block");
+
+    remove("Pending_votes.txt");
+
+}
+
+//Ajoute un block dans le repertoire Blockchain
+void add_block(int d, char* name){
+
+    Block* B = read_block("Pending_Block");
+
+    if(verify_block(B,d)){
+
+        char fichier[256]="/Blockchain/";
+        strcat(fichier,name);
+        FILE* f = fopen(fichier,"w");
+        char* bstr=block_to_str(B);
+        fprintf(f,"%s\n",bstr);
+
+        free(bstr);
+        fclose(f);
+    }
+
+    remove("Pending_Block");
+
+}
+
+//Lis tout les fichier de repertoire "Blockchain" et retourne l'arbre construit
+
+CellTree* read_tree(){
+    int nbFichiers=0;
+
+    DIR* rep=opendir("./Blockchain/");
+    
+    if(rep!=NULL){
+        struct dirent* dir;
+
+        while((dir = readdir(rep))){
+
+            if(strcmp(dir->d_name,".")!=0 && strcmp(dir->d_name,"..")!=0){
+
+                nbFichiers++;
+
+            }
+
+        }
+
+    }
+
+    closedir(rep);
+
+    if(nbFichiers==0){return NULL;}
+
+    rep=opendir("./Blockchain/");
+    
+    if(rep!=NULL){
+        struct dirent* dir;
+        int nb_node=0;  //Nombre de noeuds ajouter dans le tableau
+        CellTree* racine;
+
+        CellTree* T[nbFichiers];
+
+        while((dir = readdir(rep))){
+
+            if(strcmp(dir->d_name,".")!=0 && strcmp(dir->d_name,"..")!=0){
+
+                for(int i = 0;i<nbFichiers;i++){
+
+                    T[i]=create_node(read_block(dir->d_name));
+                    nb_node++;
+
+                    for(int j =0; j<nb_node;j++){
+                        
+                        if(strcmp(T[i]->block->hash,T[j]->block->previous_hash)==0){
+
+                            add_child(T[i],T[j]);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        closedir(rep);
+
+        for(int i = 0; i<nbFichiers ; i++){
+            if(T[i]->father==NULL){return T[i];}
+        }
+
+    }
+
+    closedir(rep);
+
+}
+//Fusionne deux listes de declarations
+void fusionne_list_decl(CellProtected* decl1, CellProtected* decl2){
+
+    CellProtected* ptr=decl1;
+
+    while(ptr->next!=NULL){
+        ptr=ptr->next;
+    }
+
+    ptr->next=decl2;
+
+}
+//Fusionne les declaration des listes chainee de la plus longue chaine
+CellProtected* fusionne_max_chaine(CellTree* Tree){
+
+    CellTree* ptr = highest_child(Tree);
+    CellProtected* LCP = ptr->block->votes;
+
+    while(ptr->firstChild!=NULL){
+        ptr=highest_child(ptr);
+        fusionne_list_decl(LCP,ptr->block->votes);        
+    }
+
+    fusionne_list_decl(LCP,ptr->block->votes);
+    return LCP;
+}
+
+//Determine le gagnant de l'election en se basant sur la plus longue chaine de l'arbre
+Key* compute_winner_BT(CellTree* tree, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
+
+    //extraction des declarations
+    CellProtected* LCP = fusionne_max_chaine(tree);
+
+    //suppression des declaration non valide
+    filter(LCP);
+
+    //Calcule du vainqueur
+    return compute_winner(LCP,candidates,voters, sizeC, sizeV);
+
+}
+
+
+*/
 
 
 
