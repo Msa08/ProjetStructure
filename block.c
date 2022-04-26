@@ -206,15 +206,16 @@ void compute_proof_of_work(Block *B, int d){
     while(B->nonce >= 0){
         block = block_to_str(B);
         tmp = str_to_hash(block);
-        for (int i = 0; i<d; i++){
+        for (int i = 0; i<d; i++){//comptage du nb de zero
             if(tmp[i] != '0'){
                 valide++;
                 B->nonce++;
                 break;
             }
         }
-
-        if(valide == 0)
+        printf("%s\n",tmp);
+        printf("B->nonce : %d  valide : %d\n",B->nonce,valide);
+        if(valide == 0)//si d zero on sort de la boucle
             break;
         free(block);
         valide = 0; 
