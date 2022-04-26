@@ -15,22 +15,30 @@ void submit_vote(Protected* p){
 void create_block(CellTree* tree, Key* author, int d){
     Block * b = (Block*) malloc(sizeof(Block));
     b->author = author;
-
+    printf("coucou\n");
     b->votes = read_protected("Pending_votes.txt");
+    printf("coucou\n");
     CellTree* last = last_node(tree);
+    printf("coucou\n");
 
     if (last == NULL){
         b->previous_hash = NULL;
     }
     else {
         b->previous_hash =(unsigned char*) strdup((const char*)last->block->hash);
+        printf("coucou.1\n");
     }
     //char* s_block = block_to_str(b) ?
     compute_proof_of_work(b, d);
+    if(verify_block(b,d)==0){
+        printf("erreur dns computee winner\n");
+        return;
+    }
+    printf("coucou\n");
     printf("fin compute\n");
-
+    printf("coucou\n");
     remove("Pending_votes.txt");
-    
+    printf("coucou\n");
     printf("deb\n");
     ecrire_block("Pending_votes",b);
     printf("fin\n");
@@ -99,9 +107,9 @@ CellTree* read_tree(){
     return racine;
 }
 
-Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV){
+/*Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV){
    
     CellProtected* declaration = fusion_highest_child(tree);
     filter(&declaration);
     return compute_winner(declaration, candidates, voters, sizeC, sizeV);
-}
+}*/

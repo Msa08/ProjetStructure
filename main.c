@@ -8,6 +8,7 @@
 #include "hachage.h"
 #include "block.h"
 #include "blocktree.h"
+#include "simulation.h"
 #include <time.h>
 #include <string.h>
 #include <openssl/sha.h>
@@ -220,9 +221,9 @@ int main(){
     printf("gagnant -> %s\n", keyg);
     free(keyg);
     free(gagnant);
-    delete_list_protected(decl);
+    //delete_list_protected(decl);
     delete_list_keys(candidates);
-    delete_list_keys(voters);
+    //delete_list_keys(voters);
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
@@ -255,7 +256,7 @@ int main(){
     }
 
     printf("\n-----------------Temps de calcul proof of work---------------------\n");
-    FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
+    /*FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
     float debut;
     float fin;
     float time=0;
@@ -270,12 +271,12 @@ int main(){
         fprintf(resultats_1,"%d %f\n",i,time);
         printf("%d zero, temps de calcul =%f \n",i,time);
         i++;
-    }
+    }*/
   
     delete_block(b);
     printf("Block_0 deleted \n");
     printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
-    fclose(resultats_1);
+    //fclose(resultats_1);
     
     /*____________________________TEST EXO8______________________________________________________*/
     printf("\n______________________________TEST EXO8___________________________\n");
@@ -293,5 +294,14 @@ int main(){
     high=highest_child(node);
     print_tree(high);
     free(buffer);
+
+    /*____________________________TEST EXO9______________________________________________________*/
+    printf("\n______________________________TEST EXO9___________________________\n");
+    while(decl){
+        submit_vote(decl->data);
+        decl=decl->next;
+    }
+    create_block(node,voters->data,1);
+
     return 0;
 }
