@@ -40,8 +40,8 @@ Block* lire_block(char* filename){
     }
 
     char buffer[256];
-    block->votes = malloc(sizeof(CellProtected));
-    CellProtected *droit = malloc(sizeof(CellProtected));
+    block->votes = create_cell_protected(NULL);
+    CellProtected *droit = create_cell_protected(NULL);
     int nonce;
 
     if(fgets(buffer, 256, f)){
