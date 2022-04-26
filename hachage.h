@@ -26,4 +26,8 @@ void delete_hashtable(HashTable* t);
 
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV);
 
+void push_protected (CellProtected ** cp, Protected * pr);
+
+CellProtected* cellProtectedDup(CellProtected * cp);
+
 #endif
