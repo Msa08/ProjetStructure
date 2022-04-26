@@ -8,6 +8,48 @@
 #include "key.h"
 
 
+void filter(CellProtected** LCP){
+    /* Supprime les declarations dont la signature n'est
+    pas valide.
+    */
+    CellProtected* courant = *LCP;
+
+    // Filtre les premiers jusqu'a une signature valide
+    while (*LCP != NULL && verify((*LCP)->data) == 0){
+
+        courant = *LCP;
+        if ((*LCP)->next == NULL){
+            printf("Aucun\n");
+            delete_cell_protected(*LCP);
+            *LCP = NULL;
+            printf("Aucune declarations signees valides\n");
+            return ;
+        }
+        *LCP = (*LCP)->next;
+        delete_cell_protected(courant);
+    }
+
+
+    // Filtre les prochains
+    if(*LCP == NULL){
+        *LCP = NULL;
+        printf("Aucune declarations signees valides\n");
+        return ;
+    }
+    CellProtected* precedent = *LCP;
+    courant = precedent->next;
+    while(courant != NULL){
+        if (courant->data != NULL && 
+            verify(courant->data) == 0){
+            precedent->next = courant->next;
+            delete_cell_protected(courant);
+        }else{
+            precedent = courant;
+        }
+        courant = precedent->next;
+    }
+}
+
 HashCell* create_hashcell(Key* key){
 	HashCell* h = malloc(sizeof(HashCell));
 	h->key = key;
