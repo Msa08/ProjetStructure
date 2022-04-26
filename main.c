@@ -262,7 +262,7 @@ int main(){
     debut=clock();
     fin=clock();
     int i=1;
-    while (time<1){
+    while (time<0.8){
         debut=clock();
         compute_proof_of_work(b,i);
         fin=clock();
@@ -274,19 +274,24 @@ int main(){
   
     delete_block(b);
     printf("Block_0 deleted \n");
-    //printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
+    printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
     fclose(resultats_1);
+    
     /*____________________________TEST EXO8______________________________________________________*/
     printf("\n______________________________TEST EXO8___________________________\n");
-    /*CellTree *node=create_node(b);
+    Block *b0=lire_block("Block_0");
+    Block *b1=lire_block("Block_1");
+    Block *b2=lire_block("Block_2");
+    CellTree *node=create_node(b0);
+    CellTree *node1=create_node(b1);
     CellTree *node2=create_node(b2);
-    CellTree *node3=create_node(b);
-    add_child(node,node2);
-    add_child(node2,node3);
+    add_child(node,node1);
+    add_child(node1,node2);
     print_tree(node);
+
     CellTree *high=malloc(sizeof(CellTree));
     high=highest_child(node);
-    print_tree(high);*/
+    print_tree(high);
     free(buffer);
     return 0;
 }
