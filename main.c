@@ -221,8 +221,8 @@ int main(){
     free(keyg);
     free(gagnant);
     delete_list_protected(decl);
-    //delete_list_keys(candidates);
-    //delete_list_keys(voters);
+    delete_list_keys(candidates);
+    delete_list_keys(voters);
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/

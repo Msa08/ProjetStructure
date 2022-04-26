@@ -129,6 +129,9 @@ HashTable* create_hashtable(CellKey* keys, int size){
 }
 
 void delete_hashtable(HashTable* t){
+    for(int i=0;i<t->size;i++){
+        free(t->tab[i]);
+    }
 	free(t->tab);
 	free(t);
 }
