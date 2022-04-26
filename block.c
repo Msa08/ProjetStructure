@@ -203,9 +203,10 @@ void compute_proof_of_work(Block *B, int d){
     B->nonce = 0;
     int valide = 0;
     char* block;
-    int a=0;
+    int a;
     unsigned char *tmp;
     while(B->nonce >= 0){
+        a=0;
         block = block_to_str(B);
         tmp = str_to_hash(block);
         for (int i = 0; i<d; i++){//comptage du nb de zero
@@ -227,11 +228,12 @@ void compute_proof_of_work(Block *B, int d){
             break;
         }
         
-        if(a==0){
-            free(tmp);
-            free(block);
-        }
         valide = 0; 
+    }
+    if(a==0){
+        free(tmp);
+        free(block);
+        a=2;
     }
     
     /*
