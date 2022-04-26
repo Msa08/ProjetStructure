@@ -28,4 +28,5 @@ void print_list_protected(CellProtected* LCP);
 void delete_cell_protected(CellProtected* cp);
 void delete_list_protected(CellProtected* LCP);
 void deleted_invalid_sign(CellProtected *LCP);
+void merge_list_protected(CellProtected **list1, CellProtected **list2);
 #endif
