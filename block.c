@@ -251,58 +251,6 @@ int verify_block(Block* b, int d){
     return 0; //sinon on renvoie 0 si le block est valide
 }
 
-
-/*b->nonce = 0;
-
-  if (b->hash == NULL)
-  {
-    char *chaine = block_to_str(b);
-    b->hash = decrypt_sha(chaine);
-    free(chaine);
-  }
-
-  unsigned char temp[256];
-  unsigned char nonce[128];
-  int cpt = 0, i = 0;
-  //on va créer une sous chaine et la hachée
-  sprintf(nonce, "%d", b->nonce);
-  strcpy(temp, b->hash);
-  strcat(temp, nonce);
-  unsigned char *decrypt = decrypt_sha(temp);
-
-  //on vérifie que la valeur hachée possède bien d 0 successifs
-  while (cpt < d)
-  {
-    if (decrypt[i++] == '0')
-    {
-      cpt++; //si on trouve un 0 on ajoute 1 au compteur
-    }
-    else
-    //si on ne trouve pas de 0 alors on réinitialise le compteur à 0, on incrémente b->nonce de 1, et on crée une nouvelle sous-chaine
-    {
-      b->nonce++;
-      i = 0;
-      cpt = 0;
-      free(decrypt);
-      sprintf(nonce, "%d", b->nonce);
-      strcpy(temp, b->hash);
-      strcat(temp, nonce);
-      decrypt = decrypt_sha(temp);
-
-    }
-  }
-  printf("La sous chaine finale qui permet de rendre le block valide : %d %s\n", b->nonce, decrypt);
-  free(decrypt);
-*/
-
-/*int verify_block(Block* b, int d){
-	if(b->nonce == d){
-		return 1;
-	}
-	return 0;
-}
-
-*/
 /*int verify_block(Block* b, int d){
     /* Verifie que le bloc b est correct.
     
