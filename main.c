@@ -228,20 +228,26 @@ int main(){
     const unsigned char *s= "Rosetta code" ;
     printf("%s\n hachage...\n",s);
     printf("%s \n",hachage_SHA256(s) );
-    char *buffer;
-    printf("coucou0\n");
+    
+
     Block *b=lire_block("Block_0");
-    printf("coucou0.1\n");
-    buffer=block_to_str(b);
-    printf("coucou0.2\n");
-    printf("block to str :%s\n",buffer);
-    printf("coucou0.3\n");
-    compute_proof_of_work(b,4);
-    int i=verify_block(b,4);
-    printf("%d\n",i);
+    printf("Lecture du Block_0 ...\n");
     ecrire_block("Block_0_bis",b);
-    delete_block(b);
-    printf("%s\n",key_to_str(b->author));
+    printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
+    
+    char *buffer;
+    buffer=block_to_str(b);
+    printf("block_to_str(Block_0) :\n%s\n",buffer);
+
+    printf("hachage avec SHA_256... \n");
+    printf("%s \n",hachage_SHA256(buffer) );
+    
+    // compute_proof_of_work(b,4);
+    // int i=verify_block(b,4);
+    // printf("%d\n",i);
+    
+    // delete_block(b);
+    // printf("%s\n",key_to_str(b->author));
 
     return 0;
 }
