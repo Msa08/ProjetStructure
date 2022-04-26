@@ -282,16 +282,27 @@ int main(){
     Block *b0=lire_block("Block_0");
     Block *b1=lire_block("Block_1");
     Block *b2=lire_block("Block_2");
+    Block *b3=lire_block("Block_3");
+    Block *b4=lire_block("Block_4");
     CellTree *node=create_node(b0);
     CellTree *node1=create_node(b1);
     CellTree *node2=create_node(b2);
+    CellTree *node3=create_node(b3);
+    CellTree *node4=create_node(b4);
+    add_child(node,node4);
     add_child(node,node1);
     add_child(node1,node2);
+    add_child(node2,node3);
     print_tree(node);
 
     CellTree *high=malloc(sizeof(CellTree));
     high=highest_child(node);
+    printf("affichage du plus grd\n");
     print_tree(high);
     free(buffer);
+
+    // last_node(CellTree* cell);
+    // fusion_declaration(CellProtected* cell1, CellProtected* cell2);
+    // fusion_highest_child(CellTree * tree);
     return 0;
 }
