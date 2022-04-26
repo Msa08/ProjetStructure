@@ -62,14 +62,12 @@ void add_child(CellTree* father, CellTree* child){
 void print_tree(CellTree * tree){
     /* Affiche l'arbre : pour chaques noeuds, la hauteur du noeud et la valeur hachee du bloc
        son affiche.*/
-    
-
     if (tree == NULL){
         return;
     }
     CellTree* courant = tree;
     while (courant) {
-        printf("Hauteur = %d , Hash = %s\n", courant->height, courant->block->hash);
+        printf("Hauteur = %d , Hash = %s\nPrevious Hash = %s\n", courant->height, courant->block->hash,courant->block->previous_hash);
         courant = courant->nextBro;
     }
     printf("\n");
