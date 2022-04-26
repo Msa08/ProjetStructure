@@ -178,5 +178,24 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, in
 	return key_gagnant;
 }
 
+void push_protected (CellProtected ** cp, Protected * pr){
+  CellProtected * new_cell = create_cell_protected(pr);
+  new_cell->next = *cp;
+  *cp = new_cell;
+}
+
+CellProtected* cellProtectedDup(CellProtected * cp) {
+  if (cp != NULL) {
+    CellProtected * res = create_cell_protected(cp->data);
+    cp = cp->next;
+    while (cp != NULL) {
+      push_protected(&res, cp->data);
+      cp = cp->next;
+    }
+    return res;
+  }
+
+  return NULL;
+}
 
 //gcc -Wall  -o main base.c chiffrement.c hachage.c key.c prime_number.c
