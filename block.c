@@ -175,6 +175,7 @@ char* block_to_str(Block* block){
     char *c = malloc(sizeof(char)*10);
     sprintf(c, "%d\0", block->nonce);
     strcat(strblock, c);
+    free(c);
     
     
     return strblock;
@@ -202,6 +203,7 @@ void compute_proof_of_work(Block *B, int d){
     B->nonce = 0;
     int valide = 0;
     char* block;
+    int a=0;
     unsigned char *tmp;
     while(B->nonce >= 0){
         block = block_to_str(B);
@@ -210,12 +212,25 @@ void compute_proof_of_work(Block *B, int d){
             if(tmp[i] != '0'){
                 valide++;
                 B->nonce++;
+                free(tmp);
+                free(block);
+                a=1;
                 break;
             }
         }
-        if(valide == 0)//si d zero on sort de la boucle
+        if(valide == 0){//si d zero on sort de la boucle
+            if(a==0){
+                free(tmp);
+                free(block);
+                a=2;
+            }
             break;
-        free(block);
+        }
+        
+        if(a==0){
+            free(tmp);
+            free(block);
+        }
         valide = 0; 
     }
     

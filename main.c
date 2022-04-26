@@ -275,7 +275,7 @@ int main(){
   
     delete_block(b);
     printf("Block_0 deleted \n");
-    printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
+    //printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
 
     /*____________________________TEST EXO8______________________________________________________*/
     printf("\n______________________________TEST EXO8___________________________\n");
