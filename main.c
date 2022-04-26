@@ -277,9 +277,10 @@ int main(){
     printf("Block_0 deleted \n");
     printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
     //fclose(resultats_1);
+    free(buffer);
     
     /*____________________________TEST EXO8______________________________________________________*/
-    printf("\n______________________________TEST EXO8___________________________\n");
+    printf("\n_______________________________TEST EXO8____________________________________________\n");
     Block *b0=lire_block("Block_0");
     Block *b1=lire_block("Block_1");
     Block *b2=lire_block("Block_2");
@@ -294,21 +295,22 @@ int main(){
     add_child(node,node1);
     add_child(node1,node2);
     add_child(node2,node3);
+    printf("--------------------------AFFICHAGE D'UN ARBRE A 4 NOEUDS-----------------------------\n");
     print_tree(node);
 
     CellTree *high=malloc(sizeof(CellTree));
     high=highest_child(node);
-    printf("affichage du plus grd\n");
+    printf("-----------------------AFFICHAGE DU NOEUD FILS AVEC LA PLUS GRANDE HAUTEUR------------\n");
     print_tree(high);
-    free(buffer);
+    
 
     /*____________________________TEST EXO9______________________________________________________*/
-    printf("\n______________________________TEST EXO9___________________________\n");
+    /*printf("\n______________________________TEST EXO9___________________________\n");
     while(decl){
         submit_vote(decl->data);
         decl=decl->next;
     }
     create_block(node,voters->data,1);
-
+    */
     return 0;
 }

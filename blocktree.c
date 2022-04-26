@@ -30,51 +30,67 @@ int update_height(CellTree * father, CellTree * child){
     return 1;
 }
 
+
 void add_child(CellTree* father, CellTree* child){
-    /* Ajoute un fils à un noeud en mettant à jour la
-    hauteur de tous les ascendants.*/
-    
-    if (father->firstChild == NULL){
-        father->firstChild = child;
-        child->father = father;
 
-    }
-    else{
-        child->father = father;
-        child->nextBro = father->firstChild;
-        father->firstChild = child;
-
-        /*CellTree* courant = father->firstChild;
-        while(courant->nextBro){
-            courant = courant->nextBro;
-        }
-        courant->nextBro = child;*/
-        
-
-    }
-
-    while(father != NULL && update_height(father, child) == 1){
-        child = father;
-        father = father->father;
-    }
-}
-
-void print_tree(CellTree * tree){
-    /* Affiche l'arbre : pour chaques noeuds, la hauteur du noeud et la valeur hachee du bloc
-       son affiche.*/
-    
-
-    if (tree == NULL){
+    if(!father){ // test si arbre vide, si oui le crée
+        father = create_node(child->block);
+        printf("Il n'y a pas de pere\n");
         return;
     }
-    CellTree* courant = tree;
-    while (courant) {
-        printf("Hauteur = %d , Hash = %s\n", courant->height, courant->block->hash);
-        courant = courant->nextBro;
+
+    CellTree *debut=father; 
+    if (!father->firstChild){ // test si le noeud n'a pas de fils
+        father->firstChild = child;
+        child->block->previous_hash = father->block->hash;
+        child->father=father;
+        
+        CellTree *it = father;
+        CellTree *itsuiv = child;
+
+        while(it){// update de la taille des noeuds
+            update_height(it, itsuiv);
+            it=it->father;
+            itsuiv=itsuiv->father;
+        }
+        father=debut;
+        return;
     }
+
+    CellTree *it = father->firstChild;
+    while(it->nextBro){
+            it=it->nextBro;
+    }
+    it->nextBro = child;
+    child->block->previous_hash = father->block->hash;
+    child->father=father;
+    
+    CellTree *itr = father;
+    CellTree *itrsuiv = child;
+    while(itr){
+        update_height(father, child);
+        itr=itr->father;
+        itrsuiv=itrsuiv->father;
+    }
+
+    father=debut;
+}
+
+
+void print_tree(CellTree* node){
+    if(!node || !node->block){
+        printf("Arbre vide\n");
+        return;
+    }
+    printf("Hauteur = %d , Hash = %s\n", node->height, node->block->hash);
+    printf("Previous_hash = %s\n", node->block->previous_hash);
     printf("\n");
 
-    print_tree(tree->firstChild);
+    CellTree *cour=node->firstChild;
+    while(cour){
+        print_tree(cour);
+        cour=cour->nextBro;
+    }   
 }
 
 
