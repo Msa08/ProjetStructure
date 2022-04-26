@@ -221,9 +221,10 @@ int main(){
     printf("gagnant -> %s\n", keyg);
     free(keyg);
     free(gagnant);
-    //delete_list_protected(decl);
+    delete_list_protected(decl);
     delete_list_keys(candidates);
-    //delete_list_keys(voters);
+    delete_list_keys(voters);
+    
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
@@ -294,14 +295,14 @@ int main(){
     high=highest_child(node);
     print_tree(high);
     free(buffer);
-
+    delete_tree(node);
     /*____________________________TEST EXO9______________________________________________________*/
     printf("\n______________________________TEST EXO9___________________________\n");
-    while(decl){
+    /*while(decl){
         submit_vote(decl->data);
         decl=decl->next;
-    }
-    create_block(node,voters->data,1);
-
+    }*/
+    //create_block(node,voters->data,1);
+    
     return 0;
 }
