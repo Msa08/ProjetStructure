@@ -128,7 +128,7 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
 
 // 8.9 à tester 
 
-CellProtected* fusion_highest_child(CellTree * tree){
+/*CellProtected* fusion_highest_child(CellTree * tree){
   CellTree * tmp = highest_child(tree);
   CellProtected * res = cellProtectedDup(tmp->block->votes);
   tmp = tmp->firstChild;
@@ -137,5 +137,5 @@ CellProtected* fusion_highest_child(CellTree * tree){
     tmp = tmp->firstChild;
   }
   return res;
-}
+}*/
 

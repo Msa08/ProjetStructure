@@ -244,13 +244,17 @@ int verify_block(Block* b, int d){
     char* block;
     unsigned char *tmp;
     block = block_to_str(b);
-    tmp = hachage_SHA256(block);
+    tmp = str_to_hash(block);
  
     for (int i = 0; i<d; i++){
         if(tmp[i] != '0'){
+            free(block);
+            free(tmp);
             return 0;
         }
     }
+    free(block);
+    free(tmp);
     return 1;
 }
 /*int verify_block(Block* b, int d){

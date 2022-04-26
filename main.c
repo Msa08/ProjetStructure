@@ -241,7 +241,9 @@ int main(){
 
     printf("\nHachage avec SHA_256: \n");
     const unsigned char *s= "Rosetta code" ;
-    printf("Rosetta code -> %s \n",hachage_SHA256(s) );
+    char *rosetta=hachage_SHA256(s);
+    printf("Rosetta code -> %s \n", rosetta);
+    free(rosetta);
 
     printf("\n-----------------TEST validite du bloc---------------------\n");
     compute_proof_of_work(b,3);
@@ -262,6 +264,7 @@ int main(){
     int i=1;
     while (time<1){
         debut=clock();
+        printf("TEST\n");
         compute_proof_of_work(b,i);
         fin=clock();
         time=(fin-debut)/(CLOCKS_PER_SEC);
@@ -285,5 +288,6 @@ int main(){
     CellTree *high=malloc(sizeof(CellTree));
     high=highest_child(node);
     print_tree(high);*/
+    free(buffer);
     return 0;
 }
