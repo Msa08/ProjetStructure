@@ -254,6 +254,17 @@ int main(){
     delete_block(b);
     printf("%s\n",key_to_str(b->author));
 
+    /*____________________________TEST EXO8______________________________________________________*/
+    printf("\n______________________________TEST EXO8___________________________\n");
+    CellTree *node=create_node(b);
+    CellTree *node2=create_node(b2);
+    CellTree *node3=create_node(b);
+    add_child(node,node2);
+    add_child(node2,node3);
+    print_tree(node);
+    CellTree *high=malloc(sizeof(CellTree));
+    high=highest_child(node);
+    print_tree(high);
     return 0;
 }
     //on obtient 215000363
