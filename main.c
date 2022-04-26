@@ -264,7 +264,6 @@ int main(){
     int i=1;
     while (time<1){
         debut=clock();
-        printf("TEST\n");
         compute_proof_of_work(b,i);
         fin=clock();
         time=(fin-debut)/(CLOCKS_PER_SEC);
