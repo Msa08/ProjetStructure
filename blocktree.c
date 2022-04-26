@@ -83,7 +83,8 @@ void print_tree(CellTree* node){
         return;
     }
     printf("Hauteur = %d , Hash = %s\n", node->height, node->block->hash);
-    printf("Previous_hash = %s\n", node->block->previous_hash);
+    printf("Previous_hash = %s\n LISTE DECLARATION : \n", node->block->previous_hash);
+    print_list_protected(node->block->votes); //pour le debug de fusion decl
     printf("\n");
 
     CellTree *cour=node->firstChild;
@@ -93,12 +94,13 @@ void print_tree(CellTree* node){
     }   
 }
 
-
+// // la notre
 // void delete_node(CellTree* node){
 //     delete_block(node->block);
 //     free(node);
 // }
 
+//la leur
 void delete_node(CellTree* node){
     delete_block(node->block);
 
@@ -111,7 +113,7 @@ void delete_node(CellTree* node){
     
     free(node);
 }
-
+//la notre
 void delete_tree(CellTree* tree){
     if (tree == NULL){
         return;
@@ -121,6 +123,8 @@ void delete_tree(CellTree* tree){
 
     delete_node(tree);
 }
+
+// //la leur
 // void delete_tree(CellTree* node){
 //     if(!node->block){
 //         printf("Arbre vide\n");
@@ -175,7 +179,7 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
 
 // 8.9 à tester 
 
-/*CellProtected* fusion_highest_child(CellTree * tree){
+CellProtected* fusion_highest_child(CellTree * tree){
   CellTree * tmp = highest_child(tree);
   CellProtected * res = cellProtectedDup(tmp->block->votes);
   tmp = tmp->firstChild;
@@ -184,5 +188,5 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
     tmp = tmp->firstChild;
   }
   return res;
-}*/
+}
 
