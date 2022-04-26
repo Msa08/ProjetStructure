@@ -179,6 +179,7 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
 
 // 8.9 à tester 
 
+/*
 CellProtected* fusion_highest_child(CellTree * tree){
   CellTree * tmp = highest_child(tree);
   CellProtected * res = cellProtectedDup(tmp->block->votes);
@@ -188,5 +189,29 @@ CellProtected* fusion_highest_child(CellTree * tree){
     tmp = tmp->firstChild;
   }
   return res;
+}
+*/
+
+// AUTRE VERSION 
+CellProtected* fusion_highest_child(CellTree * tree) {
+  // Arbre vide
+  if (tree == NULL) {
+    return NULL;
+  }
+
+
+  // Ajout liste du premier noeud
+  CellProtected* list = NULL;
+  merge_list_protected(&list, &((tree->block)->votes));
+
+
+  // Ajout liste des fils
+  CellTree* highestChild = highest_child(tree);
+  while (highestChild != NULL) {
+    merge_list_protected(&list, &((highestChild->block)->votes));
+    highestChild = highest_child(highestChild);
+  }
+
+  return list;
 }
 
