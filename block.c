@@ -298,6 +298,7 @@ int verify_block(Block* b, int d){
 //qst7.9
 void delete_block(Block *b){
 	/*supprime un bloc*/
+    printf("bjr1\n");
     delete_list_protected(b->votes);
     free(b->author);
     free(b->hash);

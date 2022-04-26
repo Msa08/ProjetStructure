@@ -73,9 +73,11 @@ CellKey *read_public_keys(char *nomFic){
     char str[100];
     while(fgets(buffer, 100, f)){
         if (sscanf(buffer, " %s\n", str)==1){
-            ck = add_cell_key(ck, str_to_key(str));
+            Key* key=str_to_key(str);
+            ck = add_cell_key(ck, key);
         }
     }
+    fclose(f);
     return ck;
 }
 
@@ -227,6 +229,7 @@ void delete_list_protected(CellProtected* c){
         return;
     }
     while(c){
+        printf("bjr\n");
         temp=c->next;
         delete_cell_protected(c);
         c=temp;
