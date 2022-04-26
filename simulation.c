@@ -13,6 +13,61 @@ void submit_vote(Protected* p){
 }
 
 void create_block(CellTree* tree, Key* author, int d){
+  printf("DEBUT CREATE BLOCK\n");
+  Block *b = (Block *)malloc(sizeof(Block));
+  if (!b)
+    exit(12);
+
+  // recuperation des votes
+  CellProtected **list_protected = read_protected("Pending_votes.txt");
+  // suppression du fichier des votes en attentes
+  remove("Pending_votes.txt");
+
+  CellTree *last = last_node(tree);
+
+  // initialisation du block
+  b->author = author;
+  if (!last)
+  {
+    b->previous_hash = NULL;
+  }
+  else
+  {
+    // copie  du previous hash pour éviter les problemes de liberation de memoire
+    b->previous_hash = (unsigned char *)malloc(sizeof(unsigned char) * (SHA256_DIGEST_LENGTH + 1));
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+    {
+      b->previous_hash[i] = last->block->hash[i];
+    }
+    b->previous_hash[SHA256_DIGEST_LENGTH] = '\0';
+  }
+  b->hash = NULL;
+  b->nonce = 0;
+
+  b->votes = *list_protected;
+  // calcul de nonce et de hash
+  compute_proof_of_work(b, d);
+
+  // char *tmp_block = block_to_str(b);
+  // printf("%s\n", tmp_block);
+  // free(tmp_block);
+
+  ecrire_block("Pending_block", b);
+
+  // Ajout d'un noeud contenant le block dans tree
+  CellTree *new_tree = create_node(b);
+  // print_tree(new_tree);
+  add_child(last, new_tree);
+
+  // delete_block(b);
+  delete_list_protected(list_protected);
+  printf("FIN CREATE BLOCK\n");
+  return;
+}
+
+
+/*
+void create_block(CellTree* tree, Key* author, int d){
     Block * b = (Block*) malloc(sizeof(Block));
     b->author = author;
     printf("coucou\n");
@@ -45,7 +100,7 @@ void create_block(CellTree* tree, Key* author, int d){
 
     delete_block(b);
 }
-
+*/
 void add_block(int d, char* name){
     Block* b = lire_block("Pending_block");
     if (verify_block(b, d) == 0){
