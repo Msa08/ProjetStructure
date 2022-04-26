@@ -94,8 +94,21 @@ void print_tree(CellTree* node){
 }
 
 
+// void delete_node(CellTree* node){
+//     delete_block(node->block);
+//     free(node);
+// }
+
 void delete_node(CellTree* node){
     delete_block(node->block);
+
+    if(node->father)
+        free(node->father);
+    if(node->firstChild)
+        free(node->firstChild);
+    if(node->nextBro)
+        free(node->nextBro);
+    
     free(node);
 }
 
@@ -108,6 +121,24 @@ void delete_tree(CellTree* tree){
 
     delete_node(tree);
 }
+// void delete_tree(CellTree* node){
+//     if(!node->block){
+//         printf("Arbre vide\n");
+//         return;
+//     }
+
+//     CellTree *cour=node->firstChild;
+//     while(cour){
+//         if(!cour->nextBro){
+//             delete_node(cour); 
+//             return;
+//         }
+            
+//         delete_tree(cour);
+//         cour=cour->nextBro;
+//     }
+// }
+
 CellTree* highest_child(CellTree* cell){
     if (cell == NULL){
         return NULL;
