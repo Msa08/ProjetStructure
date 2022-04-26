@@ -33,18 +33,29 @@ void ecrire_block(char * filename, Block * block){
     FILE *f = fopen(filename, "w");
     char *auth = key_to_str(block->author);
     fprintf(f, "%s\n", auth);
+    printf("coucou1\n");
     free(auth);
+    printf("coucou2\n");
     CellProtected *tmp = block->votes;
+    printf("coucou3\n");
     while(tmp){
         char *pr = protected_to_str(tmp->data);
+        printf("coucou4.1\n");
         fprintf(f, "%s\n", pr);
+        printf("coucou4.2\n");
         free(pr);
+        printf("coucou4.3\n");
         tmp = tmp->next;
+        printf("coucou4.4\n");
     }
     fprintf(f, "%s\n", block->hash);
+    printf("coucou5\n");
     fprintf(f, "%s\n", block->previous_hash);
+    printf("coucou6\n");
     fprintf(f, "%d\n", block->nonce);
+    printf("coucou7\n");
     fclose(f);
+    printf("coucou8\n");
 }
 	
 
@@ -171,7 +182,7 @@ Block* lire_block(char* filename){
 
 
 char * block_to_str(Block* b){
-	char * res = (char *) malloc(sizeof(char) * 256 );
+	char * res = (char *) malloc(sizeof(char) * 1059 );
 	char * author = key_to_str(b->author);
 	char * previous_hash = strdup(b->previous_hash);
 	char * vote;
@@ -194,7 +205,7 @@ char * block_to_str(Block* b){
         i++;
     }
     res[i]=' ';
-    i++;
+    i++; 
 	
 	CellProtected * votes = b->votes;
 	while (votes != NULL) {
@@ -207,11 +218,9 @@ char * block_to_str(Block* b){
         i++;
         votes=votes->next;
     }
-    res[i]='\0';
+    res[i--]='\0';
 
 	//Libération mémoire
-	free(author);
-	free(previous_hash);
 
 	return res;
 }

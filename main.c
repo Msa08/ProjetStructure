@@ -228,17 +228,14 @@ int main(){
     printf("%s\n hachage...\n",s);
     printf("%s \n",hachage_SHA256(s) );
     char *buffer;
+    printf("coucou0\n");
     Block *b=lire_block("Block_0");
-    printf("hahs:%s\n",b->hash);
-    printf("%s\n",key_to_str(b->author));
-    printf("previous_hahs:%s\n",b->previous_hash);
-    printf("nonce %d\n",b->nonce);
-    printf("coucou\n");
+    printf("coucou0.1\n");
     buffer=block_to_str(b);
-    printf("coucou\n");
-    printf("%s\n",protected_to_str(b->votes->data));
+    printf("coucou0.2\n");
     printf("block to str :%s\n",buffer);
-    //ecrire_block("Block_0_bis",b);
+    printf("coucou0.3\n");
+    ecrire_block("Block_0_bis",b);
     
      return 0;
 }
