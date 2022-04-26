@@ -51,6 +51,12 @@ void ecrire_block(char * filename, Block * block){
 Block* lire_block(char* filename){
     FILE *f = fopen(filename, "r");
     Block *block = (Block *)malloc(sizeof(Block));
+
+    if (block == NULL){
+        printf("Erreur lors de l'allocation du block\n");
+        exit(EXIT_FAILURE);
+    }
+
     char buffer[256];
     block->votes = create_cell_protected(NULL);
     CellProtected *droit = create_cell_protected(NULL);
@@ -61,7 +67,7 @@ Block* lire_block(char* filename){
     }
 
 
-    while(fgets(buffer, 256, f)){ 
+    while(fgets(buffer, 256, f)){
         char *tmp=malloc(sizeof(char)*256);
         char *tmp1=malloc(sizeof(char)*120);
         char *tmp2=malloc(sizeof(char)*50);
@@ -109,8 +115,10 @@ Block* lire_block(char* filename){
     while(block->votes->next){
         droit=add_cell_protected(droit, block->votes->data);
         block->votes=block->votes->next;
+        //printf("%s\n",protected_to_str(block->votes->data));
     }
-    delete_cell_protected(block->votes);
+    droit=add_cell_protected(droit, block->votes->data);
+    //printf("%s\n",protected_to_str(droit->data));
     block->votes=droit;
     return block;
 }
