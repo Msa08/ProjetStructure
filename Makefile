@@ -1,6 +1,6 @@
 CC = gcc
 
-main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o Block.o Blocktree.o
+main : main.o prime_number.o chiffrement.o key.o Base.o Hachage.o Block.o Blocktree.o simulation.o
 	$(CC) -g -o main  $^ -lm -lssl -lcrypto
 
 main.o : main.c
@@ -26,3 +26,6 @@ Block.o :block.c
 
 Blocktree.o :blocktree.c
 	$(CC) -g -o Blocktree.o -c $^
+
+simulation.o :simulation.c
+	$(CC) -g -o simulation.o -c $^
