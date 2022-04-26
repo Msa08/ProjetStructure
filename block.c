@@ -205,7 +205,7 @@ void compute_proof_of_work(Block *B, int d){
     unsigned char *tmp;
     while(B->nonce >= 0){
         block = block_to_str(B);
-        tmp = str_to_hash(block);
+        tmp = hachage_SHA256(block);
         for (int i = 0; i<d; i++){
             if(tmp[i] != '0'){
                 valide++;
@@ -233,7 +233,7 @@ int verify_block(Block* b, int d){
     char* block;
     unsigned char *tmp;
     block = block_to_str(b);
-    tmp = str_to_hash(block);
+    tmp = hachage_SHA256(block);
  
     for (int i = 0; i<d; i++){
         if(tmp[i] != '0'){
@@ -241,18 +241,6 @@ int verify_block(Block* b, int d){
         }
     }
     return 1;
-}
-
-unsigned char *str_to_hash(const char * str){
-
-    unsigned char *d = SHA256(str, strlen(str), 0);
-    char *string = malloc(sizeof(char)*(SHA256_DIGEST_LENGTH*2+1));
-    int cpt=0;
-    for(int it = 0; it<SHA256_DIGEST_LENGTH; it++){
-        sprintf(string+cpt, "%02x", d[it]);
-        cpt+=2;
-    }
-    return string;
 }
 /*int verify_block(Block* b, int d){
     /* Verifie que le bloc b est correct.
