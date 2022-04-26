@@ -213,8 +213,6 @@ void compute_proof_of_work(Block *B, int d){
                 break;
             }
         }
-        printf("%s\n",tmp);
-        printf("B->nonce : %d  valide : %d\n",B->nonce,valide);
         if(valide == 0)//si d zero on sort de la boucle
             break;
         free(block);

@@ -226,59 +226,33 @@ int main(){
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
-    printf("\n______________________________TEST PARTIE 4___________________________\n");
-    
-    printf("hachage avec SHA_256: \n");
-    const unsigned char *s= "Rosetta code" ;
-    printf("%s\n hachage...\n",s);
-    printf("%s \n",hachage_SHA256(s) );
-    
+    printf("\n______________________________TEST PARTIE 4_____________________________________________________\n");
 
+    printf("\n-----------------Lecture/Ecriture de bloc d'un fichier---------------------\n");
     Block *b=lire_block("Block_0");
-    //printf("Lecture du Block_0 ...\n");
+    printf("Lecture du Block_0 ...\n");
     ecrire_block("Block_0_bis",b);
-    //printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
-    
+    printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
 
-
+    printf("\n-----------------Conversion en str et hachage---------------------\n");
     char *buffer;
     buffer=block_to_str(b);
-    //printf("block_to_str(Block_0) :\n%s\n",buffer);
+    printf("block_to_str(Block_0) :\n%s\n",buffer);
 
-    compute_proof_of_work(b,4);
-    printf("nonce = %d\n",b->nonce);
-    
-    int i=verify_block(b,4);
-    printf("%d\n",i);
-    
-    delete_block(b);
-    printf("%s\n",key_to_str(b->author));
+    printf("\nHachage avec SHA_256: \n");
+    const unsigned char *s= "Rosetta code" ;
+    printf("Rosetta code -> %s \n",hachage_SHA256(s) );
 
-    /*____________________________TEST EXO8______________________________________________________*/
-    printf("\n______________________________TEST EXO8___________________________\n");
-    CellTree *node=create_node(b);
-    CellTree *node2=create_node(b2);
-    CellTree *node3=create_node(b);
-    add_child(node,node2);
-    add_child(node2,node3);
-    print_tree(node);
-    CellTree *high=malloc(sizeof(CellTree));
-    high=highest_child(node);
-    print_tree(high);
-    return 0;
-}
-    //on obtient 215000363
+    printf("\n-----------------TEST validite du bloc---------------------\n");
+    compute_proof_of_work(b,3);
+    if(verify_block(b,3)==1){
+        printf("LE  BLOC EST VALIDE !!\n");
+    }
+    else{
+        printf("LE BLOC N'EST PAS VALIDE\n");
+    }
 
-    /*Problème :
-    -la fonction hash_function retourne des valeurs negatives
-    -Il y a 5 cle public dans keys.txt
-    -Il y a 3 cle public dans candidates.txt
-    -Il y a beaucoup plus de 5 declarations dans declarations.txt
-    -compute_winner genere une fois sur deux  hc
-    
-    
-    
-    Block *b=lire_block("Block_0");
+    printf("\n-----------------Temps de calcul proof of work---------------------\n");
     FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
     float debut;
     float fin;
@@ -289,16 +263,23 @@ int main(){
         compute_proof_of_work(b,i);
         fin=clock();
         fprintf(resultats_1,"%d %f\n",i,(float)(fin-debut)/(CLOCKS_PER_SEC));
-        printf("%d\n",i);
-        printf("%f\n",(fin-debut)/(CLOCKS_PER_SEC));
+        printf("%d zero, temps de calcul =%f \n",i,(fin-debut)/(CLOCKS_PER_SEC));
     }
-    if(verify_block(b,3)==1){
-        printf("LE  BLOC EST VALIDE !!\n");
-    }
-    else{
-        printf("LE BLOC N'EST PAS VALIDE\n");
-    }
-     ecrire_block("test_exo7_2",b);
-    printf("*************************************\n");
-    Block *b2=lire_block("test_exo7_2.txt");
-    ecrire_block("test_exo7_3.txt",b2);*/
+  
+    delete_block(b);
+    printf("Block_0 deleted \n");
+    printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
+
+    /*____________________________TEST EXO8______________________________________________________*/
+    printf("\n______________________________TEST EXO8___________________________\n");
+    /*CellTree *node=create_node(b);
+    CellTree *node2=create_node(b2);
+    CellTree *node3=create_node(b);
+    add_child(node,node2);
+    add_child(node2,node3);
+    print_tree(node);
+    CellTree *high=malloc(sizeof(CellTree));
+    high=highest_child(node);
+    print_tree(high);*/
+    return 0;
+}
