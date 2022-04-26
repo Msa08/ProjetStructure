@@ -201,60 +201,60 @@ int main(){
     free(decoded);
     free(str);*/
     /*____________________________TEST PARTIE 3______________________________________________________*/
-    // printf("\n______________________________TEST PARTIE 3___________________________\n");
-    // generate_random_data(4,2);
-    // printf("\ngenerate keys\n");
-    // CellKey* voters=read_public_keys("keys.txt");
-    // print_list_keys(voters);
+    printf("\n______________________________TEST PARTIE 3___________________________\n");
+    generate_random_data(4,2);
+    printf("\ngenerate keys\n");
+    CellKey* voters=read_public_keys("keys.txt");
+    print_list_keys(voters);
 
-    // printf("\ngenerate candidates\n");
-    // CellKey* candidates=read_public_keys("candidates.txt");
-    // print_list_keys(candidates);
+    printf("\ngenerate candidates\n");
+    CellKey* candidates=read_public_keys("candidates.txt");
+    print_list_keys(candidates);
 
-    // printf("\ngenerate protected\n");
-    // CellProtected* decl=read_protected("declarations.txt");
-    // print_list_protected(decl);
+    printf("\ngenerate protected\n");
+    CellProtected* decl=read_protected("declarations.txt");
+    print_list_protected(decl);
 
 
-    // Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
-    // char* keyg=key_to_str(gagnant);
-    // printf("gagnant -> %s\n", keyg);
-    // free(keyg);
-    // free(gagnant);
-    // delete_list_protected(decl);
-    // delete_list_keys(candidates);
-    // delete_list_keys(voters);
+    Key* gagnant = compute_winner(decl,candidates,voters, 2,4);
+    char* keyg=key_to_str(gagnant);
+    printf("gagnant -> %s\n", keyg);
+    free(keyg);
+    free(gagnant);
+    delete_list_protected(decl);
+    delete_list_keys(candidates);
+    delete_list_keys(voters);
     
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
-    // printf("\n______________________________TEST PARTIE 4_____________________________________________________\n");
+    printf("\n______________________________TEST PARTIE 4_____________________________________________________\n");
 
-    // printf("\n-----------------Lecture/Ecriture de bloc d'un fichier---------------------\n");
-    // Block *b=lire_block("Block_0");
-    // printf("Lecture du Block_0 ...\n");
-    // ecrire_block("Block_0_bis",b);
-    // printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
+    printf("\n-----------------Lecture/Ecriture de bloc d'un fichier---------------------\n");
+    Block *b=lire_block("Block_0");
+    printf("Lecture du Block_0 ...\n");
+    ecrire_block("Block_0_bis",b);
+    printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
 
-    // printf("\n-----------------Conversion en str et hachage---------------------\n");
-    // char *buffer;
-    // buffer=block_to_str(b);
-    // printf("block_to_str(Block_0) :\n%s\n",buffer);
+    printf("\n-----------------Conversion en str et hachage---------------------\n");
+    char *buffer;
+    buffer=block_to_str(b);
+    printf("block_to_str(Block_0) :\n%s\n",buffer);
 
-    // printf("\nHachage avec SHA_256: \n");
-    // const unsigned char *s= "Rosetta code" ;
-    // char *rosetta=hachage_SHA256(s);
-    // printf("Rosetta code -> %s \n", rosetta);
-    // free(rosetta);
+    printf("\nHachage avec SHA_256: \n");
+    const unsigned char *s= "Rosetta code" ;
+    char *rosetta=hachage_SHA256(s);
+    printf("Rosetta code -> %s \n", rosetta);
+    free(rosetta);
 
-    // printf("\n-----------------TEST validite du bloc---------------------\n");
-    // compute_proof_of_work(b,3);
-    // if(verify_block(b,3)==1){
-    //     printf("LE  BLOC EST VALIDE !!\n");
-    // }
-    // else{
-    //     printf("LE BLOC N'EST PAS VALIDE\n");
-    // }
+    printf("\n-----------------TEST validite du bloc---------------------\n");
+    compute_proof_of_work(b,3);
+    if(verify_block(b,3)==1){
+        printf("LE  BLOC EST VALIDE !!\n");
+    }
+    else{
+        printf("LE BLOC N'EST PAS VALIDE\n");
+    }
 
     // printf("\n-----------------Temps de calcul proof of work---------------------\n");
     /*FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
@@ -311,21 +311,24 @@ int main(){
 
     printf("-----------------------TEST FUSION DECLARATION------------\n");
 
-    CellProtected* cell1=read_protected("declarations.txt");
-    CellProtected* cell2=read_protected("declarations.txt");
-    printf("cell1\n");
-    print_list_protected(cell1);
-    printf("cell2\n");
-    print_list_protected(cell2);
+    // CellProtected* cell1=read_protected("declarations.txt");
+    // CellProtected* cell2=read_protected("declarations.txt");
+    // printf("cell1\n");
+    // print_list_protected(cell1);
+    // printf("cell2\n");
+    // print_list_protected(cell2);
 
-    fusion_declaration(cell1, cell2);
-    printf("fusion de cell2 dans cell1\n");
-    print_list_protected(cell1);
+    // fusion_declaration(cell1, cell2);
+    // printf("fusion de cell2 dans cell1\n");
+    // print_list_protected(cell1);
 
     // delete_list_protected(cell1);
     // delete_list_protected(cell2);
- 
-    //fusion_highest_child(CellTree * tree)
+    
+    printf("fusion highest_child\n");
+    CellProtected* cell=fusion_highest_child(node);
+    print_list_protected(cell);
+
     // delete_node(node);
     // delete_node(node1);
     // delete_node(node2);
