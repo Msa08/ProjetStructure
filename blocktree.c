@@ -127,6 +127,8 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
 }
 */
 
+//Exercice 8  –  Structure arborescente
+
 /=========================== Question 8.1 ======================================/
 
 CellTree* create_node(Block* b){
@@ -225,7 +227,7 @@ void delete_node(CellTree* node){
         free(node->firstChild);
     if(node->nextBro)
         free(node->nextBro);
-
+*/
 } 
 
 void delete_tree(CellTree** abr){
@@ -352,7 +354,7 @@ CellProtected * fusion_votehigh(CellTree * tree){
     /*tmp = fusion_listpr(tmp,tree->block->votes);
     if(tmp == NULL){
         return NULL;
-    }
+    }*/
     CellTree * h = highest_child(tree);
     printf(" high : %d et hash %02x \n",h->height,h->block->hash);
     printf("test2\n");
@@ -368,4 +370,3 @@ CellProtected * fusion_votehigh(CellTree * tree){
     }
     return tmp;
 }
-
