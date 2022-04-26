@@ -221,9 +221,10 @@ int main(){
     printf("gagnant -> %s\n", keyg);
     free(keyg);
     free(gagnant);
-    //delete_list_protected(decl);
+    delete_list_protected(decl);
     delete_list_keys(candidates);
-    //delete_list_keys(voters);
+    delete_list_keys(voters);
+    
     
 
     /*____________________________TEST PARTIE 4______________________________________________________*/
@@ -295,7 +296,7 @@ int main(){
     add_child(node,node1);
     add_child(node1,node2);
     add_child(node2,node3);
-    printf("--------------------------AFFICHAGE D'UN ARBRE A 4 NOEUDS-----------------------------\n");
+    printf("--------------------------AFFICHAGE D'UN ARBRE A 5 NOEUDS-----------------------------\n");
     print_tree(node);
 
     CellTree *high=malloc(sizeof(CellTree));
@@ -303,6 +304,11 @@ int main(){
     printf("-----------------------AFFICHAGE DU NOEUD FILS AVEC LA PLUS GRANDE HAUTEUR------------\n");
     print_tree(high);
     
+    delete_tree(node);
+    delete_tree(node1);
+    delete_tree(node2);
+    delete_tree(node3);
+    delete_tree(node4);
 
     /*____________________________TEST EXO9______________________________________________________*/
     /*printf("\n______________________________TEST EXO9___________________________\n");
