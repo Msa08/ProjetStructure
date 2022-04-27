@@ -5,6 +5,7 @@
 #include "key.h"
 #include "chiffrement.h"
 
+//question 5.1
 CellKey* create_cell_key(Key* key){
     /* allocation et initialisation d'une cellule de liste chainée de clés */
     CellKey* cell=malloc(sizeof(CellKey));
@@ -25,7 +26,10 @@ CellKey* create_cell_key(Key* key){
 // 	(*cellKey) = newCellKey;
 // 	return;
 // }
+
+//question 5.2
 CellKey* add_cell_key(CellKey* cellkey, Key* key){
+    /*fonction qui ajoute une clé en tete de liste*/
     if (!cellkey->data)
         return create_cell_key(key);
     
@@ -61,6 +65,8 @@ CellKey* add_cell_key(CellKey* cellkey, Key* key){
 //     }
 //     return liste;
 // }
+
+//question 5.3
 CellKey *read_public_keys(char *nomFic){
     FILE *f = fopen(nomFic, "r");
     if (f == NULL){
@@ -81,7 +87,7 @@ CellKey *read_public_keys(char *nomFic){
     return ck;
 }
 
-
+//question 5.4
 void print_list_keys(CellKey* LCK){
     /* affiche la liste des clés LCK*/
     if(LCK==NULL){
@@ -98,6 +104,7 @@ void print_list_keys(CellKey* LCK){
     printf("\n");
 }
 
+//question 5.5
 void delete_cell_key(CellKey* c){
     /* supprime une cellule de liste chaînée de clés */
     free(c->data);
@@ -114,6 +121,7 @@ void delete_list_keys(CellKey* LCK){
     }
 }
 
+//question 5.6
 CellProtected* create_cell_protected(Protected* pr){
     /* alloue et initialise une cellule de liste chaînée de déclarations signées */
     CellProtected* cell_p=malloc(sizeof(CellProtected));
@@ -134,7 +142,9 @@ CellProtected* create_cell_protected(Protected* pr){
 // 	return;
 // }
 
+//question 5.7
 CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr){
+    /*fonction qui ajoute une déclaration signée en tete de liste*/
     if (!cellpr->data)
         return create_cell_protected(pr);
 
@@ -176,7 +186,12 @@ CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr){
 //     }
 //     return liste;
 // }
+
+
+//question 5.8
 CellProtected *read_protected(char *nomFichier){
+    /*fonction qui lit le fichier déclarations.txt et 
+    crée une liste contenant les déclarations signées de ce fichier*/
     FILE *f = fopen(nomFichier, "r");
     if (f == NULL){
         printf("Erreur : ouverture fichier\n");
@@ -194,6 +209,7 @@ CellProtected *read_protected(char *nomFichier){
     return cellpr;
 }
 
+//question 5.9
 void print_list_protected(CellProtected* LCP){
     /* affiche la liste de déclarations signées LCP*/
     if(LCP==NULL){
@@ -210,6 +226,7 @@ void print_list_protected(CellProtected* LCP){
     printf("\n");
 }
 
+//question 5.10
 void delete_cell_protected(CellProtected* cp){
     /* supprime une cellule de liste chaînée de déclarations signées */
     free(cp->data->pKey);
