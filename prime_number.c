@@ -4,7 +4,9 @@
 #include "prime_number.h"
 #include <time.h>
 
+// EXERCICE 1
 
+//question 1.1
 int is_prime_naive(long p){
     /* Renvoie 1 si p est premier sinon renvoie 0*/ 
     for(long i=3; i<p; i++){
@@ -15,6 +17,7 @@ int is_prime_naive(long p){
     return 1;
 }
 
+//question 1.3
 long modpow_naive(long a, long m, long n){
     /*Renvoie a^m mod n par la méthode naive  */
     long res=1;
@@ -24,6 +27,7 @@ long modpow_naive(long a, long m, long n){
     return res;
 }
 
+//question 1.4
 long modpow(long a, long m, long n){
     /*Renvoie a^m mod n  */
     if (a == 0)
@@ -43,6 +47,7 @@ long modpow(long a, long m, long n){
     return (long)((y + n) % n);
 }
 
+//question 1.6
 int witness(long a, long b, long d, long p){
     /*Renvoie 1 si a est un témoin de Miller pour p*/
     long x = modpow(a,d,p);
@@ -93,6 +98,7 @@ int is_prime_miller(long p, int k) {
     return 1;
 }
 
+//question 1.8
 long random_prime_number(int low_size, int up_size, int k){
     /*Renvoie un nombre premier aléatoire 
     de taille comprise entre low_size et up_size 
