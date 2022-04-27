@@ -75,20 +75,6 @@ int hash_function(Key* key, int size){
 	return 0;
 }
 
-//influe pas
-/*int find_position(HashTable* t, Key* key){
-	//cherche dans t si key existe
-
-	for(int i=0; i<t->size; i++){//parcourt la table de hachage
-		//si clé de la ième case de tab = la clé en argument alors return i
-		if(t->tab[i]->key->n == key->n && t->tab[i]->key->cle == key->cle){
-			return i;
-		}
-	}
-	//sinon retourne la position ou elle aurait du etre
-	return hash_function(key, t->size);
-}*/
-
 // question 6.4
 int find_position(HashTable* t, Key* key){
 	/*cherche dans la table t si l'élément key existe et retourne sa position*/
@@ -211,4 +197,3 @@ CellProtected* cellProtectedDup(CellProtected * cp) {
   return NULL;
 }
 
-//gcc -Wall  -o main base.c chiffrement.c hachage.c key.c prime_number.c
