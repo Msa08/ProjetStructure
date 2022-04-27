@@ -3,7 +3,10 @@
 #include <string.h>
 #include "blocktree.h"
 
+
+//question 8.1
 CellTree * create_node(Block* b){
+    /*fonction qui permet de créer et initialiser un noeud avec une hauteur à 0*/
     CellTree * res = (CellTree *) malloc(sizeof(CellTree));
     if (res == NULL){
         printf("Erreur d'allocation\n");
@@ -19,8 +22,10 @@ CellTree * create_node(Block* b){
 
 }
 
+//question 8.2
 int update_height(CellTree * father, CellTree * child){
-    /* Retourne 0 si on a modifie la taille du pere.
+    /*Fonction permettant de màj la hauteur du noeud father quand l'un de ses fils a été modifié
+    Retourne 0 si on a modifie la taille du pere.
     Retourne 1 sinon.*/
     
     if (father->height > child->height+1){
@@ -30,9 +35,9 @@ int update_height(CellTree * father, CellTree * child){
     return 1;
 }
 
-
+//question 8.3
 void add_child(CellTree* father, CellTree* child){
-
+    /*fonction qui ajoute un fils à un noeud*/
     if(!father){ // test si arbre vide, si oui le crée
         father = create_node(child->block);
         printf("Il n'y a pas de pere\n");
@@ -76,8 +81,9 @@ void add_child(CellTree* father, CellTree* child){
     father=debut;
 }
 
-
+//question 8.4
 void print_tree(CellTree* node){
+    /*fonction qui affiche arbre + la hauteur de chaque noeud et la valeur hachée du bloc*/
     if(!node || !node->block){
         printf("Arbre vide\n");
         return;
@@ -93,14 +99,9 @@ void print_tree(CellTree* node){
     }   
 }
 
-// // la notre
-// void delete_node(CellTree* node){
-//     delete_block(node->block);
-//     free(node);
-// }
-
-//la leur
+//question 8.5
 void delete_node(CellTree* node){
+    /*fonction qui supprime un noeud de l'arbre*/
     delete_block(node->block);
 
     if(node->father)
@@ -112,7 +113,7 @@ void delete_node(CellTree* node){
     
     free(node);
 }
-//la notre
+//fonction moins optimisée que delete_node
 void delete_tree(CellTree* tree){
     if (tree == NULL){
         return;
@@ -123,26 +124,9 @@ void delete_tree(CellTree* tree){
     delete_node(tree);
 }
 
-// //la leur
-// void delete_tree(CellTree* node){
-//     if(!node->block){
-//         printf("Arbre vide\n");
-//         return;
-//     }
-
-//     CellTree *cour=node->firstChild;
-//     while(cour){
-//         if(!cour->nextBro){
-//             delete_node(cour); 
-//             return;
-//         }
-            
-//         delete_tree(cour);
-//         cour=cour->nextBro;
-//     }
-// }
-
+//question 8.6
 CellTree* highest_child(CellTree* cell){
+    /*fonction qui renvoie le noeud fils avec la plus grande hauteur*/
     if (cell == NULL){
         return NULL;
     }
@@ -153,7 +137,9 @@ CellTree* highest_child(CellTree* cell){
     return filsCourant;
 }
 
+//question 8.7
 CellTree* last_node(CellTree* cell){
+    /*fonction qui retourne la valeur hachée du dernier bloc de cette plus longue chaîne*/
     CellTree* filsCourant = highest_child(cell);
     if (filsCourant == NULL){
         return cell;
@@ -165,7 +151,9 @@ CellTree* last_node(CellTree* cell){
     return filsCourant;
 }
 
+//question 8.8
 CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
+    /*fonction permettant de fusionner deux listes chainées de déclarations signées*/
     if (cell1 == NULL){
         return cell2;
     }
@@ -176,8 +164,29 @@ CellProtected* fusion_declaration(CellProtected* cell1, CellProtected* cell2){
     return cell1;
 }
 
-// 8.9 à tester 
+// question 8.9 + une variante
 
+CellProtected* fusion_highest_child(CellTree * tree) {
+    /*fonction qui retourne la liste obtenue par fusion des listes chaînées*/
+  // Arbre vide
+  if (tree == NULL) {
+    return NULL;
+  }
+  // Ajout liste du premier noeud
+  CellProtected* list = NULL;
+  merge_list_protected(&list, &((tree->block)->votes));
+
+  // Ajout liste des fils
+  CellTree* highestChild = highest_child(tree);
+  while (highestChild != NULL) {
+    merge_list_protected(&list, &((highestChild->block)->votes));
+    highestChild = highest_child(highestChild);
+  }
+
+  return list;
+}
+
+// AUTRE VERSION
 /*
 CellProtected* fusion_highest_child(CellTree * tree){
   CellTree * tmp = highest_child(tree);
@@ -190,27 +199,3 @@ CellProtected* fusion_highest_child(CellTree * tree){
   return res;
 }
 */
-
-// AUTRE VERSION 
-CellProtected* fusion_highest_child(CellTree * tree) {
-  // Arbre vide
-  if (tree == NULL) {
-    return NULL;
-  }
-
-
-  // Ajout liste du premier noeud
-  CellProtected* list = NULL;
-  merge_list_protected(&list, &((tree->block)->votes));
-
-
-  // Ajout liste des fils
-  CellTree* highestChild = highest_child(tree);
-  while (highestChild != NULL) {
-    merge_list_protected(&list, &((highestChild->block)->votes));
-    highestChild = highest_child(highestChild);
-  }
-
-  return list;
-}
-

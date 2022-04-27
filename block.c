@@ -7,7 +7,9 @@
 #include "block.h"
 #include <openssl/sha.h>
 
+// question 7.1
 void ecrire_block(char * filename, Block * block){
+	/*fonction permettant d'écrire un bloc dans un fichier*/
     FILE *f = fopen(filename, "w");
     char *auth = key_to_str(block->author);
     fprintf(f, "%s\n", auth);
@@ -29,8 +31,9 @@ void ecrire_block(char * filename, Block * block){
     fclose(f);
 }
 	
-
+//question 7.2
 Block* lire_block(char* filename){
+	/* fonction permettant de lire un bloc depuis un fichier*/
     FILE *f = fopen(filename, "r");
     Block *block = (Block *)malloc(sizeof(Block));
 
@@ -107,8 +110,10 @@ Block* lire_block(char* filename){
     return block;
 }
 
-
+//question 7.3
 char* block_to_str(Block* block){
+	/*fonction qui génère une chaîne de caractères strblock 
+        en fonction d'un block*/
     char* strblock = (char *)malloc(sizeof(char)*1000);
     char* tmp = key_to_str(block->author);
     strcpy(strblock, tmp);
@@ -138,8 +143,10 @@ char* block_to_str(Block* block){
 
 }
 
-
+//question 7.5
 char * hachage_SHA256(const unsigned char *s){
+	/*fonction qui retourne la valeur hachée tmp d'une chaîne de caractères s
+	en utilisant le hachage cryptographique SHA-256*/
 	unsigned char *d = SHA256(s, strlen((const char*)s),0);
 	
 	char* tmp = malloc(sizeof(char)*strlen((const char*)d)*2+1);
@@ -155,7 +162,9 @@ char * hachage_SHA256(const unsigned char *s){
 	return tmp;	
 }
 
+//question 7.6
 void compute_proof_of_work(Block *B, int d){
+	/*fonction permettant de rendre un bloc valide en procédant par brute force*/
     B->nonce = 0;
     int valide = 0;
     char* block;
@@ -212,8 +221,10 @@ unsigned char *str_to_hash(const char * str){
     return string;
 }
 
+//question 7.7
 int verify_block(Block* b, int d){
-    // retourne 1 si le block est valide, 0 sinon
+    /* fonction permettant de vérifier la validité d'un bloc :
+	retourne 1 si le block est valide, 0 sinon */
     char* block;
     unsigned char *tmp;
     block = block_to_str(b);
@@ -231,7 +242,7 @@ int verify_block(Block* b, int d){
     return 1;
 }
 
-
+//question 7.9
 void delete_block(Block *b){
 	/*supprime un bloc*/
     delete_list_protected(b->votes);
