@@ -6,12 +6,17 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 #include "math.h"
+
+//question 3.2
 void init_key(Key* key, long val, long n){
+    /*fonction permettant d'initialiser une clé key déja allouée*/
     key->n=n;
     key->cle=val;
 }
 
+//question 3.3
 void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
+    /*fonction permettant d'initialiser une clé publique et une clé secrète déja allouées*/
     long a=random_prime_number(low_size,up_size,5000);
     long b=random_prime_number(low_size,up_size,5000);
     while(a==b){
@@ -31,15 +36,18 @@ void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size){
     sKey->n=n;
 }
 
+//question 3.4
 char* key_to_str(Key* key){
+    /*fonction permettant de passer d'une variable de type Key à sa valeur en str*/
     char* str=malloc(50*sizeof(char));
     long a=key->cle;
     long b=key->n;
     sprintf(str,"(%lx,%lx)",a,b);
     return str;
 }
-
+//question 3.4 
 Key* str_to_key(char* str){
+    /*fonction permettant de passer d'une variable de type str au type Key*/
     Key* pKey=malloc(sizeof(Key));
     long cle, n;
     sscanf(str,"(%lx,%lx)",&cle,&n);
@@ -47,19 +55,24 @@ Key* str_to_key(char* str){
     return pKey;
 }
 
+//question 3.6
 Signature* init_signature(long* content, int size){
+    /*fonction permettant d'allouer et de remplir une signature avec un tableau content de type long*/
     Signature* signature=malloc(sizeof(Signature));
     signature->size=size;
     signature->content=content;
     return signature;
 }
 
+//question 3.7
 Signature* sign(char* mess, Key* sKey){
+    /*fonction permettant de créer une signature à partir de mess et de la clé sKey*/
     long* tab=encrypt(mess,sKey->cle,sKey->n);
     Signature* signature=init_signature(tab, strlen(mess));
     return signature;
 }
 
+//question 3.8
 char* signature_to_str(Signature* sgn){
     char* result = malloc(10*sgn->size*sizeof(char)); 
     result[0]= '#';
@@ -78,7 +91,7 @@ char* signature_to_str(Signature* sgn){
     result = realloc(result, (pos+1)*sizeof(char));
     return result;
 }
-
+//question 3.8
 Signature* str_to_signature(char* str){
     int len = strlen(str);
     long* content = (long*)malloc(sizeof(long)*len); 
@@ -103,7 +116,9 @@ Signature* str_to_signature(char* str){
     return init_signature(content , num);
 }
 
+//question 3.10
 Protected* init_protected(Key* pKey, char* mess, Signature* sgn){
+    /*fonction qui alloue et initialise une structure Protected*/
     Protected* protected=malloc(sizeof(Protected));
     protected->pKey=pKey;
     protected->mess=mess;
@@ -111,7 +126,10 @@ Protected* init_protected(Key* pKey, char* mess, Signature* sgn){
     return protected;
 }
 
+//question 3.11
 int verify(Protected* pr){
+    /*fonction qui vérifie que la signature correspond au message et à la personne contenue dans pr,
+    renvoie 1 si c'est valide sinon 0*/
     Key* pKey=pr->pKey;
     char* mess=pr->mess;
     Signature* sgn=pr->sgn;
@@ -124,7 +142,9 @@ int verify(Protected* pr){
     return 0;
 }
 
+//question 3.12
 char* protected_to_str(Protected* pr){
+    /*fonction permettant de passer d'une structure Protected à sa valeur en str*/
     char* key=key_to_str(pr->pKey);
     char* sgn=signature_to_str(pr->sgn);
     char* str=malloc(2*(strlen(key)+strlen(sgn)+strlen(pr->mess))*sizeof(char));
@@ -134,7 +154,9 @@ char* protected_to_str(Protected* pr){
     return str;
 }
 
+//question 3.12
 Protected* str_to_protected(char* str){
+    /*fonction permettant de passer d'une str à une structure Protected*/
    Protected* pr=malloc(sizeof(Protected));
      char key[255];
      char mess[255];
@@ -242,7 +264,10 @@ Protected* str_to_protected(char* str){
     free(sKey);
 }*/
 
+//EXERCICE 4
+//question 4.1
 void generate_random_data(int nv, int nc){
+    /*fonction réalisant une simulation de vote aléatoire*/
 
     Key *pKey = NULL;
     Key *sKey = NULL; 
