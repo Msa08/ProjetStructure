@@ -83,8 +83,7 @@ void print_tree(CellTree* node){
         return;
     }
     printf("Hauteur = %d , Hash = %s\n", node->height, node->block->hash);
-    printf("Previous_hash = %s\n LISTE DECLARATION : \n", node->block->previous_hash);
-    print_list_protected(node->block->votes); //pour le debug de fusion decl
+    printf("Previous_hash = %s\n", node->block->previous_hash);
     printf("\n");
 
     CellTree *cour=node->firstChild;
