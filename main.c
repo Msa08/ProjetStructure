@@ -23,71 +23,72 @@ void print_long_vector(long *result, int size){
 int main(){
     srand(time(NULL));
 
-/*____________________________TEST PARTIE 1__________________________________________________________
+//____________________________TEST PARTIE 1__________________________________________________________
   printf("\n______________________________TEST PARTIE 1___________________________\n");
-    // FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
-    // FILE *f2=fopen("modpow2.txt", "w");
-    // clock_t time_initial=0;
-    // clock_t time_final=0;
-    // clock_t time_initial2=0;
-    // clock_t time_final2=0;
-    // double time;
-    // double time2;
+    FILE *f = fopen("modpow.txt", "w");//Pour comparer méthodes d'exponentation modulaire
+    FILE *f2=fopen("modpow2.txt", "w");
+    clock_t time_initial=0;
+    clock_t time_final=0;
+    clock_t time_initial2=0;
+    clock_t time_final2=0;
+    double time;
+    double time2;
     long a, b;
     int m,p;
 
 
     //Q1.2 Plus grand nombre premier testable en moins de 2 millième de sec?
-    // long i;
-    // int res=0;
-    // int tmp=0;
-    // printf("---Plus grand nombre testable avec is_prime_naive() en moins de 0.002s-----\n");
-    // for(i=10000; time<0.0020;i++){// tant que time< 2 millième de sec itérer
-    //
-    //     time_initial=clock();
-    //     tmp=is_prime_naive(i);
-    //     time_final=clock();
-    //     time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;//
-    //     if(tmp==1){ // si i premier
-    //         res=i;
-    //     }
-    //     printf("time : %f, nb : %ld, premier= %d\n",time, i,tmp);
-    // }
-    // printf("Plus grand nombre : %d\n",res);//186763
+    long i;
+    int res=0;
+    int tmp=0;
+    printf("---Plus grand nombre testable avec is_prime_naive() en moins de 0.002s-----\n");
+    for(i=10000; time<0.0020;i++){// tant que time< 2 millième de sec itérer
+    
+        time_initial=clock();
+        tmp=is_prime_naive(i);
+        time_final=clock();
+        time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;//
+        if(tmp==1){ // si i premier
+            res=i;
+        }
+        //printf("time : %f, nb : %ld, premier= %d\n",time, i,tmp);
+    }
+    printf("Plus grand nombre : %d\n",res);//186763
 
 
 
     //Test de modpow et modpow_naive
     printf("\n---------------Test de modpow_naive et modpow----------------------\n" );
     for(int i=30;i<40;i++){
-        m=(int) rand()%i;
-        p=(int) rand()%i;
+        m=(int) rand()%i+1;
+        p=(int) rand()%i+1;
         a=modpow_naive(m,i,p);
         b=modpow(m,i,p);
         printf("%d^%d mod %d ->  modpow_naive: %lu, modpow : %lu\n",m,i,p,a,b);
     }
 
-    // //Q1.5 Comparaison des performances de modpow_naive et modpow
-    // //écriture dans les fichiers modpow_naive et modpow
+    //Q1.5 Comparaison des performances de modpow_naive et modpow
+    //écriture dans les fichiers modpow_naive et modpow
+    printf("\nComparaison des performances de modpow_naive et modpow\nCela prend un peu de temps...\n");
     // for(int i=1;i<50000;i++){ //la puissance varie de 1 à 50 000
     //   //modpow
     //   time_initial=clock();
     //   modpow(10, i, 12);
     //   time_final=clock();
     //   time=(double)(time_final-time_initial)/CLOCKS_PER_SEC;
-    //
+    
     //   //modpow_naive
     //   time_initial2=clock();
     //   modpow_naive(10, i, 12);
     //   time_final2=clock();
     //   time2=(double)(time_final2-time_initial2)/CLOCKS_PER_SEC;
-    //
+    
     //   fprintf(f,"%d %f\n",i,time);//modpow
     //   fprintf(f2,"%d %f\n",i,time2);//modpow_naive
-    //   printf("%i\n",i);
+    //   //printf("%i\n",i);
     // }
-    // fclose(f);
-    // fclose(f2);
+    fclose(f);
+    fclose(f2);
 
 
     //Generation des clés;
@@ -109,7 +110,7 @@ int main(){
         long t= (a-1)*(b-1);
         u=u+t;
     }
-    //affichage des valeurs des clés en haxadécimal
+    //affichage des valeurs des clés en hexadécimal
     printf("cle publique = (%lx, %lx) \n",s,n);
     printf("cle privee = (%lx, %lx) \n",u,n);
     //initialisation des clés
@@ -119,8 +120,8 @@ int main(){
     printf("key_to_str -> %s\n",str);
     Key* sKey=str_to_key("(1273,1f15)");
     //affichage des cles en décimal
-    printf("cle publique = %lu,%lu\n",pKey->cle,pKey->n);
-    printf("cle privee = %lu,%lu\n",sKey->cle,sKey->n);
+    printf("cle publique en decimal= %lu,%lu\n",pKey->cle,pKey->n);
+    printf("cle privee en decimal= %lu,%lu\n",sKey->cle,sKey->n);
 
 
     //chiffrement
@@ -135,11 +136,11 @@ int main(){
     //dechiffrement
     printf("Dechiffrement\n");
     char* decoded=decrypt(crypted,len,u,n);//message decrypté
-    printf("Decoded = %s\n",decoded);*/
+    printf("Decoded = %s\n",decoded);
 
 
-    /*____________________________TEST PARTIE 2______________________________________________________
-      printf("\n______________________________TEST PARTIE 2___________________________\n");
+    //____________________________TEST PARTIE 2___________________________________________________________________________________________________
+    printf("\n______________________________TEST PARTIE 2___________________________\n");
     //Testing Init Keys
     printf("\n-----------------Generation d'une paire de cle---------------------\n");
     init_pair_keys(pKey, sKey,3,7);
@@ -199,8 +200,8 @@ int main(){
     free(mess);
     free(crypted);
     free(decoded);
-    free(str);*/
-    /*____________________________TEST PARTIE 3______________________________________________________*/
+    free(str);
+    //____________________________TEST PARTIE 3______________________________________________________*/
     printf("\n______________________________TEST PARTIE 3___________________________\n");
     generate_random_data(4,2);
     printf("\ngenerate keys\n");
@@ -231,25 +232,25 @@ int main(){
     printf("\n______________________________TEST PARTIE 4_____________________________________________________\n");
 
     printf("\n-----------------Lecture/Ecriture de bloc d'un fichier---------------------\n");
-    Block *b=lire_block("Block_0");
+    Block *block=lire_block("Block_0");
     printf("Lecture du Block_0 ...\n");
-    ecrire_block("Block_0_bis",b);
+    ecrire_block("Block_0_bis",block);
     printf("Ecriture du Block_0 dans le fichier : Block_0_bis \n");
 
     printf("\n-----------------Conversion en str et hachage---------------------\n");
     char *buffer;
-    buffer=block_to_str(b);
+    buffer=block_to_str(block);
     printf("block_to_str(Block_0) :\n%s\n",buffer);
 
     printf("\nHachage avec SHA_256: \n");
-    const unsigned char *s= "Rosetta code" ;
-    char *rosetta=hachage_SHA256(s);
+    const unsigned char *chain= "Rosetta code" ;
+    char *rosetta=hachage_SHA256(chain);
     printf("Rosetta code -> %s \n", rosetta);
     free(rosetta);
 
     printf("\n-----------------TEST validite du bloc---------------------\n");
-    compute_proof_of_work(b,3);
-    if(verify_block(b,3)==1){
+    compute_proof_of_work(block,3);
+    if(verify_block(block,3)==1){
         printf("LE  BLOC EST VALIDE !!\n");
     }
     else{
@@ -257,28 +258,29 @@ int main(){
     }
 
     // printf("\n-----------------Temps de calcul proof of work---------------------\n");
-    /*FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
+    FILE *resultats_1=fopen("Temps_calcul_Compute_proof_of_work.txt","wa");
     float debut;
     float fin;
-    float time=0;
+    float ptime=0;
     debut=clock();
     fin=clock();
-    int i=1;
-    while (time<0.8){
+    i=1;
+    printf("Temps de calcul de Compute_proof_of_work\n");
+    while (ptime<0.8){
         debut=clock();
-        compute_proof_of_work(b,i);
+        compute_proof_of_work(block,i);
         fin=clock();
-        time=(fin-debut)/(CLOCKS_PER_SEC);
-        fprintf(resultats_1,"%d %f\n",i,time);
-        printf("%d zero, temps de calcul =%f \n",i,time);
+        ptime=(fin-debut)/(CLOCKS_PER_SEC);
+        fprintf(resultats_1,"%ld %f\n",i,ptime);
+        printf("%ld zero, temps de calcul =%f \n",i,ptime);
         i++;
-    }*/
+    }
   
-    // delete_block(b);
-    // printf("Block_0 deleted \n");
-    // printf("auteur du bloc Block_0 : %s\n",key_to_str(b->author));
-    // //fclose(resultats_1);
-    // free(buffer);
+    delete_block(block);
+    printf("Block_0 deleted \n");
+    //printf("auteur du bloc Block_0 : %s\n",key_to_str(block->author));
+    //fclose(resultats_1);
+    free(buffer);
     
     /*____________________________TEST EXO8______________________________________________________*/
     printf("\n_______________________________TEST EXO8____________________________________________\n");
@@ -311,37 +313,34 @@ int main(){
 
     printf("-----------------------TEST FUSION DECLARATION------------\n");
 
-    // CellProtected* cell1=read_protected("declarations.txt");
-    // CellProtected* cell2=read_protected("declarations.txt");
-    // printf("cell1\n");
-    // print_list_protected(cell1);
-    // printf("cell2\n");
-    // print_list_protected(cell2);
+    CellProtected* cell1=read_protected("declarations.txt");
+    CellProtected* cell2=read_protected("declarations.txt");
+    printf("cell1\n");
+    print_list_protected(cell1);
+    printf("cell2\n");
+    print_list_protected(cell2);
 
-    // fusion_declaration(cell1, cell2);
-    // printf("fusion de cell2 dans cell1\n");
-    // print_list_protected(cell1);
+    fusion_declaration(cell1, cell2);
+    printf("fusion de cell2 dans cell1\n");
+    print_list_protected(cell1);
 
-    // delete_list_protected(cell1);
-    // delete_list_protected(cell2);
+    delete_list_protected(cell2);
+    
     
     printf("fusion highest_child\n");
-    CellProtected* cell=fusion_highest_child(node);
-    print_list_protected(cell);
+    cell1=fusion_highest_child(node);
+    print_list_protected(cell1);
 
-    // delete_node(node);
-    // delete_node(node1);
-    // delete_node(node2);
-    // delete_node(node3);
-    // delete_node(node4);
+    delete_list_protected(cell1);
+        
 
     /*____________________________TEST EXO9______________________________________________________*/
-    /*printf("\n______________________________TEST EXO9___________________________\n");
-    while(decl){
-        submit_vote(decl->data);
-        decl=decl->next;
-    }
-    create_block(node,voters->data,1);
-    */
+    printf("\n______________________________TEST EXO9___________________________\n");
+    // while(decl){
+    //     submit_vote(decl->data);
+    //     decl=decl->next;
+    // }
+    // create_block(node,voters->data,1);
+    
     return 0;
 }
