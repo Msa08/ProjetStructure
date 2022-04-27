@@ -6,6 +6,8 @@
 #include "prime_number.h"
 #include "chiffrement.h"
 
+// EXERCICE 2
+
 long extended_gcd(long s, long t, long *u, long *v){
     /*Retourne le PGCD(s,t) et affecte à u et v les valeurs
     verifiant l'equation de Bezout : s*u +t*v =PGCD(s,t)   */
@@ -21,6 +23,7 @@ long extended_gcd(long s, long t, long *u, long *v){
     return gcd;
 }
 
+//question 2.1
 void generate_key_values(long p, long q, long* n, long *s, long *u){
     /*Génère la clé public pkey(s,n) et la clé secrete skey(u,n) à partir des
     nombres premiers p et q */
@@ -33,8 +36,9 @@ void generate_key_values(long p, long q, long* n, long *s, long *u){
     }
 }
 
+//question 2.2
 long* encrypt(char* chaine, long s, long n){
-    /*Retourne la chaine chiffré grace à la clé publique */
+    /*Retourne la chaine chiffrée grace à la clé publique */
     long *crypted=(long*)malloc(strlen(chaine)*sizeof(long));
     int i=0;
     while(chaine[i]!='\0'){
@@ -44,6 +48,7 @@ long* encrypt(char* chaine, long s, long n){
     return crypted;
 }
 
+//question 2.3
 char* decrypt(long* crypted, int size, long u, long n){
     /*Retourne crypted sous forme de message déchiffré*/
     char* decrypt=malloc(size*sizeof(char)+1);
