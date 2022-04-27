@@ -229,7 +229,6 @@ void delete_list_protected(CellProtected* c){
         return;
     }
     while(c){
-        printf("bjr\n");
         temp=c->next;
         delete_cell_protected(c);
         c=temp;
