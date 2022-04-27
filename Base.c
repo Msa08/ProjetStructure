@@ -15,17 +15,6 @@ CellKey* create_cell_key(Key* key){
 }
 
 
-// void add_cell_key(CellKey** cellKey, Key* key){
-// 	/*ajout d'une clé en tete de liste*/
-// 	if (!(*cellKey) || !key){
-// 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
-// 		return;
-// 	}
-// 	CellKey* newCellKey = create_cell_key(key);
-// 	newCellKey->next = (*cellKey); 
-// 	(*cellKey) = newCellKey;
-// 	return;
-// }
 
 //question 5.2
 CellKey* add_cell_key(CellKey* cellkey, Key* key){
@@ -38,36 +27,11 @@ CellKey* add_cell_key(CellKey* cellkey, Key* key){
     return ck;
 }
 
-// CellKey* read_public_keys(char* fichier){
-//     /*retourne une liste chainée contenant toutes les clés du fichier en paramètre*/
-//     if(strcmp(fichier,"keys.txt")!=0 && strcmp(fichier,"candidates.txt")!=0){
-//         printf("mauvais fichier\n");
-//         return NULL;
-//     }
-//     FILE *f=fopen(fichier,"r");
-//     char ligne[50];
-//     char poubelle[50];
-//     char pKey[50];
-//     Key* pkey2;
-//     CellKey* liste = malloc(sizeof(CellKey));
-//     liste->data=NULL;
-//     liste->next=NULL;
-//     while(!feof(f)){
-//         fgets(ligne,50,f);
-//         sscanf(ligne,"%s %s",pKey,poubelle);
-//         pkey2=str_to_key(pKey);
-//         if(liste->data==NULL){
-//             liste->data=str_to_key(pKey);
-//         }
-//         else{
-//             add_cell_key(&liste, pkey2);
-//         }
-//     }
-//     return liste;
-// }
+
 
 //question 5.3
 CellKey *read_public_keys(char *nomFic){
+    /*fonction qui retourne une liste chaînée contenant toutes les clés du fichier nomFic*/
     FILE *f = fopen(nomFic, "r");
     if (f == NULL){
         printf("Erreur : ouverture fichier\n");
@@ -130,17 +94,6 @@ CellProtected* create_cell_protected(Protected* pr){
     return cell_p;
 }
 
-// void add_cell_protected(CellProtected** cellPro, Protected* pr){
-// 	/* ajoute une déclaration signée en tête de liste*/
-// 	if (!(*cellPro) || !pr){
-// 		printf("[Add_Cell_Key Function] Erreur Key = NULL ou *newCellKey = NULL\n");
-// 		return;
-// 	}
-// 	CellProtected* newCellProtected = create_cell_protected(pr);
-// 	newCellProtected->next = (*cellPro); 
-// 	(*cellPro) = newCellProtected;
-// 	return;
-// }
 
 //question 5.7
 CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr){
@@ -157,36 +110,6 @@ CellProtected* add_cell_protected(CellProtected *cellpr, Protected *pr){
 
     return cellpr;
 }
-
-// CellProtected* read_protected(char* fic){
-//     /* retourne une liste chaînée contenant toutes les déclarations signées du fichier
-//     “declarations.txt” */
-//     if(strcmp(fic,"declarations.txt")!=0){
-//         printf("mauvais fichier\n");
-//         return NULL;
-//     }
-//     FILE *f = fopen(fic,"r");
-//     CellProtected* liste=malloc(sizeof(CellProtected));
-//     liste->data=NULL;
-//     liste->next=NULL;
-//     char ligne[50];
-//     char poubelle[50];
-//     char protected[50];
-//     Protected* pr2;
-//     while(!feof(f)){
-//         fgets(ligne,50,f);
-//         sscanf(ligne,"%s %s",protected,poubelle);
-//         pr2=str_to_protected(protected);
-//         if(liste->data==NULL){
-//             liste->data=str_to_protected(protected);
-//         }
-//         else{
-//             add_cell_protected(&liste, pr2);
-//         }
-//     }
-//     return liste;
-// }
-
 
 //question 5.8
 CellProtected *read_protected(char *nomFichier){
