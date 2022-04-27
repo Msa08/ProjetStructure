@@ -255,6 +255,6 @@ void merge_list_protected(CellProtected **list1, CellProtected **list2) {
     // Destruction 2eme liste sans libérer la mémoire
     *list2 = NULL;
   }
-
+}
 
 
