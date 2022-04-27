@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "key.h"
 
-
+//question 6.1
 void filter(CellProtected** LCP){
     /* Supprime les declarations dont la signature n'est
     pas valide.
@@ -50,7 +50,9 @@ void filter(CellProtected** LCP){
     }
 }
 
+//question 6.2
 HashCell* create_hashcell(Key* key){
+	/*fonction permettant d'allouer et initialiser à 0 une cellule de la table de hachage*/
 	HashCell* h = malloc(sizeof(HashCell));
 	h->key = key;
 	h->val = 0;
@@ -58,11 +60,15 @@ HashCell* create_hashcell(Key* key){
 	return h;
 }
 
+
 void delete_hashcell(HashCell* c){
 	free(c);
 }
 
+//question 6.3
 int hash_function(Key* key, int size){
+	/*retourne la position d'un élément dans la table de hachage,
+	si la table est vide retourne 0*/
 	if (key != NULL) {
 		return (key->cle + key->n) % size;
 	}
@@ -83,7 +89,9 @@ int hash_function(Key* key, int size){
 	return hash_function(key, t->size);
 }*/
 
+// question 6.4
 int find_position(HashTable* t, Key* key){
+	/*cherche dans la table t si l'élément key existe et retourne sa position*/
 	int h, i=0;
 	while(i < t->size){
 		h=(hash_function(key,t->size)+i)%t->size;
@@ -95,7 +103,9 @@ int find_position(HashTable* t, Key* key){
 	return i;
 }
 
+//question 6.5
 HashTable* create_hashtable(CellKey* keys, int size){
+	/*fonction permettant de créer et initialiser une table de hachage*/
     HashTable *t = (HashTable*)malloc(sizeof(HashTable));
     t->tab = (HashCell**)malloc(sizeof(HashCell*)*size);
     t->size=size;
@@ -128,7 +138,9 @@ HashTable* create_hashtable(CellKey* keys, int size){
     return t;
 }
 
+//question 6.6
 void delete_hashtable(HashTable* t){
+	/*fonction permettant de supprimer une table de hachage t*/
     for(int i=0;i<t->size;i++){
         free(t->tab[i]);
     }
@@ -136,7 +148,9 @@ void delete_hashtable(HashTable* t){
 	free(t);
 }
 
+//question 6.7
 Key* compute_winner(CellProtected* decl, CellKey* candidates,CellKey* voters, int sizeC, int sizeV){
+	/*fonction permettant de calculer le vainqueur d'une élection*/
 	//Creation de 2 tables de hachages
 	HashTable* hc= create_hashtable(candidates,sizeC);//pour la liste des candidats
 	HashTable* hv= create_hashtable(voters, sizeV);//pour la liste des votants
